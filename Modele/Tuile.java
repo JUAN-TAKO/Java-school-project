@@ -1,4 +1,4 @@
-package modele.ileinterdite;
+package Modele;
 
 public class Tuile {
     private int x;
@@ -7,12 +7,12 @@ public class Tuile {
     private Tresor tresor;
     private Etat etat;
 
-    Tuile(int x, int y, String nom, Tresor tresor){
-        setX(x);
-        setY(y);
-        setNom(nom);
-        setTresor(tresor);
-        setEtat(Etat.SECHE);
+    Tuile(int cx, int cy, String nomT, Tresor tresor){
+        x = cx;
+        y = cy;
+        nom = nomT;
+        this.tresor = tresor;
+        etat = Etat.SECHE;
     }
     public int getX() {
         return x;

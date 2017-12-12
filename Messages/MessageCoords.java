@@ -1,3 +1,4 @@
+package Messages;
 
 public class MessageCoords extends Message{
 	private int cx;

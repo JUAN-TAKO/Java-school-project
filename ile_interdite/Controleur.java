@@ -1,4 +1,12 @@
-import java.utils.ArrayList;
+package ile_interdite;
+
+import java.util.ArrayList;
+import java.util.Observable;
+import java.util.Observer;
+import Modele.*;
+import Vues.*;
+import Messages.*;
+
 public class Controleur implements Observer{
 	
 	private VueAventurier vueAventurier;
@@ -27,7 +35,7 @@ public class Controleur implements Observer{
 	}
 	
 	public void afficherAventurier(){
-		Aventurier av = aventuriers.at(indexAventurierCourant);
+		Aventurier av = aventuriers.get(indexAventurierCourant);
 		vueAventurier.afficher(av.getNom(), av.getRole());
 	}
 	
@@ -45,7 +53,9 @@ public class Controleur implements Observer{
 		indexAventurierCourant = 0;
 	}
 	
-	public void update(Observable o, Object arg){
+        
+	@Override
+        public void update(Observable o, Object arg){
 		Message m = (Message)arg;
 		MessageCoords mc = (MessageCoords)arg;
 		switch(m.getAction()){
@@ -64,5 +74,4 @@ public class Controleur implements Observer{
 			
 		}
 	}
-	
 }

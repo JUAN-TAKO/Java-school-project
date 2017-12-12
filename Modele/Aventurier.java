@@ -1,4 +1,4 @@
-package modele.ileinterdite;
+package Modele;
 
 public abstract class Aventurier{
 	private Tuile position;

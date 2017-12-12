@@ -1,4 +1,4 @@
-package modele.ileinterdite;
+package Modele;
 
 import java.util.ArrayList;
 
@@ -10,6 +10,6 @@ public class Grille {
         generateur.generate(tuiles);
     }
     public Tuile at(int x, int y){
-  		return tuiles.at(y*size + x);
+        return tuiles.get(y*size + x);
     }
 }

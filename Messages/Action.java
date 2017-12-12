@@ -1,3 +1,5 @@
+package Messages;
+
 public enum Action{
 	DEPLACER,
 	ASSECHER,

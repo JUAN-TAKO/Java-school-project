@@ -1,4 +1,9 @@
-public class GrillePredefinie extends GenerateurGrille{
+package Generateurs;
+
+import Modele.*;
+import java.util.ArrayList;
+
+public class GrillePredefinie extends Generateur{
 	public void generate(ArrayList<Tuile> tuiles){
 		
 	}
