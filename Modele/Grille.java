@@ -5,7 +5,8 @@ import java.util.ArrayList;
 public class Grille {
     private ArrayList<Tuile> tuiles;
     private int size;
-    Grille(Generateur generateur) {
+    
+    public Grille(Generateur generateur) {
         tuiles = new ArrayList<>();
         generateur.generate(tuiles);
     }

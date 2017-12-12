@@ -9,14 +9,14 @@ public class Message{
     /**
      * @return the act
      */
-    public Action getAct() {
+    public Action getAction() {
         return act;
     }
 
     /**
      * @param act the act to set
      */
-    public void setAct(Action act) {
+    public void setAction(Action act) {
         this.act = act;
     }
 	

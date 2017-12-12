@@ -1,5 +1,6 @@
 package ile_interdite;
 
+import Generateurs.*;
 import java.util.ArrayList;
 import java.util.Observable;
 import java.util.Observer;
@@ -36,7 +37,7 @@ public class Controleur implements Observer{
 	
 	public void afficherAventurier(){
 		Aventurier av = aventuriers.get(indexAventurierCourant);
-		vueAventurier.afficher(av.getNom(), av.getRole());
+		vueAventurier.afficher(av.getNom(), av.getNomRole());
 	}
 	
 	public void aventurierSuivant(){
@@ -59,16 +60,16 @@ public class Controleur implements Observer{
 		Message m = (Message)arg;
 		MessageCoords mc = (MessageCoords)arg;
 		switch(m.getAction()){
-			case Action.DEPLACER:
+			case DEPLACER:
 				
 				break;
-			case Action.ASSECHER:
+			case ASSECHER:
 				
 				break;
-			case Action.SPECIAL:
+			case SPECIAL:
 				
 				break;
-			case Action.PASSER:
+			case PASSER:
 				
 				break;
 			
