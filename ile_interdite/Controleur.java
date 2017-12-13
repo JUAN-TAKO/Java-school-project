@@ -34,9 +34,13 @@ public class Controleur implements Observer{
 	public void start(){
 		init();
 	}
-	
+
+	public Aventurier getAventurierCourant(){
+		return aventuriers.get(indexAventurierCourant);
+	}
+
 	public void afficherAventurier(){
-		Aventurier av = aventuriers.get(indexAventurierCourant);
+		Aventurier av = getAventurierCourant();
 		vueAventurier.afficher(av.getNom(), av.getNomRole());
 	}
 	
@@ -54,25 +58,52 @@ public class Controleur implements Observer{
 		indexAventurierCourant = 0;
 	}
 	
-        
+	public void deplacer(int idTuile){
+		getAventurierCourant.setPosition(grille.getTuileById(idTuile));
+	}
+
+	public void assecher(int idTuile){
+		grille.getTuileById(idTuile).setEtat(Etat.SECHE);
+	}
+	
 	@Override
-        public void update(Observable o, Object arg){
+    public void update(Observable o, Object arg){
 		Message m = (Message)arg;
-		MessageCoords mc = (MessageCoords)arg;
-		switch(m.getAction()){
-			case DEPLACER:
+		MessageId mi = (MessageId)arg;
+		MessageTuiles mt = (MessageTuiles)arg;
+
+		switch(m.getType()){
+			case BTN_DEPLACER:  //clic sur le bouton déplacer
+				getAventurierCourant().seDeplacer(grille);
+				break;
+			case BTN_ASSECHER:  //clic sur le bouton assecher
+					
+				break;
+			case BTN_SPECIAL:   //clic sur le bouton spécial
+					
+				break;
+			case BTN_PASSER:    //clic sur le bouton passer
+					
+				break;
+			case SELECT_DEPLACEMENT:   //fenêtre de selection de la tuile pour le déplacement
 				
 				break;
-			case ASSECHER:
-				
+			case SELECT_ASSECHER:      //fenêtre de selection de la tuile pour l'assèchement
+
 				break;
-			case SPECIAL:
-				
+			case SELECT_SPECIAL:       //fenêtre de selection de la tuile pour l'action spéciale
+
 				break;
-			case PASSER:
-				
+			case FAIRE_DEPLACEMENT:    //effectuer le déplacement
+				getAventurierCourant().setPosition(g.getTuileById(mi.getId()));
+				break;
+			case FAIRE_ASSECHER:       //effectuer l'assèchement
+
+				break;
+			case FAIRE_SPECIAL:        //effectuer l'action spéciale
+
 				break;
 			
 		}
 	}
-}
+}	

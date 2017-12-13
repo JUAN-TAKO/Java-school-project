@@ -13,4 +13,7 @@ public class Grille {
     public Tuile at(int x, int y){
         return tuiles.get(y*size + x);
     }
+    public Tuile getTuileById(int id){
+        return tuiles.get(id);
+    }
 }

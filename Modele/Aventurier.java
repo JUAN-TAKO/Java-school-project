@@ -1,6 +1,6 @@
 package Modele;
 
-public abstract class Aventurier{
+public abstract class Aventurier extends Observable{
 	private Tuile position;
 	private String nom;
 	private String nomRole;
@@ -10,17 +10,45 @@ public abstract class Aventurier{
             this.nomRole = nomRole;
         }
         
-	public ResultatAction seDeplacer(Grille g){
-		return ResultatAction.NON_IMPLEMENTE;
+	public void seDeplacer(Grille g){
+		ArrayList<Tuile> tuilesAccessibles;
+		tuilesAccessibles.add(g.at(getPosition().getX(), getPosition().getY()+1));
+		tuilesAccessibles.add(g.at(getPosition().getX(), getPosition().getY()-1));
+		tuilesAccessibles.add(g.at(getPosition().getX()+1, getPosition().getY()));
+		tuilesAccessibles.add(g.at(getPosition().getX()-1, getPosition().getY()));
+
+		setChanged();
+		MessageTuiles m = new MessageTuiles(MessageType.TUILES_DEPLACEMENT, tuilesAccessibles);
+		notifyObservers(m);
+		clearChanged();
 	}
 
-	public ResultatAction assecher(Grille g){
-		return ResultatAction.NON_IMPLEMENTE;
+	public void assecher(Grille g){
+		ArrayList<Tuile> tuilesAccessibles;
+		Tuile t;
+		t = g.at(position.getX(), position.getY()+1);
+		if(t.getEtat() == Etat.INNONDEE)
+		tuilesAccessibles.add(t);	
+		
+		t = g.at(position.getX(), position.getY()-1);
+		if(t.getEtat() == Etat.INNONDEE)
+		tuilesAccessibles.add(t);
+		
+		t = g.at(position.getX()+1, position.getY());
+		if(t.getEtat() == Etat.INNONDEE)
+		tuilesAccessibles.add(t);
+		
+		t = g.at(position.getX()-1, position.getY());
+		if(t.getEtat() == Etat.INNONDEE)
+			tuilesAccessibles.add(t);
+		
+		setChanged();
+		MessageTuiles m = new MessageTuiles(MessageType.TUILES_ASSECHER, tuilesAccessibles);
+		notifyObservers(m);
+		clearChanged();
 	}
 	
-	public ResultatAction actionSpeciale(Grille g){
-		return ResultatAction.NON_IMPLEMENTE;
-	}
+	public void actionSpeciale(Grille g){}
         
 	
 	public String getNom(){

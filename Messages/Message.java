@@ -1,23 +1,23 @@
 package Messages;
 
 public class Message{
-	private Action act;
-	public Message(Action a){
-		act = a;
+	private MessageType type;
+	public Message(MessageType t){
+		type = t;
 	}
 
     /**
      * @return the act
      */
-    public Action getAction() {
-        return act;
+    public MessageType getType() {
+        return type;
     }
 
     /**
      * @param act the act to set
      */
-    public void setAction(Action act) {
-        this.act = act;
+    public void setType(MessageType t) {
+        type = t;
     }
 	
 }

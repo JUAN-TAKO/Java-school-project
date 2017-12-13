@@ -6,10 +6,12 @@ public class Tuile {
     private String nom;
     private Tresor tresor;
     private Etat etat;
+    private int id;
 
     Tuile(int cx, int cy, String nomT, Tresor tresor){
         x = cx;
         y = cy;
+        id = 6*cy + cx;
         nom = nomT;
         this.tresor = tresor;
         etat = Etat.SECHE;
@@ -19,6 +21,9 @@ public class Tuile {
     }
     public int getY() {
         return y;
+    }
+    public int getId(){
+        return id;
     }
     public String getNom() {
         return nom;
