@@ -1,6 +1,9 @@
 package Modele;
 
+import Messages.*;
+
 import java.util.ArrayList;
+import java.util.Observable;
 
 public abstract class Aventurier extends Observable{
 	private Tuile position;
@@ -15,13 +18,13 @@ public abstract class Aventurier extends Observable{
 	protected void checkDeplacement(Grille g, ArrayList<Tuile> tuilesAccessibles, int x, int y) {
 		Tuile t;
 		t = g.at(getPosition().getX()+x, getPosition().getY()+y);
-        if(t != NULL && t.getEtat() != Etat.COULEE)
+        if(t != null && t.getEtat() != Etat.COULEE)
             tuilesAccessibles.add(t);
     }
     protected void checkAssechement(Grille g, ArrayList<Tuile> tuilesAccessibles, int x, int y) {
 		Tuile t;
 		t = g.at(getPosition().getX()+x, getPosition().getY()+y);
-        if(t != NULL && t.getEtat() == Etat.INNONDEE)
+        if(t != null && t.getEtat() == Etat.INNONDEE)
             tuilesAccessibles.add(t);
     }
     

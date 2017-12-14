@@ -1,5 +1,6 @@
 package Aventuriers;
 
+import Messages.*;
 import java.util.ArrayList;
 
 import Modele.*;

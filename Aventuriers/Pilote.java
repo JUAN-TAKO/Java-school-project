@@ -1,5 +1,6 @@
 package Aventuriers;
 
+import Messages.*;
 import Modele.*;
 import java.util.ArrayList;
 
@@ -11,7 +12,7 @@ public class Pilote extends Aventurier{
     protected void checkDeplacement(Grille g, ArrayList<Tuile> tuilesAccessibles, int x, int y) {
 		Tuile t;
 		t = g.at(x, y);
-        if(t != NULL && t.getEtat() != Etat.COULEE)
+        if(t != null && t.getEtat() != Etat.COULEE)
             tuilesAccessibles.add(t);
     }
 
