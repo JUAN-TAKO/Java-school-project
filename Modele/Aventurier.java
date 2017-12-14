@@ -1,55 +1,67 @@
 package Modele;
 
+import java.util.ArrayList;
+
 public abstract class Aventurier extends Observable{
 	private Tuile position;
 	private String nom;
 	private String nomRole;
         
-        public Aventurier(String nom, String nomRole){
-            this.nom = nom;
-            this.nomRole = nomRole;
-        }
-        
+    public Aventurier(String nom, String nomRole){
+        this.nom = nom;
+        this.nomRole = nomRole;
+    }
+	
+	protected void checkDeplacement(Grille g, ArrayList<Tuile> tuilesAccessibles, int x, int y) {
+		Tuile t;
+		t = g.at(getPosition().getX()+x, getPosition().getY()+y);
+        if(t != NULL && t.getEtat() != Etat.COULEE)
+            tuilesAccessibles.add(t);
+    }
+    protected void checkAssechement(Grille g, ArrayList<Tuile> tuilesAccessibles, int x, int y) {
+		Tuile t;
+		t = g.at(getPosition().getX()+x, getPosition().getY()+y);
+        if(t != NULL && t.getEtat() == Etat.INNONDEE)
+            tuilesAccessibles.add(t);
+    }
+    
 	public void seDeplacer(Grille g){
-		ArrayList<Tuile> tuilesAccessibles;
-		tuilesAccessibles.add(g.at(getPosition().getX(), getPosition().getY()+1));
-		tuilesAccessibles.add(g.at(getPosition().getX(), getPosition().getY()-1));
-		tuilesAccessibles.add(g.at(getPosition().getX()+1, getPosition().getY()));
-		tuilesAccessibles.add(g.at(getPosition().getX()-1, getPosition().getY()));
+		ArrayList<Tuile> tuilesAccessibles = new ArrayList<>();
+        checkDeplacement(g, tuilesAccessibles, 0, 1);
+        checkDeplacement(g, tuilesAccessibles, 1, 0);
+        checkDeplacement(g, tuilesAccessibles, 0, -1);
+        checkDeplacement(g, tuilesAccessibles, -1, 0);
 
 		setChanged();
-		MessageTuiles m = new MessageTuiles(MessageType.TUILES_DEPLACEMENT, tuilesAccessibles);
+		MessageTuiles m = new MessageTuiles(MessageType.SELECT_DEPLACEMENT, tuilesAccessibles);
 		notifyObservers(m);
-		clearChanged();
+        clearChanged();
+        finAction();
 	}
 
 	public void assecher(Grille g){
-		ArrayList<Tuile> tuilesAccessibles;
-		Tuile t;
-		t = g.at(position.getX(), position.getY()+1);
-		if(t.getEtat() == Etat.INNONDEE)
-		tuilesAccessibles.add(t);	
-		
-		t = g.at(position.getX(), position.getY()-1);
-		if(t.getEtat() == Etat.INNONDEE)
-		tuilesAccessibles.add(t);
-		
-		t = g.at(position.getX()+1, position.getY());
-		if(t.getEtat() == Etat.INNONDEE)
-		tuilesAccessibles.add(t);
-		
-		t = g.at(position.getX()-1, position.getY());
-		if(t.getEtat() == Etat.INNONDEE)
-			tuilesAccessibles.add(t);
+		ArrayList<Tuile> tuilesAccessibles = new ArrayList<>();
+		checkAssechement(g, tuilesAccessibles, 0, 1);
+        checkAssechement(g, tuilesAccessibles, 1, 0);
+        checkAssechement(g, tuilesAccessibles, 0, -1);
+        checkAssechement(g, tuilesAccessibles, -1, 0);
 		
 		setChanged();
-		MessageTuiles m = new MessageTuiles(MessageType.TUILES_ASSECHER, tuilesAccessibles);
+		MessageTuiles m = new MessageTuiles(MessageType.SELECT_ASSECHER, tuilesAccessibles);
 		notifyObservers(m);
-		clearChanged();
+        clearChanged();
+        
+        finAction();
 	}
 	
-	public void actionSpeciale(Grille g){}
-        
+    public void actionSpeciale(Grille g){}
+    
+    protected void finAction(){
+        setChanged();
+		Message m = new Message(MessageType.ACTION);
+		notifyObservers(m);
+		clearChanged();
+    }
 	
 	public String getNom(){
 		return nom;
