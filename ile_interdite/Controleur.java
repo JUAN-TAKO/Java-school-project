@@ -16,6 +16,7 @@ public class Controleur implements Observer{
 	private Grille grille;
 	private ArrayList<Aventurier> aventuriers;
 	private int indexAventurierCourant;
+	private int action;
 	private int tour;
 	
 	public Controleur(){
@@ -25,6 +26,8 @@ public class Controleur implements Observer{
 		Generateur g = new GrillePredefinie();
 		grille = new Grille(g);
 		tour = 0;
+		indexAventurierCourant = 0;
+		action = 0;
 	}
 	
 	public void init(){
@@ -34,7 +37,6 @@ public class Controleur implements Observer{
 	public void start(){
 		init();
 	}
-
 	public Aventurier getAventurierCourant(){
 		return aventuriers.get(indexAventurierCourant);
 	}
@@ -43,7 +45,13 @@ public class Controleur implements Observer{
 		Aventurier av = getAventurierCourant();
 		vueAventurier.afficher(av.getNom(), av.getNomRole());
 	}
-	
+	public void actionSuivante(){
+		action++;
+		if(action > 3){
+			action = 0;
+			aventurierSuivant();
+		}
+	}
 	public void aventurierSuivant(){
 		indexAventurierCourant++;
 		if(indexAventurierCourant >= aventuriers.size()){
@@ -77,33 +85,45 @@ public class Controleur implements Observer{
 				getAventurierCourant().seDeplacer(grille);
 				break;
 			case BTN_ASSECHER:  //clic sur le bouton assecher
-					
+				getAventurierCourant().assecher(grille);
 				break;
 			case BTN_SPECIAL:   //clic sur le bouton spécial
-					
+				
 				break;
 			case BTN_PASSER:    //clic sur le bouton passer
 					
 				break;
 			case SELECT_DEPLACEMENT:   //fenêtre de selection de la tuile pour le déplacement
 				
+			
 				break;
 			case SELECT_ASSECHER:      //fenêtre de selection de la tuile pour l'assèchement
+
+				
 
 				break;
 			case SELECT_SPECIAL:       //fenêtre de selection de la tuile pour l'action spéciale
 
 				break;
-			case FAIRE_DEPLACEMENT:    //effectuer le déplacement
+                                
+                        case FAIRE_DEPLACEMENT:   //fenêtre de selection de la tuile pour le déplacement
+				
+			
 				getAventurierCourant().setPosition(g.getTuileById(mi.getId()));
 				break;
-			case FAIRE_ASSECHER:       //effectuer l'assèchement
+			case FAIRE_ASSECHER:      //fenêtre de selection de la tuile pour l'assèchement
+
+				
+
+				g.getTuileById(mi.getId()).setEtat(Etat.SECHE);
+				break;
+			case FAIRE_SPECIAL:       //fenêtre de selection de la tuile pour l'action spéciale
 
 				break;
-			case FAIRE_SPECIAL:        //effectuer l'action spéciale
-
+                                
+			case ACTION:
+				actionSuivante();
 				break;
-			
 		}
 	}
 }	
