@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.HashSet;
 
 import Modele.*;
-
+import Messages.*;
 public class Plongeur extends Aventurier{
     
     Plongeur(String nomJoueur, String nomRole){
@@ -30,17 +30,17 @@ public class Plongeur extends Aventurier{
     }
 
     public void seDeplacer(Grille g){
-		HashSet<Tuile> tuilesAccessibles = new HashSet<>();
+	HashSet<Tuile> tuilesAccessibles = new HashSet<>();
         HashSet<Tuile> tuilesCoulees = new HashSet<>();
         tuilesAccessibles.add(getPosition());
-        checkTuile(g, tuilesAccessibles, tuilesInnondees, getPosition());
+        checkTuile(g, tuilesAccessibles, tuilesCoulees, getPosition());
         tuilesAccessibles.remove(getPosition());
         ArrayList<Tuile> tacc = new ArrayList(tuilesAccessibles);
 
-		setChanged();
-		MessageTuiles m = new MessageTuiles(MessageType.SELECT_DEPLACEMENT, tacc);
-		notifyObservers(m);
-		clearChanged();
+	setChanged();
+	MessageTuiles m = new MessageTuiles(MessageType.SELECT_DEPLACEMENT, tacc);
+	notifyObservers(m);
+	clearChanged();
         
         finAction();
     }

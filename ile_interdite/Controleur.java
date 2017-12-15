@@ -96,17 +96,31 @@ public class Controleur implements Observer{
 			case SELECT_DEPLACEMENT:   //fenêtre de selection de la tuile pour le déplacement
 				
 			
-				getAventurierCourant().setPosition(g.getTuileById(mi.getId()));
 				break;
 			case SELECT_ASSECHER:      //fenêtre de selection de la tuile pour l'assèchement
 
 				
 
-				g.getTuileById(mi.getId()).setEtat(Etat.SECHE);
 				break;
 			case SELECT_SPECIAL:       //fenêtre de selection de la tuile pour l'action spéciale
 
 				break;
+                                
+                        case FAIRE_DEPLACEMENT:   //fenêtre de selection de la tuile pour le déplacement
+				
+			
+				getAventurierCourant().setPosition(g.getTuileById(mi.getId()));
+				break;
+			case FAIRE_ASSECHER:      //fenêtre de selection de la tuile pour l'assèchement
+
+				
+
+				g.getTuileById(mi.getId()).setEtat(Etat.SECHE);
+				break;
+			case FAIRE_SPECIAL:       //fenêtre de selection de la tuile pour l'action spéciale
+
+				break;
+                                
 			case ACTION:
 				actionSuivante();
 				break;
