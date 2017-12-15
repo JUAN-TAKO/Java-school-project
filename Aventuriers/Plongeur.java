@@ -18,8 +18,8 @@ public class Plongeur extends Aventurier{
         adjacentes.add(g.at(t.getX(), t.getY()-1));
 
         for(Tuile tu : adjacentes){
-            if(t.getEtat() == Etat.INNONDEE){
-                if(tuilesInnondees.add(tu)){
+            if(t.getEtat() == Etat.COULEE){
+                if(tuilesInnondees.add(tu)){ //renvoie true si c'est une nouvelle tuile
                     checkTuile(g, tuilesAccessibles, tuilesInnondees, tu);
                 }
             }
