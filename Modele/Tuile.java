@@ -16,6 +16,14 @@ public class Tuile {
         this.tresor = tresor;
         etat = Etat.SECHE;
     }
+        Tuile(int cx, int cy, String nomT, Etat e){
+        x = cx;
+        y = cy;
+        id = 6*cy + cx;
+        nom = nomT;
+        this.tresor = Tresor.AUCUN;
+        etat = e;
+    }
     public int getX() {
         return x;
     }
