@@ -7,7 +7,7 @@ public class GrillePredefinie extends Generateur{
 	public void generate(ArrayList<Tuile> tuiles){
             tuiles.add(null);
             tuiles.add(null);
-            tuiles.add(1, 0,"Le pont des abîmes", Etat.SECHE );
+            tuiles.add(new Tuile(1, 0,TypeTuile.PONT_ABIMES, Etat.SECHE));
             tuiles.add(null);
             tuiles.add(null);
             tuiles.add(null);

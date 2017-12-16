@@ -3,24 +3,24 @@ package Modele;
 public class Tuile {
     private int x;
     private int y;
-    private String nom;
+    private TypeTuile type;
     private Tresor tresor;
     private Etat etat;
     private int id;
 
-    Tuile(int cx, int cy, String nomT, Tresor tresor){
+    Tuile(int cx, int cy, TypeTuile t, Tresor tresor){
         x = cx;
         y = cy;
         id = 6*cy + cx;
-        nom = nomT;
+        type = t;
         this.tresor = tresor;
         etat = Etat.SECHE;
     }
-        Tuile(int cx, int cy, String nomT, Etat e){
+    Tuile(int cx, int cy, TypeTuile t, Etat e){
         x = cx;
         y = cy;
         id = 6*cy + cx;
-        nom = nomT;
+        type = t;
         this.tresor = Tresor.AUCUN;
         etat = e;
     }

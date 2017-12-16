@@ -18,7 +18,8 @@ public class Controleur implements Observer{
 	private int indexAventurierCourant;
 	private int action;
 	private int tour;
-	
+	private int typeAction; //0: deplacer, 1: assecher, 2: special
+
 	public Controleur(){
 		vueAventurier = new VueAventurier();
 		vueParametres = new VueParametres();
@@ -94,33 +95,33 @@ public class Controleur implements Observer{
 					
 				break;
 			case SELECT_DEPLACEMENT:   //fenêtre de selection de la tuile pour le déplacement
-				
+				typeAction = 0;	
 			
 				break;
 			case SELECT_ASSECHER:      //fenêtre de selection de la tuile pour l'assèchement
-
+				typeAction = 1;
 				
 
 				break;
 			case SELECT_SPECIAL:       //fenêtre de selection de la tuile pour l'action spéciale
+				typeAction = 2;
 
 				break;
-                                
-                        case FAIRE_DEPLACEMENT:   //fenêtre de selection de la tuile pour le déplacement
+				                    
+            case VALIDER_SELECTION:   //fenêtre de selection de la tuile pour le déplacement
 				
-			
-				getAventurierCourant().setPosition(g.getTuileById(mi.getId()));
-				break;
-			case FAIRE_ASSECHER:      //fenêtre de selection de la tuile pour l'assèchement
-
-				
-
-				g.getTuileById(mi.getId()).setEtat(Etat.SECHE);
-				break;
-			case FAIRE_SPECIAL:       //fenêtre de selection de la tuile pour l'action spéciale
-
-				break;
-                                
+				switch(typeAction){
+					case 0:
+						getAventurierCourant().setPosition(g.getTuileById(mi.getId()));
+						break;	
+					case 1:
+						g.getTuileById(mi.getId()).setEtat(Etat.SECHE);
+						break;
+					case 2:
+						break;
+					
+				}
+				break;        
 			case ACTION:
 				actionSuivante();
 				break;
