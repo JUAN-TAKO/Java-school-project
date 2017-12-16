@@ -35,4 +35,9 @@ public class Ingenieur extends Aventurier{
         finAction();
 
 	}
+
+    @Override
+    public TypeTuile getTuileDepart() {
+        return TypeTuile.PORTE_BRONZE;
+    }
 }

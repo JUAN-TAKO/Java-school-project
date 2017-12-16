@@ -31,4 +31,9 @@ public class Pilote extends Aventurier{
         
         finAction();
 	}
+
+    @Override
+    public TypeTuile getTuileDepart() {
+        return TypeTuile.HELIPORT;
+    }
 }

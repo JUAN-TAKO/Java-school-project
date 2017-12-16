@@ -29,4 +29,9 @@ public class Explorateur extends Aventurier{
         
         finAction();
 	}
+
+    @Override
+    public TypeTuile getTuileDepart() {
+        return TypeTuile.PORTE_FER;
+    }
 }

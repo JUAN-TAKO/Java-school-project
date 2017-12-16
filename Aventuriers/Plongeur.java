@@ -1,5 +1,6 @@
 package Aventuriers;
 
+import Messages.*;
 import java.util.ArrayList;
 import java.util.HashSet;
 
@@ -30,10 +31,10 @@ public class Plongeur extends Aventurier{
     }
 
     public void seDeplacer(Grille g){
-		HashSet<Tuile> tuilesAccessibles = new HashSet<>();
+	HashSet<Tuile> tuilesAccessibles = new HashSet<>();
         HashSet<Tuile> tuilesCoulees = new HashSet<>();
         tuilesAccessibles.add(getPosition());
-        checkTuile(g, tuilesAccessibles, tuilesInnondees, getPosition());
+        checkTuile(g, tuilesAccessibles, tuilesCoulees, getPosition());
         tuilesAccessibles.remove(getPosition());
         ArrayList<Tuile> tacc = new ArrayList(tuilesAccessibles);
 
@@ -43,5 +44,10 @@ public class Plongeur extends Aventurier{
 		clearChanged();
         
         finAction();
+    }
+
+    @Override
+    public TypeTuile getTuileDepart() {
+        return TypeTuile.PORTE_CUIVRE;
     }
 }

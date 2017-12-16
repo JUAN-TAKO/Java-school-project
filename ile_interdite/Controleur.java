@@ -68,7 +68,7 @@ public class Controleur implements Observer{
 	}
 	
 	public void deplacer(int idTuile){
-		getAventurierCourant.setPosition(grille.getTuileById(idTuile));
+		getAventurierCourant().setPosition(grille.getTuileById(idTuile));
 	}
 
 	public void assecher(int idTuile){
@@ -108,14 +108,14 @@ public class Controleur implements Observer{
 
 				break;
 				                    
-            case VALIDER_SELECTION:   //fenêtre de selection de la tuile pour le déplacement
+                        case VALIDER_SELECTION:   //effectuer l'action sur la case selectionnée
 				
 				switch(typeAction){
 					case 0:
 						getAventurierCourant().setPosition(g.getTuileById(mi.getId()));
 						break;	
 					case 1:
-						g.getTuileById(mi.getId()).setEtat(Etat.SECHE);
+						grille.getTuileById(mi.getId()).setEtat(Etat.SECHE);
 						break;
 					case 2:
 						break;

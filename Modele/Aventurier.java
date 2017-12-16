@@ -86,4 +86,6 @@ public abstract class Aventurier extends Observable{
     public void setPosition(Tuile position) {
         this.position = position;
     }
+    
+    public abstract TypeTuile getTuileDepart();  
 }
