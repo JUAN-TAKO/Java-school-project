@@ -6,6 +6,8 @@ import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.GridLayout;
 import java.awt.Toolkit;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import javax.swing.BorderFactory;
@@ -19,8 +21,9 @@ import javax.swing.JTextField;
 public class VueParametres{
     private final JFrame window ;
     private final JComboBox listeDeroulante;
-    JPanel panelC1;
-    JPanel panelC2;
+    
+    private JPanel panelC1;
+    private JPanel panelC2;
     
     
     public VueParametres(){
@@ -67,18 +70,10 @@ public class VueParametres{
         
         //Choix des pseudos
         panelCentre.add(panelC2 = new JPanel(new GridLayout(4,2)));
-        for (int i = 1; i < listeDeroulante.getSelectedIndex() + 3; i++) {
+        
+        for (int i = 1; i < 5; i++) {
             panelC2.add(new JLabel("JOUEUR " + i + " :", JLabel.CENTER));
             panelC2.add(new JTextField());
-        }
-        if (listeDeroulante.getSelectedIndex() == 0) {
-            panelC2.add(new JLabel());
-            panelC2.add(new JLabel());
-            panelC2.add(new JLabel());
-            panelC2.add(new JLabel());
-        } else if(listeDeroulante.getSelectedIndex() == 1){
-            panelC2.add(new JLabel());
-            panelC2.add(new JLabel());
         }
         
         // =================================================================================
@@ -89,8 +84,27 @@ public class VueParametres{
         panelBas.add(new JLabel()) ;
         panelBas.add(new JButton("Valider"));
         
+        listeDeroulante.addActionListener (new ActionListener () {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                updateNbr();
+            }
+        });
+        updateNbr();
     }
-    
+    private void updateNbr(){
+        for (int i = 0; i < 8; i+=2) {
+            if(i < (listeDeroulante.getSelectedIndex() + 2) * 2){
+                panelC2.getComponent(i).setVisible(true);
+                panelC2.getComponent(i+1).setVisible(true);
+            }
+            else{
+                panelC2.getComponent(i).setVisible(false);
+                panelC2.getComponent(i+1).setVisible(false);
+            }
+            
+        }
+    }
     public void afficher() {
         this.window.setVisible(true);
     }
