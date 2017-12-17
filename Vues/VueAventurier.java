@@ -80,7 +80,6 @@ public class VueAventurier  {
         this.panelBoutons.add(btnAutreAction);
         this.panelBoutons.add(btnTerminerTour);
 
-        this.window.setVisible(true);
     } 
     
     public void setPosition(String pos) {
