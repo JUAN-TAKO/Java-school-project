@@ -71,14 +71,15 @@ public class VueParametres{
             panelC2.add(new JLabel("JOUEUR " + i + " :", JLabel.CENTER));
             panelC2.add(new JTextField());
         }
-//        panelC2.add(new JLabel("JOUEUR 1 :", JLabel.CENTER));
-//        panelC2.add(new JTextField());
-//        panelC2.add(new JLabel("JOUEUR 2 :", JLabel.CENTER));
-//        panelC2.add(new JTextField());
-//        panelC2.add(new JLabel("JOUEUR 3 :", JLabel.CENTER));
-//        panelC2.add(new JTextField());
-//        panelC2.add(new JLabel("JOUEUR 4 :", JLabel.CENTER));
-//        panelC2.add(new JTextField());
+        if (listeDeroulante.getSelectedIndex() == 0) {
+            panelC2.add(new JLabel());
+            panelC2.add(new JLabel());
+            panelC2.add(new JLabel());
+            panelC2.add(new JLabel());
+        } else if(listeDeroulante.getSelectedIndex() == 1){
+            panelC2.add(new JLabel());
+            panelC2.add(new JLabel());
+        }
         
         // =================================================================================
         // SUD
