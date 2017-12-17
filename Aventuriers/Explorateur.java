@@ -10,6 +10,7 @@ public class Explorateur extends Aventurier{
         super(nomJoueur,nomRole);
     }
 
+    @Override
     public void seDeplacer(Grille g){
 		ArrayList<Tuile> tuilesAccessibles = new ArrayList<>();
         Tuile t;
