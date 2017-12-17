@@ -10,6 +10,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.util.Observable;
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
@@ -18,12 +19,15 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
-public class VueParametres{
+public class VueParametres extends Observable{
     private final JFrame window ;
     private final JComboBox listeDeroulante;
     
     private JPanel panelC1;
     private JPanel panelC2;
+    
+    private JButton boutonValider;
+    private JButton boutonQuitter;
     
     
     public VueParametres(){
@@ -60,7 +64,7 @@ public class VueParametres{
         
         // selection du nombre de joueur
         panelCentre.add(panelC1 = new JPanel(new GridLayout(1,2)));
-        panelC1.add(new JLabel("nombre de joueur : "));
+        panelC1.add(new JLabel("nombre de joueur : ", JLabel.RIGHT));
         listeDeroulante = new JComboBox(nombreJoueur.values());
         panelC1.add(listeDeroulante);
         listeDeroulante.setSelectedIndex(0);
@@ -72,7 +76,7 @@ public class VueParametres{
         panelCentre.add(panelC2 = new JPanel(new GridLayout(4,2)));
         
         for (int i = 1; i < 5; i++) {
-            panelC2.add(new JLabel("JOUEUR " + i + " :", JLabel.CENTER));
+            panelC2.add(new JLabel("JOUEUR " + i + " :", JLabel.RIGHT));
             panelC2.add(new JTextField());
         }
         
@@ -80,9 +84,27 @@ public class VueParametres{
         // SUD
         JPanel panelBas = new JPanel(new GridLayout(1,3)) ;
         mainPanel.add(panelBas, BorderLayout.SOUTH);
-        panelBas.add(new JButton("Retour"));
+        boutonQuitter = new JButton("Quitter");
+        boutonQuitter.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+            }
+        });
+        
+        panelBas.add(boutonQuitter);
         panelBas.add(new JLabel()) ;
-        panelBas.add(new JButton("Valider"));
+        boutonValider = new JButton("Valider");
+        boutonValider.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                setChanged();
+                notifyObservers(Commandes.ANNULER);
+                clearChanged();
+            }
+        });
+        
+        panelBas.add(boutonValider);
         
         listeDeroulante.addActionListener (new ActionListener () {
             @Override
