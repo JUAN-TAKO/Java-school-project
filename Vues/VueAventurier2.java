@@ -1,4 +1,4 @@
-package view;
+package Vues;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
