@@ -33,6 +33,9 @@ public class Tuile {
     public String getNom() {
         return type.toString();
     }
+    public TypeTuile getType(){
+        return type;
+    }
     public Tresor getTresor() {
         return type.getTresor();
     }

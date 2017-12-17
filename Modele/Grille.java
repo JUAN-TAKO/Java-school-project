@@ -11,7 +11,7 @@ public class Grille {
     public Grille(Generateur generateur) {
         tuiles = new ArrayList<>();
         tuilesMap = new HashMap<>();
-        generateur.generate(tuiles);
+        generateur.generate(this);
     }
     public Tuile at(int x, int y){
         return tuiles.get(y*size + x);
@@ -19,7 +19,8 @@ public class Grille {
     public Tuile getTuileById(int id){
         return tuiles.get(id);
     }
-    public void addTuile(){
-        
+    public void add(Tuile t){
+        tuiles.add(t);
+        tuilesMap.put(t.getType(), t);
     }
 }
