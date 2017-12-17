@@ -38,10 +38,10 @@ public class Plongeur extends Aventurier{
         tuilesAccessibles.remove(getPosition());
         ArrayList<Tuile> tacc = new ArrayList(tuilesAccessibles);
 
-		setChanged();
-		MessageTuiles m = new MessageTuiles(MessageType.SELECT_DEPLACEMENT, tacc);
-		notifyObservers(m);
-		clearChanged();
+        setChanged();
+        MessageTuiles m = new MessageTuiles(MessageType.SELECT_DEPLACEMENT, tacc);
+        notifyObservers(m);
+        clearChanged();
         
         finAction();
     }
