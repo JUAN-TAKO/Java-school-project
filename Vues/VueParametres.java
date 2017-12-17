@@ -133,6 +133,10 @@ public class VueParametres extends Observable{
         this.window.setVisible(true);
     }
     
+    public void hide() {
+        window.dispose();
+    }
+    
     public static void main(String [] args) {
         VueParametres parametres = new VueParametres();
         parametres.afficher();
