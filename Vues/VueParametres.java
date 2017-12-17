@@ -88,7 +88,9 @@ public class VueParametres extends Observable{
         boutonQuitter.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+                setChanged();
+                notifyObservers(Commandes.ANNULER);
+                clearChanged();
             }
         });
         
@@ -99,7 +101,7 @@ public class VueParametres extends Observable{
             @Override
             public void actionPerformed(ActionEvent e) {
                 setChanged();
-                notifyObservers(Commandes.ANNULER);
+                notifyObservers(Commandes.VALIDER);
                 clearChanged();
             }
         });

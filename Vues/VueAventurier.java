@@ -89,4 +89,13 @@ public class VueAventurier  {
     public void setActive(boolean a){
         mainPanel.setBorder(BorderFactory.createLineBorder(couleur, 2)) ;
     }
+    
+    public void afficher() {
+        this.window.setVisible(true);
+    }
+    
+    public static void main(String [] args) {
+        VueAventurier av = new VueAventurier("Toto", "Ingénieur", Color.BLUE);
+        av.afficher();
+   }
 }

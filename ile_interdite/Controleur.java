@@ -7,6 +7,7 @@ import java.util.Observer;
 import Modele.*;
 import Vues.*;
 import Messages.*;
+import java.awt.Color;
 
 public class Controleur implements Observer{
     private VueParametres vueParametres;
@@ -22,10 +23,10 @@ public class Controleur implements Observer{
 
     public Controleur(){
 
-        vuesAventuriers.add(new VueAventurier("Dami1", "Pilote"));
-        vuesAventuriers.add(new VueAventurier("Tibo", "Navigateur"));
-        vuesAventuriers.add(new VueAventurier("Delf1", "Messager"));
-        vuesAventuriers.add(new VueAventurier("Juan", "Ingenieur"));
+        vuesAventuriers.add(new VueAventurier("Dami1", "Pilote", Color.BLUE));
+        vuesAventuriers.add(new VueAventurier("Tibo", "Navigateur", Color.GREEN));
+        vuesAventuriers.add(new VueAventurier("Delf1", "Messager", Color.RED));
+        vuesAventuriers.add(new VueAventurier("Juan", "Ingenieur", Color.ORANGE));
 
         vueParametres = new VueParametres();
 
