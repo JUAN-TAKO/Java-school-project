@@ -67,14 +67,18 @@ public class VueParametres{
         
         //Choix des pseudos
         panelCentre.add(panelC2 = new JPanel(new GridLayout(4,2)));
-        panelC2.add(new JLabel("JOUEUR 1 :", JLabel.CENTER));
-        panelC2.add(new JTextField());
-        panelC2.add(new JLabel("JOUEUR 2 :", JLabel.CENTER));
-        panelC2.add(new JTextField());
-        panelC2.add(new JLabel("JOUEUR 3 :", JLabel.CENTER));
-        panelC2.add(new JTextField());
-        panelC2.add(new JLabel("JOUEUR 4 :", JLabel.CENTER));
-        panelC2.add(new JTextField());
+        for (int i = 1; i < listeDeroulante.getSelectedIndex() + 3; i++) {
+            panelC2.add(new JLabel("JOUEUR " + i + " :", JLabel.CENTER));
+            panelC2.add(new JTextField());
+        }
+//        panelC2.add(new JLabel("JOUEUR 1 :", JLabel.CENTER));
+//        panelC2.add(new JTextField());
+//        panelC2.add(new JLabel("JOUEUR 2 :", JLabel.CENTER));
+//        panelC2.add(new JTextField());
+//        panelC2.add(new JLabel("JOUEUR 3 :", JLabel.CENTER));
+//        panelC2.add(new JTextField());
+//        panelC2.add(new JLabel("JOUEUR 4 :", JLabel.CENTER));
+//        panelC2.add(new JTextField());
         
         // =================================================================================
         // SUD
