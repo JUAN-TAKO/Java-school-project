@@ -1,11 +1,11 @@
-package Messages;
+package Utils;
 
 import Modele.*;
 import java.util.ArrayList;
 
-public class MessageTuiles extends Message{
+public class MessageTuile extends Message{
 	TypeTuile tuile;
-	public MessageTuiles(MessageType t, TypeTuile tuile){
+	public MessageTuile(MessageType t, TypeTuile tuile){
 		super(t);
 		this.tuile = tuile;
 	}

@@ -54,13 +54,6 @@ public abstract class Aventurier extends Observable{
     }
 	
     public void actionSpeciale(Grille g){}
-    
-    protected void finAction(){
-        setChanged();
-        Message m = new Message(MessageType.ACTION);
-        notifyObservers(m);
-        clearChanged();
-    }
 	
     public String getNom(){
         return nom;

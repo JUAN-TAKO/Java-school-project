@@ -7,6 +7,7 @@ import java.util.Observer;
 import Modele.*;
 import Vues.*;
 import Utils.*;
+import Aventuriers.*;
 import java.awt.Color;
 
 public class Controleur implements Observer{
@@ -75,58 +76,58 @@ public class Controleur implements Observer{
 
     @Override
     public void update(Observable o, Object arg){
-        Message m = (Message)arg;
+        lastMessage = (Message)arg;
         MessageTuile mt = (MessageTuile)arg;
-
-        switch(m.getType()){
-            case BTN_DEPLACER:  //clic sur le bouton déplacer
-                typeAction = 0;
-                ArrayList<Tuile> l = getAventurierCourant().getTuilesAccessiblesDeplacement(grille);
-                ArrayList<TypeTuile> typeTuiles;
+        ArrayList<Tuile> l;
+        ArrayList<TypeTuile> typeTuiles;
+        
+        switch(lastMessage.getType()){
+            case DEPLACER:  //clic sur le bouton déplacer
+                l = getAventurierCourant().getTuilesAccessiblesDeplacement(grille);
+                typeTuiles = new ArrayList<>();
                 
                 for(Tuile t : l){
-                    nomTuiles.add(t.getType());
+                    typeTuiles.add(t.getType());
                 }
                 
                 vueSelection.afficher(typeTuiles);
                 
-                if(getAventurierCourant().instanceof(Ingenieur)){
+                if(getAventurierCourant() instanceof Ingenieur){
                     vueSelection.afficher(typeTuiles);
                 }
                 
-                actionSuivante;
+                actionSuivante();
                 break;
-            case BTN_ASSECHER:  //clic sur le bouton assecher
-                typeAction = 1;
-                ArrayList<Tuile> l = getAventurierCourant().getTuilesAccessiblesAssechement(grille);
-                ArrayList<String> nomTuiles;
+            case ASSECHER:  //clic sur le bouton assecher
+                l = getAventurierCourant().getTuilesAccessiblesAssechement(grille);
+                typeTuiles = new ArrayList<>();
                 
                 for(Tuile t : l){
-                    nomTuiles.add(t.getType().toString() + "(" + t.getX() + " ; " + t.getY());
+                    typeTuiles.add(t.getType());
                 }
                 
-                vueSelection.afficher(nomTuiles);
+                vueSelection.afficher(typeTuiles);
                 
                 actionSuivante();
                 break;
-            case BTN_SPECIAL:   //clic sur le bouton spécial
-                typeAction = 2;
+            case SPECIAL:   //clic sur le bouton spécial
+                
                 
                 break;
-            case BTN_PASSER:    //clic sur le bouton passer
+            case PASSER:    //clic sur le bouton passer
                 aventurierSuivant();
                 break;
 
             case VALIDER_SELECTION:   //effectuer l'action sur la case selectionnée
 
-                switch(typeAction){
-                    case 0:
-                        getAventurierCourant().setPosition(grille.getTuileById(mi.getId()));
+                switch(lastMessage.getType()){
+                    case DEPLACER:
+                        getAventurierCourant().setPosition(grille.getTuileByType(mt.getTuile()));
                         break;	
-                    case 1:
-                        grille.getTuileById(mi.getId()).setEtat(Etat.SECHE);
+                    case ASSECHER:
+                        grille.getTuileByType(mt.getTuile()).setEtat(Etat.SECHE);
                         break;
-                    case 2:
+                    case SPECIAL:
                         break;
 
                 }
