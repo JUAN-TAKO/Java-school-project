@@ -6,7 +6,7 @@ import java.util.Observable;
 import java.util.Observer;
 import Modele.*;
 import Vues.*;
-import Messages.*;
+import Utils.*;
 import java.awt.Color;
 
 public class Controleur implements Observer{

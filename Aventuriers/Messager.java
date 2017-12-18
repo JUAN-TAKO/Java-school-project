@@ -1,6 +1,7 @@
 package Aventuriers;
 
 import Modele.*;
+import Utils.*;
 
 public class Messager extends Aventurier{
     

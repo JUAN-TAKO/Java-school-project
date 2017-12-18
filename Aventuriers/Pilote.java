@@ -1,6 +1,6 @@
 package Aventuriers;
 
-import Messages.*;
+import Utils.*;
 import Modele.*;
 import java.util.ArrayList;
 

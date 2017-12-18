@@ -1,6 +1,6 @@
 package Modele;
 
-import Messages.*;
+import Utils.*;
 
 import java.util.ArrayList;
 import java.util.Observable;

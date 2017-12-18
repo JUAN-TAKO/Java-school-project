@@ -1,7 +1,7 @@
 package Aventuriers;
 
 import Modele.*;
-import Messages.*;
+import Utils.*;
 import java.util.ArrayList;
 
 public class Explorateur extends Aventurier{
