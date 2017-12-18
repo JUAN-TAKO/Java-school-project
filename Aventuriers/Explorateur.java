@@ -11,9 +11,8 @@ public class Explorateur extends Aventurier{
     }
 
     @Override
-    public void seDeplacer(Grille g){
+    public ArrayList<Tuile> getTuilesAccessiblesDeplacement(Grille g){
 		ArrayList<Tuile> tuilesAccessibles = new ArrayList<>();
-        Tuile t;
         checkDeplacement(g, tuilesAccessibles, 0, 1);
         checkDeplacement(g, tuilesAccessibles, 1, 0);
         checkDeplacement(g, tuilesAccessibles, 1, 1);
@@ -22,13 +21,21 @@ public class Explorateur extends Aventurier{
         checkDeplacement(g, tuilesAccessibles, -1, -1);
         checkDeplacement(g, tuilesAccessibles, 1, -1);
         checkDeplacement(g, tuilesAccessibles, -1, 1);
-
-	setChanged();
-	MessageTuiles m = new MessageTuiles(MessageType.SELECT_DEPLACEMENT, tuilesAccessibles);
-	notifyObservers(m);
-        clearChanged();
+        return tuilesAccessibles;
+	}
+	public ArrayList<Tuile> getTuilesAccessiblesAssechement(Grille g){
+		ArrayList<Tuile> tuilesAccessibles = new ArrayList<>();
+		checkAssechement(g, tuilesAccessibles, 0, 0);
+        checkAssechement(g, tuilesAccessibles, 0, 1);
+        checkAssechement(g, tuilesAccessibles, 1, 0);
+        checkAssechement(g, tuilesAccessibles, 1, 1);
+        checkAssechement(g, tuilesAccessibles, 0, -1);
+        checkAssechement(g, tuilesAccessibles, -1, 0);
+        checkAssechement(g, tuilesAccessibles, -1, -1);
+        checkAssechement(g, tuilesAccessibles, 1, -1);
+        checkAssechement(g, tuilesAccessibles, -1, 1);
         
-        finAction();
+        return tuilesAccessibles;
 	}
 
     @Override

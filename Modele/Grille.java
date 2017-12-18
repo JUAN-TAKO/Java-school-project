@@ -16,8 +16,8 @@ public class Grille {
     public Tuile at(int x, int y){
         return tuiles.get(y*size + x);
     }
-    public Tuile getTuileById(int id){
-        return tuiles.get(id);
+    public Tuile getTuileByType(TypeTuile type){
+        return tuilesMap.get(type);
     }
     public void add(Tuile t){
         tuiles.add(t);

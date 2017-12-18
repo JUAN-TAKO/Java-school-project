@@ -30,22 +30,17 @@ public abstract class Aventurier extends Observable{
         }
     }
     
-    public void seDeplacer(Grille g){
+    public ArrayList<Tuile> getTuilesAccessiblesDeplacement(Grille g){
         ArrayList<Tuile> tuilesAccessibles = new ArrayList<>();
         checkDeplacement(g, tuilesAccessibles, 0, 1);
         checkDeplacement(g, tuilesAccessibles, 1, 0);
         checkDeplacement(g, tuilesAccessibles, 0, -1);
         checkDeplacement(g, tuilesAccessibles, -1, 0);
 
-        setChanged();
-        MessageTuiles m = new MessageTuiles(MessageType.SELECT_DEPLACEMENT, tuilesAccessibles);
-        notifyObservers(m);
-        clearChanged();
-
-        finAction();
+        return tuilesAccessibles;
     }
 
-    public void assecher(Grille g){
+    public ArrayList<Tuile> getTuilesAccessiblesAssechement(Grille g){
         ArrayList<Tuile> tuilesAccessibles = new ArrayList<>();
         
         checkAssechement(g, tuilesAccessibles, 0, 0);
@@ -54,12 +49,7 @@ public abstract class Aventurier extends Observable{
         checkAssechement(g, tuilesAccessibles, 0, -1);
         checkAssechement(g, tuilesAccessibles, -1, 0);
 
-        setChanged();
-        MessageTuiles m = new MessageTuiles(MessageType.SELECT_ASSECHER, tuilesAccessibles);
-        notifyObservers(m);
-        clearChanged();
-
-        finAction();
+        return tuilesAccessibles;
     }
 	
     public void actionSpeciale(Grille g){}

@@ -30,20 +30,15 @@ public class Plongeur extends Aventurier{
         }
     }
 
-    public void seDeplacer(Grille g){
-	HashSet<Tuile> tuilesAccessibles = new HashSet<>();
+    public ArrayList<Tuile> getTuilesAccessiblesDeplacement(Grille g){
+	    
+	    HashSet<Tuile> tuilesAccessibles = new HashSet<>();
         HashSet<Tuile> tuilesCoulees = new HashSet<>();
         tuilesAccessibles.add(getPosition());
         checkTuile(g, tuilesAccessibles, tuilesCoulees, getPosition());
         tuilesAccessibles.remove(getPosition());
-        ArrayList<Tuile> tacc = new ArrayList(tuilesAccessibles);
-
-        setChanged();
-        MessageTuiles m = new MessageTuiles(MessageType.SELECT_DEPLACEMENT, tacc);
-        notifyObservers(m);
-        clearChanged();
+        return new ArrayList(tuilesAccessibles);
         
-        finAction();
     }
 
     @Override

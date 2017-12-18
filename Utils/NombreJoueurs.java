@@ -9,14 +9,14 @@ package Vues;
  *
  * @author damien
  */
-public enum nombreJoueur {
+public enum NombreJoueurs {
     DEUX("2"),
     TROIS("3"),
     QUATRE("4");
     
     private final String name;
     
-    nombreJoueur(String name){
+    NombreJoueurs(String name){
         this.name = name;
     }
     

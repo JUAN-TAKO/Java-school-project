@@ -16,7 +16,7 @@ public class Pilote extends Aventurier{
             tuilesAccessibles.add(t);
     }
 
-    public void seDeplacer(Grille g){
+    public ArrayList<Tuile> getTuilesAccessiblesDeplacement(Grille g){
 		ArrayList<Tuile> tuilesAccessibles = new ArrayList<>();
         for(int i = 0; i < 6; i++){
             for(int j = 0; j < 6; j++){
@@ -24,12 +24,7 @@ public class Pilote extends Aventurier{
             }
         }
 
-		setChanged();
-		MessageTuiles m = new MessageTuiles(MessageType.SELECT_DEPLACEMENT, tuilesAccessibles);
-		notifyObservers(m);
-        clearChanged();
-        
-        finAction();
+		return tuilesAccessibles;
 	}
 
     @Override
