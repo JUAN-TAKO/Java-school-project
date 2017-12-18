@@ -5,7 +5,7 @@
  */
 package ile_interdite;
 
-import Vues.Commandes;
+import Utils.*;
 import Vues.VueParametres;
 import java.util.Observable;
 import java.util.Observer;
@@ -24,9 +24,9 @@ public class ControleurParametres implements Observer{
 
     @Override
     public void update(Observable o, Object arg) {
-        if (arg instanceof Commandes) {
-            if ((Commandes) arg == Commandes.ANNULER) {
-                System.out.println("prout");
+        if (arg instanceof MessageType) {
+            if ((MessageType) arg == MessageType.ANNULER) {
+                System.out.println("test");
                 view.hide();
             } else {
                 view.hide();

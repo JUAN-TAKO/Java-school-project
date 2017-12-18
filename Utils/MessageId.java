@@ -1,4 +1,4 @@
-package Messages;
+package Utils;
 
 public class MessageId extends Message{
 	private int idm;

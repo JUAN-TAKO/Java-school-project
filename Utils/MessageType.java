@@ -1,4 +1,4 @@
-package Messages;
+package Utils;
 
 public enum MessageType{
 	BTN_DEPLACER,

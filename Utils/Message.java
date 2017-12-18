@@ -1,4 +1,4 @@
-package Messages;
+package Utils;
 
 public class Message{
 	private MessageType type;

@@ -1,4 +1,4 @@
-package Messages;
+package Utils;
 
 import Modele.*;
 import java.util.ArrayList;

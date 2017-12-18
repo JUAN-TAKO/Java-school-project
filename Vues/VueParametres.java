@@ -90,7 +90,7 @@ public class VueParametres extends Observable{
             @Override
             public void actionPerformed(ActionEvent e) {
                 setChanged();
-                notifyObservers(Commandes.ANNULER);
+                notifyObservers(MessageType.ANNULER);
                 clearChanged();
             }
         });
@@ -102,7 +102,7 @@ public class VueParametres extends Observable{
             @Override
             public void actionPerformed(ActionEvent e) {
                 setChanged();
-                notifyObservers(Commandes.VALIDER);
+                notifyObservers(MessageType.VALIDER);
                 clearChanged();
             }
         });

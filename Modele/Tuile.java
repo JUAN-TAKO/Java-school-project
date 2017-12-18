@@ -1,5 +1,8 @@
 package Modele;
 
+import Utils.Tresor;
+import Utils.*;
+
 public class Tuile {
     private int x;
     private int y;

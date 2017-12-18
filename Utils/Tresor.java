@@ -1,4 +1,4 @@
-package Modele;
+package Utils;
 
 public enum Tresor {
     CRISTAL,

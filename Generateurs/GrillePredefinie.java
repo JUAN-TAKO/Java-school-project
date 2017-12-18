@@ -1,6 +1,7 @@
 package Generateurs;
 
 import Modele.*;
+import Utils.*;
 import java.util.ArrayList;
 
 public class GrillePredefinie extends Generateur{
