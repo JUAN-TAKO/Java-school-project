@@ -1,4 +1,5 @@
-package Modele;
+package Utils;
+
 public enum TypeTuile{
     PORTE_FER("Porte de fer", null),
     PORTE_CUIVRE("Porte de cuivre", null),

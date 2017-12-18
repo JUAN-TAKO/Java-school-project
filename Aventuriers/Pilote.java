@@ -2,6 +2,7 @@ package Aventuriers;
 
 import Utils.*;
 import Modele.*;
+import java.awt.Color;
 import java.util.ArrayList;
 
 public class Pilote extends Aventurier{
@@ -32,6 +33,6 @@ public class Pilote extends Aventurier{
         return TypeTuile.HELIPORT;
     }
     public Color getColor(){
-        return Color.PURPLE;
+        return Color.MAGENTA;
     }
 }

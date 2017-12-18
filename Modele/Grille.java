@@ -1,5 +1,6 @@
 package Modele;
 
+import Utils.*;
 import java.util.ArrayList;
 import java.util.HashMap;
 
