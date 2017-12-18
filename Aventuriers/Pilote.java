@@ -36,4 +36,7 @@ public class Pilote extends Aventurier{
     public TypeTuile getTuileDepart() {
         return TypeTuile.HELIPORT;
     }
+    public Color getColor(){
+        return Color.PURPLE;
+    }
 }

@@ -40,4 +40,7 @@ public class Ingenieur extends Aventurier{
     public TypeTuile getTuileDepart() {
         return TypeTuile.PORTE_BRONZE;
     }
+    public Color getColor(){
+        return Color.RED;
+    }
 }

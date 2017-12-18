@@ -12,4 +12,7 @@ public class Messager extends Aventurier{
     public TypeTuile getTuileDepart() {
         return TypeTuile.PORTE_ARGENT;
     }
+    public Color getColor(){
+        return Color.CYAN;
+    }
 }

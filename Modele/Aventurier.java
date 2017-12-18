@@ -77,7 +77,7 @@ public abstract class Aventurier extends Observable{
     public String getNomRole(){
         return nomRole;
     }
-
+    public abstract Color getColor();
     /**
      * @return the position
      */

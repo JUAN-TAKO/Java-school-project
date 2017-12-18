@@ -86,7 +86,17 @@ public class VueAventurier  {
         this.position.setText(pos);
     }
     public void setActive(boolean a){
-        mainPanel.setBorder(BorderFactory.createLineBorder(couleur, 2)) ;
+        if(a){
+            mainPanel.setBorder(BorderFactory.createLineBorder(couleur, 2)) ;
+            this.panelCentre.setBorder(new MatteBorder(0, 0, 2, 0, couleur));
+            panelAventurier.setBackground(couleur);    
+        }
+        else{
+            mainPanel.setBorder(BorderFactory.createLineBorder(Color.GRAY, 2)) ;
+            this.panelCentre.setBorder(new MatteBorder(0, 0, 2, 0, Color.GRAY));
+            panelAventurier.setBackground(Color.GRAY);
+        }
+        
     }
     
     public void afficher() {

@@ -50,4 +50,7 @@ public class Plongeur extends Aventurier{
     public TypeTuile getTuileDepart() {
         return TypeTuile.PORTE_CUIVRE;
     }
+    public Color getColor(){
+        return Color.BLUE;
+    }
 }
