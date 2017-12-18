@@ -2,6 +2,7 @@ package Aventuriers;
 
 import Modele.*;
 import Utils.*;
+import java.awt.Color;
 
 public class Navigateur extends Aventurier{
     

@@ -4,6 +4,7 @@ import Utils.*;
 import java.util.ArrayList;
 
 import Modele.*;
+import java.awt.Color;
 
 public class Ingenieur extends Aventurier{
     

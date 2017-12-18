@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.HashSet;
 
 import Modele.*;
+import java.awt.Color;
 
 public class Plongeur extends Aventurier{
     
