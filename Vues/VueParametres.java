@@ -103,8 +103,9 @@ public class VueParametres extends Observable{
         boutonValider.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
+                
                 setChanged();
-                notifyObservers(new Message(MessageType.VALIDER));
+                notifyObservers(new Message(MessageType.VALIDER_PARAMETRES));
                 clearChanged();
             }
         });

@@ -94,7 +94,7 @@ public class VueSelection extends Observable{
             @Override
             public void actionPerformed(ActionEvent e) {
                 setChanged();
-                notifyObservers(MessageType.VALIDER);
+                notifyObservers(MessageType.VALIDER_SELECTION);
                 clearChanged();
             }
         });

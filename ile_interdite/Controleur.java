@@ -140,12 +140,12 @@ public class Controleur implements Observer{
                 }
                 break;
                 
-            case ANNULER_SELECTION:   //effectuer l'action sur la case selectionnée
+            case ANNULER_SELECTION:
 
              
                 break;
                 
-            case QUITTER:   //effectuer l'action sur la case selectionnée
+            case QUITTER: 
                 vueParametres.hide();
                 break;
         }

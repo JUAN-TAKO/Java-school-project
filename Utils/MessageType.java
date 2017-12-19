@@ -6,7 +6,7 @@ public enum MessageType{
 	SPECIAL,
 	PASSER,
         VALIDER_SELECTION,
-	VALIDER,
+	VALIDER_PARAMETRES,
 	QUITTER,
         ANNULER_SELECTION;
 }

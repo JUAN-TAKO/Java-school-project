@@ -4,12 +4,12 @@ import Modele.*;
 import java.util.ArrayList;
 
 public class MessageTuile extends Message{
-	TypeTuile tuile;
-	public MessageTuile(MessageType t, TypeTuile tuile){
-		super(t);
-		this.tuile = tuile;
-	}
-	public TypeTuile getTuile(){
-		return tuile;
-	}
+    private TypeTuile tuile;
+    public MessageTuile(MessageType t, TypeTuile tuile){
+	super(t);
+	this.tuile = tuile;
+    }
+    public TypeTuile getTuile(){
+	return tuile;
+    }
 }
