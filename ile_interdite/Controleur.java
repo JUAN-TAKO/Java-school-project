@@ -82,6 +82,7 @@ public class Controleur implements Observer{
         MessageTuile mt = (MessageTuile)arg; //interprète le message reçu comme un message tuile 
         ArrayList<Tuile> l;
         ArrayList<TypeTuile> typeTuiles;
+        VueSelection selection;
         
         switch(m.getType()){
             case DEPLACER:  //clic sur le bouton déplacer
@@ -91,7 +92,8 @@ public class Controleur implements Observer{
                     typeTuiles.add(t.getType());
                 }
                 
-                vueSelection.afficher(typeTuiles);
+                selection = new VueSelection(typeTuiles);
+                selection.afficher();
                 
                 
                 actionSuivante();
@@ -104,10 +106,12 @@ public class Controleur implements Observer{
                     typeTuiles.add(t.getType());
                 }
                 
-                vueSelection.afficher(typeTuiles);
+                selection = new VueSelection(typeTuiles);
+                selection.afficher();
                 
-                if(getAventurierCourant() instanceof Ingenieur){
-                    vueSelection.afficher(typeTuiles);
+                if(getAventurierCourant() instanceof Ingenieur && lastMessage.getType() != MessageType.ANNULER){
+                    selection = new VueSelection(typeTuiles);
+                    selection.afficher();
                 }
                 
                 actionSuivante();
