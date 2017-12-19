@@ -21,16 +21,17 @@ import javax.swing.JPanel;
  *
  * @author damien
  */
-public class vueSelection extends Observable{
-    private final JFrame window ;
-    private final JComboBox listeDeroulanteSelection;
+public class VueSelection extends Observable{
+    private JFrame window ;
+    private JComboBox listeDeroulanteSelection;
     
     private JPanel panelCS1;
     
     private JButton boutonValider;
     private JButton boutonRetour;
     
-    public vueSelection(){
+    public VueSelection(ArrayList<TypeTuile> t){
+        ArrayList<String> nomTuiles = new ArrayList<>();
         window = new JFrame();
         window.setDefaultCloseOperation(javax.swing.JFrame.EXIT_ON_CLOSE);
         window.setSize(400, 250);
@@ -59,12 +60,16 @@ public class vueSelection extends Observable{
         
         // =================================================================================
         // CENTRE
+        for (TypeTuile tbis : t) {
+            nomTuiles.add(tbis.toString());
+        }
+        
         JPanel panelCentre = new JPanel(new GridLayout(1,2));
         mainPanel.add(panelCentre, BorderLayout.CENTER);
         
         panelCentre.add(panelCS1 = new JPanel(new GridLayout(1,2)));
         panelCS1.add(new JLabel("Tuiles accessibles : ", JLabel.RIGHT));
-        listeDeroulanteSelection = new JComboBox(TypeTuile.values());
+        listeDeroulanteSelection = new JComboBox(nomTuiles.toArray());
         panelCS1.add(listeDeroulanteSelection);
         listeDeroulanteSelection.setSelectedIndex(0);
         
@@ -77,7 +82,7 @@ public class vueSelection extends Observable{
             @Override
             public void actionPerformed(ActionEvent e) {
                 setChanged();
-                notifyObservers(MessageType.ANNULER);
+                notifyObservers(MessageType.QUITTER);
                 clearChanged();
             }
         });
@@ -106,7 +111,7 @@ public class vueSelection extends Observable{
     }
 
     public void afficher(){
-        this.window.setVisible(true);
+       this.window.setVisible(true);
     }
     
     public void hide() {
@@ -114,7 +119,11 @@ public class vueSelection extends Observable{
     }
     
     public static void main(String [] args) {
-        vueSelection selection = new vueSelection();
+        ArrayList<TypeTuile> test = new ArrayList<>();
+        test.add(TypeTuile.PORTE_OR);
+        test.add(TypeTuile.FORET_POURPRE);
+        test.add(TypeTuile.PONT_ABIMES);
+        VueSelection selection = new VueSelection(test);
         selection.afficher();
    }
 }

@@ -90,19 +90,21 @@ public class VueParametres extends Observable{
             @Override
             public void actionPerformed(ActionEvent e) {
                 setChanged();
-                notifyObservers(MessageType.ANNULER);
+                notifyObservers(new Message(MessageType.QUITTER));
                 clearChanged();
             }
         });
         
         panelBas.add(boutonQuitter);
-        panelBas.add(new JLabel()) ;
+        
+        panelBas.add(new JLabel()) ; // Label du milieu vide
+        
         boutonValider = new JButton("Valider");
         boutonValider.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 setChanged();
-                notifyObservers(MessageType.VALIDER);
+                notifyObservers(new Message(MessageType.VALIDER));
                 clearChanged();
             }
         });
