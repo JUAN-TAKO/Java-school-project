@@ -89,11 +89,12 @@ public class Controleur implements Observer{
                 for(Tuile t : l){
                     typeTuiles.add(t.getType());
                 }
-                
-                vueSelection.afficher(typeTuiles);
+                vueSelection vueS = new vueSelection(typeTuiles);
+                vueS.afficher();
                 
                 if(getAventurierCourant() instanceof Ingenieur){
-                    vueSelection.afficher(typeTuiles);
+                    vueS = new vueSelection(typeTuiles);
+                    vueS.afficher();
                 }
                 
                 actionSuivante();
@@ -106,7 +107,8 @@ public class Controleur implements Observer{
                     typeTuiles.add(t.getType());
                 }
                 
-                vueSelection.afficher(typeTuiles);
+                vueS = new vueSelection(typeTuiles);
+                vueS.afficher();
                 
                 actionSuivante();
                 break;
