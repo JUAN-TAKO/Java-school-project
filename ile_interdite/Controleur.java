@@ -81,7 +81,6 @@ public class Controleur implements Observer{
     @Override
     public void update(Observable o, Object arg){ //gère la réception des messages des vues aventuriers
         Message m = (Message)arg;
-        MessageTuile mt = (MessageTuile)arg; //interprète le message reçu comme un message tuile 
         ArrayList<Tuile> l;
         ArrayList<TypeTuile> typeTuiles;
         VueSelection selection;
@@ -127,7 +126,7 @@ public class Controleur implements Observer{
                 break;
 
             case VALIDER_SELECTION:   //effectuer l'action sur la case selectionnée
-
+                MessageTuile mt = (MessageTuile)arg; //interprète le message reçu comme un message tuile 
                 switch(lastMessage.getType()){
                     case DEPLACER:
                         getAventurierCourant().setPosition(grille.getTuileByType(mt.getTuile()));
@@ -157,5 +156,6 @@ public class Controleur implements Observer{
     
     public static void main(String [] args) {
         Controleur c = new Controleur();
+        c.start();
    }
 }	

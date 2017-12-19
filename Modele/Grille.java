@@ -22,6 +22,8 @@ public class Grille {
     }
     public void add(Tuile t){
         tuiles.add(t);
-        tuilesMap.put(t.getType(), t);
+        if(t != null){
+            tuilesMap.put(t.getType(), t);
+        }
     }
 }

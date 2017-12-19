@@ -33,7 +33,7 @@ public class VueParametres extends Observable{
     
     public VueParametres(){
         window = new JFrame();
-        window.setDefaultCloseOperation(javax.swing.JFrame.EXIT_ON_CLOSE);
+        window.setDefaultCloseOperation(javax.swing.JFrame.DISPOSE_ON_CLOSE);
         window.setSize(400, 250);
         Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
         window.setLocation(dim.width/2-window.getSize().width/2, dim.height/2-window.getSize().height/2);
