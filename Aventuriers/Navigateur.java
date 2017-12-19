@@ -6,8 +6,8 @@ import java.awt.Color;
 
 public class Navigateur extends Aventurier{
     
-    Navigateur(String nomJoueur, String nomRole){
-        super(nomJoueur,nomRole);
+    public Navigateur(String nomJoueur){
+        super(nomJoueur, "Navigateur");
     }
 
     @Override

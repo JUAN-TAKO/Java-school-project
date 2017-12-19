@@ -9,8 +9,8 @@ import java.awt.Color;
 
 public class Plongeur extends Aventurier{
     
-    Plongeur(String nomJoueur, String nomRole){
-        super(nomJoueur,nomRole);
+    public Plongeur(String nomJoueur){
+        super(nomJoueur, "Plongeur");
     }
     protected void checkTuile(Grille g, HashSet<Tuile> tuilesAccessibles, HashSet<Tuile> tuilesInnondees, Tuile t) {
         ArrayList<Tuile> adjacentes = new ArrayList<>();

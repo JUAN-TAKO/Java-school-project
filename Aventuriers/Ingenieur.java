@@ -8,8 +8,8 @@ import java.awt.Color;
 
 public class Ingenieur extends Aventurier{
     
-    Ingenieur(String nomJoueur, String nomRole){
-        super(nomJoueur,nomRole);
+    public Ingenieur(String nomJoueur){
+        super(nomJoueur, "Ingenieur");
     }
 
     @Override

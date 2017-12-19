@@ -6,8 +6,8 @@ import java.awt.Color;
 
 public class Messager extends Aventurier{
     
-    Messager(String nomJoueur, String nomRole){
-        super(nomJoueur,nomRole);
+    public Messager(String nomJoueur){
+        super(nomJoueur, "Messager");
     }
 
     @Override

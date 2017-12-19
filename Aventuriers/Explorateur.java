@@ -7,8 +7,8 @@ import java.util.ArrayList;
 
 public class Explorateur extends Aventurier{
     
-    Explorateur(String nomJoueur, String nomRole){
-        super(nomJoueur,nomRole);
+    public Explorateur(String nomJoueur){
+        super(nomJoueur, "Explorateur");
     }
 
     @Override

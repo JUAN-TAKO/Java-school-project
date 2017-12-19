@@ -7,8 +7,8 @@ import java.util.ArrayList;
 
 public class Pilote extends Aventurier{
     
-    Pilote(String nomJoueur, String nomRole){
-        super(nomJoueur,nomRole);
+    public Pilote(String nomJoueur){
+        super(nomJoueur, "Pilote");
     }
     protected void checkDeplacement(Grille g, ArrayList<Tuile> tuilesAccessibles, int x, int y) {
 		Tuile t;
