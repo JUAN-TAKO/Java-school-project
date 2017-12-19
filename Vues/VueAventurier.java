@@ -58,9 +58,10 @@ public class VueAventurier  {
         this.panelCentre.setBorder(new MatteBorder(0, 0, 2, 0, couleur));
         mainPanel.add(this.panelCentre, BorderLayout.CENTER);
         
-        panelCentre.add(new JLabel ("Position", SwingConstants.CENTER));
+        panelCentre.add(new JLabel ("Position actuelle", SwingConstants.CENTER));
         position = new  JTextField(30); 
         position.setHorizontalAlignment(CENTER);
+        position.setEditable(false);
         panelCentre.add(position);
 
 
@@ -74,6 +75,7 @@ public class VueAventurier  {
         this.btnAssecher = new JButton( "Assecher");
         this.btnAutreAction = new JButton("AutreAction") ;
         this.btnTerminerTour = new JButton("Terminer Tour") ;
+        
         
         this.panelBoutons.add(btnBouger);
         this.panelBoutons.add(btnAssecher);
@@ -96,15 +98,13 @@ public class VueAventurier  {
             this.panelCentre.setBorder(new MatteBorder(0, 0, 2, 0, Color.GRAY));
             panelAventurier.setBackground(Color.GRAY);
         }
+        for(int i = 0; i < panelBoutons.getComponentCount(); i++){
+            panelBoutons.getComponent(i).setEnabled(a);
+        }
         
     }
     
     public void afficher() {
         this.window.setVisible(true);
     }
-    
-    public static void main(String [] args) {
-        VueAventurier av = new VueAventurier("Toto", "Ingénieur", Color.BLUE);
-        av.afficher();
-   }
 }

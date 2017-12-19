@@ -14,6 +14,7 @@ public abstract class Aventurier extends Observable{
     public Aventurier(String nom, String nomRole){
         this.nom = nom;
         this.nomRole = nomRole;
+        System.out.println(nom + " est un " + nomRole);
     }
 	
     protected void checkDeplacement(Grille g, ArrayList<Tuile> tuilesAccessibles, int x, int y) {

@@ -17,7 +17,7 @@ public class MessageNoms extends Message{
 	super(t);
 	this.noms = noms;
     }
-    public ArrayList<String> getTuile(){
+    public ArrayList<String> getNoms(){
 	return noms;
     }
 }

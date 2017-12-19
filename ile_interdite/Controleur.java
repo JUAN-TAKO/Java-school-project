@@ -9,6 +9,8 @@ import Vues.*;
 import Utils.*;
 import Aventuriers.*;
 import java.awt.Color;
+import java.util.Collections;
+import java.util.HashSet;
 
 public class Controleur implements Observer{
     private VueParametres vueParametres; //paramètres de début de partie (nb de joueurs, noms etc)
@@ -24,11 +26,7 @@ public class Controleur implements Observer{
     
     public Controleur(){
         vuesAventuriers = new ArrayList<>();
-        
-        vuesAventuriers.add(new VueAventurier("Dami1", "Pilote", Color.BLUE));
-        vuesAventuriers.add(new VueAventurier("Tibo", "Navigateur", Color.GREEN));
-        vuesAventuriers.add(new VueAventurier("Delf1", "Messager", Color.RED));
-        vuesAventuriers.add(new VueAventurier("Juan", "Ingenieur", Color.ORANGE));
+        aventuriers = new ArrayList<Aventurier>();
 
         vueParametres = new VueParametres();
         vueParametres.addObserver(this);
@@ -147,6 +145,51 @@ public class Controleur implements Observer{
                 
             case QUITTER: 
                 vueParametres.hide();
+                break;
+            case VALIDER_PARAMETRES:
+                MessageNoms mn = (MessageNoms)arg;
+                int randomIndex;
+                ArrayList<Integer> indexes = new ArrayList<>();
+                for(int i = 0; i < 6; i++){
+                    indexes.add(i);
+                }
+                Collections.shuffle(indexes);
+                int i = 0;
+                System.out.println(mn.getNoms().size());
+                for(String nom : mn.getNoms()){
+                    switch(indexes.get(i)){
+                        case 0:
+                            aventuriers.add(new Explorateur(nom));
+                            break;
+                        case 1:
+                            aventuriers.add(new Ingenieur(nom));
+                            break;
+                        case 2:
+                            aventuriers.add(new Messager(nom));
+                            break;
+                        case 3:
+                            aventuriers.add(new Navigateur(nom));
+                            break;    
+                        case 4:
+                            aventuriers.add(new Pilote(nom));
+                            break;
+                        case 5:
+                            aventuriers.add(new Plongeur(nom));
+                            break;
+                    }
+                    Aventurier a = aventuriers.get(aventuriers.size()-1);
+                    a.setPosition(grille.getTuileByType(a.getTuileDepart()));
+                    VueAventurier v = new VueAventurier(a.getNom(), a.getNomRole(), a.getColor());
+                    v.setPosition(a.getPosition().getNom() + " (" + a.getPosition().getX() + " ; " + a.getPosition().getY() + ")");
+                    vuesAventuriers.add(v);
+                    
+                    i++;
+                }
+                vueParametres.hide();
+                for(VueAventurier v : vuesAventuriers){
+                    v.afficher();
+                }
+                afficherAventurier();
                 break;
         }
         if(m.getType() != MessageType.VALIDER_SELECTION){

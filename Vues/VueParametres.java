@@ -19,6 +19,7 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 import Utils.*;
+import java.util.ArrayList;
 
 public class VueParametres extends Observable{
     private final JFrame window ;
@@ -103,9 +104,13 @@ public class VueParametres extends Observable{
         boutonValider.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
+                ArrayList<String> listeNoms = new ArrayList<>();
+                for(int i = 1; i < (listeDeroulante.getSelectedIndex() + 2) * 2; i += 2){
+                    listeNoms.add(((JTextField)panelC2.getComponent(i)).getText());
+                }
                 
                 setChanged();
-                notifyObservers(new Message(MessageType.VALIDER_PARAMETRES));
+                notifyObservers(new MessageNoms(MessageType.VALIDER_PARAMETRES, listeNoms));
                 clearChanged();
             }
         });
