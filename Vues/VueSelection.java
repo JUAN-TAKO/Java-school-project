@@ -30,7 +30,7 @@ public class VueSelection extends Observable{
     private JButton boutonValider;
     private JButton boutonRetour;
     
-    public VueSelection(ArrayList<TypeTuile> t){
+    public VueSelection(ArrayList<TypeTuile> t, ArrayList<String> coords){
         ArrayList<String> nomTuiles = new ArrayList<>();
         window = new JFrame();
         window.setDefaultCloseOperation(javax.swing.JFrame.EXIT_ON_CLOSE);
@@ -60,8 +60,8 @@ public class VueSelection extends Observable{
         
         // =================================================================================
         // CENTRE
-        for (TypeTuile tbis : t) {
-            nomTuiles.add(tbis.toString());
+        for (int i = 0; i < t.size(); i++) {
+            nomTuiles.add(t.get(i).toString() + coords.get(i));
         }
         
         JPanel panelCentre = new JPanel(new GridLayout(1,2));
@@ -120,10 +120,14 @@ public class VueSelection extends Observable{
     
     public static void main(String [] args) {
         ArrayList<TypeTuile> test = new ArrayList<>();
+        ArrayList<String> testCoords = new ArrayList<>();
         test.add(TypeTuile.PORTE_OR);
+        testCoords.add(" (1 ; 3)");
         test.add(TypeTuile.FORET_POURPRE);
+        testCoords.add(" (2 ; 3)");
         test.add(TypeTuile.PONT_ABIMES);
-        VueSelection selection = new VueSelection(test);
+        testCoords.add(" (1 ; 1)");
+        VueSelection selection = new VueSelection(test, testCoords);
         selection.afficher();
    }
 }

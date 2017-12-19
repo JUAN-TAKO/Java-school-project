@@ -81,17 +81,20 @@ public class Controleur implements Observer{
         Message m = (Message)arg;
         ArrayList<Tuile> l;
         ArrayList<TypeTuile> typeTuiles;
+        ArrayList<String> coordsTuiles;
         VueSelection selection;
         
         switch(m.getType()){
             case DEPLACER:  //clic sur le bouton déplacer
                 l = getAventurierCourant().getTuilesAccessiblesDeplacement(grille);
                 typeTuiles = new ArrayList<>();
+                coordsTuiles = new ArrayList<>();
                 for(Tuile t : l){
                     typeTuiles.add(t.getType());
+                    coordsTuiles.add(new String(" (" + t.getX() + " ; " + t.getY() + ")"));
                 }
                 
-                selection = new VueSelection(typeTuiles);
+                selection = new VueSelection(typeTuiles, coordsTuiles);
                 selection.afficher();
                 
                 
@@ -100,16 +103,26 @@ public class Controleur implements Observer{
             case ASSECHER:  //clic sur le bouton assecher
                 l = getAventurierCourant().getTuilesAccessiblesAssechement(grille);
                 typeTuiles = new ArrayList<>();
-                
+                coordsTuiles = new ArrayList<>();
                 for(Tuile t : l){
                     typeTuiles.add(t.getType());
+                    coordsTuiles.add(new String(" (" + t.getX() + " ; " + t.getY() + ")"));
                 }
                 
-                selection = new VueSelection(typeTuiles);
+                selection = new VueSelection(typeTuiles, coordsTuiles);
                 selection.afficher();
                 
                 if(getAventurierCourant() instanceof Ingenieur && lastMessage.getType() != MessageType.ANNULER_SELECTION){
-                    selection = new VueSelection(typeTuiles);
+                    
+                    l = getAventurierCourant().getTuilesAccessiblesAssechement(grille);
+                    typeTuiles = new ArrayList<>();
+                    coordsTuiles = new ArrayList<>();
+                    for(Tuile t : l){
+                        typeTuiles.add(t.getType());
+                        coordsTuiles.add(new String(" (" + t.getX() + " ; " + t.getY() + ")"));
+                    }
+                
+                    selection = new VueSelection(typeTuiles, coordsTuiles);
                     selection.afficher();
                 }
                 
