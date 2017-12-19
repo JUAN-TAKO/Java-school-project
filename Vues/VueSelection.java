@@ -71,7 +71,7 @@ public class VueSelection extends Observable{
         panelCS1.add(new JLabel("Tuiles accessibles : ", JLabel.RIGHT));
         listeDeroulanteSelection = new JComboBox(nomTuiles.toArray());
         panelCS1.add(listeDeroulanteSelection);
-        listeDeroulanteSelection.setSelectedIndex(0);
+        //listeDeroulanteSelection.setSelectedIndex(0);
         
         // =================================================================================
         // SUD
@@ -117,17 +117,4 @@ public class VueSelection extends Observable{
     public void hide() {
         window.dispose();
     }
-    
-    public static void main(String [] args) {
-        ArrayList<TypeTuile> test = new ArrayList<>();
-        ArrayList<String> testCoords = new ArrayList<>();
-        test.add(TypeTuile.PORTE_OR);
-        testCoords.add(" (1 ; 3)");
-        test.add(TypeTuile.FORET_POURPRE);
-        testCoords.add(" (2 ; 3)");
-        test.add(TypeTuile.PONT_ABIMES);
-        testCoords.add(" (1 ; 1)");
-        VueSelection selection = new VueSelection(test, testCoords);
-        selection.afficher();
-   }
 }

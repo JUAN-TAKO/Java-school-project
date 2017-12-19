@@ -12,7 +12,7 @@ public class Plongeur extends Aventurier{
     public Plongeur(String nomJoueur){
         super(nomJoueur, "Plongeur");
     }
-    protected void checkTuile(Grille g, HashSet<Tuile> tuilesAccessibles, HashSet<Tuile> tuilesInnondees, Tuile t) {
+    protected void checkTuile(Grille g, HashSet<Tuile> tuilesAccessibles, HashSet<Tuile> tuilesCoulees, Tuile t) {
         ArrayList<Tuile> adjacentes = new ArrayList<>();
         adjacentes.add(g.at(t.getX()+1, t.getY()));
         adjacentes.add(g.at(t.getX()-1, t.getY()));
@@ -20,20 +20,22 @@ public class Plongeur extends Aventurier{
         adjacentes.add(g.at(t.getX(), t.getY()-1));
 
         for(Tuile tu : adjacentes){
-            if(t.getEtat() == Etat.COULEE){
-                if(tuilesInnondees.add(tu)){ //renvoie true si c'est une nouvelle tuile
-                    checkTuile(g, tuilesAccessibles, tuilesInnondees, tu);
+            if(tu != null){
+                if(tu.getEtat() == Etat.COULEE){
+                    if(tuilesCoulees.add(tu)){ //renvoie true si c'est une nouvelle tuile
+                        checkTuile(g, tuilesAccessibles, tuilesCoulees, tu);
+                    }
                 }
-            }
-            else{
-                tuilesAccessibles.add(tu);
-            }
+                else{
+                    tuilesAccessibles.add(tu);
+                }
+            }           
         }
     }
 
-    public ArrayList<Tuile> getTuilesAccessiblesDeplacement(Grille g){
-	    
-	    HashSet<Tuile> tuilesAccessibles = new HashSet<>();
+    @Override
+    public ArrayList<Tuile> getTuilesAccessiblesDeplacement(Grille g){    
+	HashSet<Tuile> tuilesAccessibles = new HashSet<>();
         HashSet<Tuile> tuilesCoulees = new HashSet<>();
         tuilesAccessibles.add(getPosition());
         checkTuile(g, tuilesAccessibles, tuilesCoulees, getPosition());
@@ -46,6 +48,7 @@ public class Plongeur extends Aventurier{
     public TypeTuile getTuileDepart() {
         return TypeTuile.PORTE_CUIVRE;
     }
+    @Override
     public Color getColor(){
         return Color.BLUE;
     }

@@ -91,7 +91,7 @@ public class Controleur implements Observer{
                 coordsTuiles = new ArrayList<>();
                 for(Tuile t : l){
                     typeTuiles.add(t.getType());
-                    coordsTuiles.add(new String(" (" + t.getX() + " ; " + t.getY() + ")"));
+                    coordsTuiles.add(" (" + t.getX() + " ; " + t.getY() + ")");
                 }
                 
                 selection = new VueSelection(typeTuiles, coordsTuiles);
@@ -106,7 +106,7 @@ public class Controleur implements Observer{
                 coordsTuiles = new ArrayList<>();
                 for(Tuile t : l){
                     typeTuiles.add(t.getType());
-                    coordsTuiles.add(new String(" (" + t.getX() + " ; " + t.getY() + ")"));
+                    coordsTuiles.add(" (" + t.getX() + " ; " + t.getY() + ")");
                 }
                 
                 selection = new VueSelection(typeTuiles, coordsTuiles);
@@ -119,7 +119,7 @@ public class Controleur implements Observer{
                     coordsTuiles = new ArrayList<>();
                     for(Tuile t : l){
                         typeTuiles.add(t.getType());
-                        coordsTuiles.add(new String(" (" + t.getX() + " ; " + t.getY() + ")"));
+                        coordsTuiles.add(" (" + t.getX() + " ; " + t.getY() + ")");
                     }
                 
                     selection = new VueSelection(typeTuiles, coordsTuiles);
@@ -194,6 +194,7 @@ public class Controleur implements Observer{
                     a.setPosition(grille.getTuileByType(a.getTuileDepart()));
                     VueAventurier v = new VueAventurier(a.getNom(), a.getNomRole(), a.getColor());
                     v.setPosition(a.getPosition().getNom() + " (" + a.getPosition().getX() + " ; " + a.getPosition().getY() + ")");
+                    v.addObserver(this);
                     vuesAventuriers.add(v);
                     
                     i++;

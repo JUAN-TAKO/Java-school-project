@@ -13,8 +13,11 @@ import javax.swing.SwingConstants;
 import static javax.swing.SwingConstants.CENTER;
 import javax.swing.border.MatteBorder;
 import Utils.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.util.Observable;
  
-public class VueAventurier  {
+public class VueAventurier extends Observable{
      
     private final JPanel panelBoutons ;
     private final JPanel panelCentre ;
@@ -23,14 +26,14 @@ public class VueAventurier  {
     private final JPanel mainPanel;
     private final JButton btnBouger  ;
     private final JButton btnAssecher;
-    private final JButton btnAutreAction;
-    private final JButton btnTerminerTour;
+    private final JButton btnSpecial;
+    private final JButton btnPasser;
     private JTextField position;
     private Color couleur;
    
    
     
-    public VueAventurier(String nomJoueur, String nomAventurier, Color c){
+    public VueAventurier(String nomJoueur, String nomAventurier, Color c) {
 
         couleur = c;
         this.window = new JFrame();
@@ -71,17 +74,53 @@ public class VueAventurier  {
         this.panelBoutons.setOpaque(false);
         mainPanel.add(this.panelBoutons, BorderLayout.SOUTH);
 
-        this.btnBouger = new JButton("Bouger") ;
+        this.btnBouger = new JButton("Se deplacer") ;
         this.btnAssecher = new JButton( "Assecher");
-        this.btnAutreAction = new JButton("AutreAction") ;
-        this.btnTerminerTour = new JButton("Terminer Tour") ;
+        this.btnSpecial = new JButton("Speciale") ;
+        this.btnPasser = new JButton("Passer Tour") ;
         
         
         this.panelBoutons.add(btnBouger);
         this.panelBoutons.add(btnAssecher);
-        this.panelBoutons.add(btnAutreAction);
-        this.panelBoutons.add(btnTerminerTour);
+        this.panelBoutons.add(btnSpecial);
+        this.panelBoutons.add(btnPasser);
 
+        btnBouger.addActionListener(new ActionListener(){
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                setChanged();
+                notifyObservers(new Message(MessageType.DEPLACER));
+                clearChanged();
+            }
+        
+        });
+        btnAssecher.addActionListener(new ActionListener(){
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                setChanged();
+                notifyObservers(new Message(MessageType.ASSECHER));
+                clearChanged();
+            }
+        
+        });
+        btnSpecial.addActionListener(new ActionListener(){
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                setChanged();
+                notifyObservers(new Message(MessageType.SPECIAL));
+                clearChanged();
+            }
+        
+        });
+        btnPasser.addActionListener(new ActionListener(){
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                setChanged();
+                notifyObservers(new Message(MessageType.PASSER));
+                clearChanged();
+            }
+        
+        });
     } 
     
     public void setPosition(String pos) {

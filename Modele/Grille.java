@@ -15,15 +15,24 @@ public class Grille {
         generateur.generate(this);
     }
     public Tuile at(int x, int y){
-        return tuiles.get(y*size + x);
+        int index = y*size + x;
+        if(index < tuiles.size() && index >= 0){
+            return tuiles.get(index);
+        }
+        return null;
     }
     public Tuile getTuileByType(TypeTuile type){
         return tuilesMap.get(type);
     }
-    public void add(Tuile t){
-        tuiles.add(t);
-        if(t != null){
-            tuilesMap.put(t.getType(), t);
-        }
+    public void setSize(int s){
+        size = s;
+    }
+    public void add(TypeTuile t, Etat e){
+        Tuile tuile = new Tuile((tuiles.size())%size, (tuiles.size())/size, t, e);
+        tuiles.add(tuile);
+        tuilesMap.put(tuile.getType(), tuile);
+    }
+    public void addEmpty(){
+        tuiles.add(null);
     }
 }
