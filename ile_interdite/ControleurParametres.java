@@ -25,7 +25,7 @@ public class ControleurParametres implements Observer{
     @Override
     public void update(Observable o, Object arg) {
         if (arg instanceof MessageType) {
-            if ((MessageType) arg == MessageType.ANNULER) {
+            if ((MessageType) arg == MessageType.QUITTER) {
                 System.out.println("test");
                 view.hide();
             } else {

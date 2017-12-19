@@ -31,6 +31,7 @@ public class Controleur implements Observer{
         vuesAventuriers.add(new VueAventurier("Juan", "Ingenieur", Color.ORANGE));
 
         vueParametres = new VueParametres();
+        vueParametres.addObserver(this);
 
         Generateur g = new GrillePredefinie();
         
@@ -42,8 +43,9 @@ public class Controleur implements Observer{
     }
 	
     public void start(){
-
+        vueParametres.afficher();
     }
+    
     public Aventurier getAventurierCourant(){
         return aventuriers.get(indexAventurierCourant);
     }
@@ -109,7 +111,7 @@ public class Controleur implements Observer{
                 selection = new VueSelection(typeTuiles);
                 selection.afficher();
                 
-                if(getAventurierCourant() instanceof Ingenieur && lastMessage.getType() != MessageType.ANNULER){
+                if(getAventurierCourant() instanceof Ingenieur && lastMessage.getType() != MessageType.ANNULER_SELECTION){
                     selection = new VueSelection(typeTuiles);
                     selection.afficher();
                 }
@@ -138,9 +140,22 @@ public class Controleur implements Observer{
 
                 }
                 break;
+                
+            case ANNULER_SELECTION:   //effectuer l'action sur la case selectionnée
+
+             
+                break;
+                
+            case QUITTER:   //effectuer l'action sur la case selectionnée
+                vueParametres.hide();
+                break;
         }
         if(m.getType() != MessageType.VALIDER_SELECTION){
           lastMessage = m;  
         }
     }
+    
+    public static void main(String [] args) {
+        Controleur c = new Controleur();
+   }
 }	

@@ -82,7 +82,7 @@ public class VueSelection extends Observable{
             @Override
             public void actionPerformed(ActionEvent e) {
                 setChanged();
-                notifyObservers(MessageType.ANNULER);
+                notifyObservers(MessageType.QUITTER);
                 clearChanged();
             }
         });
