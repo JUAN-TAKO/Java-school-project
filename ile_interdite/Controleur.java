@@ -17,7 +17,7 @@ public class Controleur implements Observer{
 	
     private Grille grille; 
     private ArrayList<Aventurier> aventuriers; //liste des aventuriers
-    private ArrayList<VueAventurier> vuesAventuriers; //liste des vues associées aux aventuriers
+    private VueAventuriers vueAventuriers; //liste des vues associées aux aventuriers
     private VueSelection selection;
     private int indexAventurierCourant; 
     private int action; //nombre d'actions effectuées par le joueur courant
@@ -26,7 +26,6 @@ public class Controleur implements Observer{
     private Message lastMessage;  //sauvegarde du dernier message reçu par le controleur
     
     public Controleur(){
-        vuesAventuriers = new ArrayList<>();
         aventuriers = new ArrayList<Aventurier>();
 
         vueParametres = new VueParametres();
@@ -49,9 +48,6 @@ public class Controleur implements Observer{
     public Aventurier getAventurierCourant(){
         return aventuriers.get(indexAventurierCourant);
     }
-    public VueAventurier getVueAventurierCourant(){
-        return vuesAventuriers.get(indexAventurierCourant);
-    }
 
     public void actionSuivante(){ //gere le nombre d'actions de l'aventurier courant et le passage au joueur suivant si le joueur a effectué ses trois actions
         action++;
@@ -70,10 +66,7 @@ public class Controleur implements Observer{
 
     }
     public void afficherAventurier(){ //désactive les vues des aventuriers dont ce n'est pas le tour, et active celle de l'aventurier courant
-        for(VueAventurier v : vuesAventuriers){
-            v.setActive(false);
-        }
-        getVueAventurierCourant().setActive(true);
+        vueAventuriers.setActive(indexAventurierCourant);
     }
 
     public void tourSuivant(){
@@ -88,7 +81,7 @@ public class Controleur implements Observer{
     
     public void deplacer(TypeTuile t){
         getAventurierCourant().setPosition(grille.getTuileByType(t));
-        getVueAventurierCourant().setPosition(getAventurierCourant().getPosition().getNom() + " (" + getAventurierCourant().getPosition().getX() + " ; " + getAventurierCourant().getPosition().getY() + ")");
+        vueAventuriers.setPosition(indexAventurierCourant, getAventurierCourant().getPosition().getNom() + " (" + getAventurierCourant().getPosition().getX() + " ; " + getAventurierCourant().getPosition().getY() + ")");
     }
     public void assecher(TypeTuile t){
         grille.getTuileByType(t).setEtat(Etat.SECHE);
@@ -170,8 +163,13 @@ public class Controleur implements Observer{
                 break;
             case VALIDER_PARAMETRES:
                 MessageNoms mn = (MessageNoms)arg;
+                ArrayList<String> noms = new ArrayList<>();
+                ArrayList<String> roles = new ArrayList<>();
+                ArrayList<Color> couleurs = new ArrayList<>();
+                
                 int randomIndex;
                 ArrayList<Integer> indexes = new ArrayList<>();
+                
                 for(int i = 0; i < 6; i++){
                     indexes.add(i);
                 }
@@ -201,16 +199,19 @@ public class Controleur implements Observer{
                     }
                     Aventurier a = aventuriers.get(aventuriers.size()-1);
                     a.setPosition(grille.getTuileByType(a.getTuileDepart()));
-                    VueAventurier v = new VueAventurier(a.getNom(), a.getNomRole(), a.getColor());
-                    v.setPosition(a.getPosition().getNom() + " (" + a.getPosition().getX() + " ; " + a.getPosition().getY() + ")");
-                    v.addObserver(this);
-                    vuesAventuriers.add(v);
-                    
+                    noms.add(a.getNom());
+                    roles.add(a.getNomRole());
+                    couleurs.add(a.getColor());
+                   
                     i++;
                 }
+                vueAventuriers = new VueAventuriers(noms, roles, couleurs);
+                vueAventuriers.addObserver(this);
                 vueParametres.hide();
-                for(VueAventurier v : vuesAventuriers){
-                    v.afficher();
+                vueAventuriers.afficher();
+                for(int j = 0; j < aventuriers.size(); j++){
+                    Aventurier a = aventuriers.get(j);
+                    vueAventuriers.setPosition(j, a.getPosition().getNom() + " (" + a.getPosition().getX() + " ; " + a.getPosition().getY() + ")");
                 }
                 afficherAventurier();
                 break;

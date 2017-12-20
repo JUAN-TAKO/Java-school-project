@@ -13,66 +13,85 @@ import javax.swing.SwingConstants;
 import static javax.swing.SwingConstants.CENTER;
 import javax.swing.border.MatteBorder;
 import Utils.*;
+import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
 import java.util.Observable;
  
-public class VueAventurier extends Observable{
+public class VueAventuriers extends Observable{
      
     private final JPanel panelBoutons ;
-    private final JPanel panelCentre ;
+    private final JPanel panelAventuriers;
     private final JFrame window;
-    private final JPanel panelAventurier;
     private final JPanel mainPanel;
     private final JButton btnBouger  ;
     private final JButton btnAssecher;
     private final JButton btnSpecial;
     private final JButton btnPasser;
-    private JTextField position;
-    private Color couleur;
-   
+    private ArrayList<JTextField> positions;
+    private ArrayList<Color> couleurs;
+    private ArrayList<JLabel> labelsRoleAventurier;
    
     
-    public VueAventurier(String nomJoueur, String nomAventurier, Color c) {
-
-        couleur = c;
+    public VueAventuriers(ArrayList<String> noms, ArrayList<String> roles, ArrayList<Color> c) {
+        couleurs = c;
         this.window = new JFrame();
-        window.setSize(350, 200);
+        window.setSize(300*noms.size(), 300);
         //le titre = nom du joueur 
-        window.setTitle(nomJoueur);
+        window.setTitle("Ile Interdite");
         window.setDefaultCloseOperation(javax.swing.JFrame.EXIT_ON_CLOSE);
         mainPanel = new JPanel(new BorderLayout());
         this.window.add(mainPanel);
 
         mainPanel.setBackground(new Color(230, 230, 230));
-        mainPanel.setBorder(BorderFactory.createLineBorder(couleur, 2)) ;
 
         // =================================================================================
         // NORD : le titre = nom de l'aventurier sur la couleurActive du pion
-
-        this.panelAventurier = new JPanel();
-        panelAventurier.setBackground(couleur);
-        panelAventurier.add(new JLabel(nomAventurier,SwingConstants.CENTER ));
-        mainPanel.add(panelAventurier, BorderLayout.NORTH);
+        
+        labelsRoleAventurier = new ArrayList<>();
+        panelAventuriers = new JPanel(new GridLayout(1, noms.size()));
+        panelAventuriers.setBorder(new MatteBorder(0, 0, 15, 0, Color.LIGHT_GRAY));
+        mainPanel.add(panelAventuriers, BorderLayout.NORTH);
+        
+        positions = new ArrayList<JTextField>(); 
+        
+        
+        for(int i = 0; i < noms.size(); i++){
+            JPanel a = new JPanel(new GridLayout(4, 1));
+            JLabel b = new JLabel(roles.get(i),SwingConstants.CENTER );
+            b.setOpaque(true);
+            JTextField p = new JTextField(30);
+            p.setHorizontalAlignment(CENTER);
+            p.setEditable(false);
+            positions.add(p);
+            a.setBorder(new MatteBorder(0, 1, 0, 1, Color.DARK_GRAY));
+            
+            
+            a.add(new JLabel(noms.get(i),SwingConstants.CENTER ));
+            a.add(b);
+            a.add(new JLabel ("Position actuelle", SwingConstants.CENTER));
+            a.add(p);
+            
+            labelsRoleAventurier.add(b);
+            panelAventuriers.add(a);
+        }
+        
+        panelAventuriers.setOpaque(false);
+        
+        
    
         // =================================================================================
         // CENTRE : 1 ligne pour position courante
-        this.panelCentre = new JPanel(new GridLayout(2, 1));
-        this.panelCentre.setOpaque(false);
-        this.panelCentre.setBorder(new MatteBorder(0, 0, 2, 0, couleur));
-        mainPanel.add(this.panelCentre, BorderLayout.CENTER);
         
-        panelCentre.add(new JLabel ("Position actuelle", SwingConstants.CENTER));
-        position = new  JTextField(30); 
-        position.setHorizontalAlignment(CENTER);
-        position.setEditable(false);
-        panelCentre.add(position);
-
+        mainPanel.add(this.panelAventuriers, BorderLayout.CENTER);
 
         // =================================================================================
         // SUD : les boutons
         this.panelBoutons = new JPanel(new GridLayout(2,2));
         this.panelBoutons.setOpaque(false);
+        Dimension d = new Dimension(-1, 75);
+        panelBoutons.setPreferredSize(d);
         mainPanel.add(this.panelBoutons, BorderLayout.SOUTH);
 
         this.btnBouger = new JButton("Se deplacer") ;
@@ -124,27 +143,19 @@ public class VueAventurier extends Observable{
         });
     } 
     
-    public void setPosition(String pos) {
-        this.position.setText(pos);
-    }
-    public void setActive(boolean a){
-        if(a){
-            mainPanel.setBorder(BorderFactory.createLineBorder(couleur, 2)) ;
-            this.panelCentre.setBorder(new MatteBorder(0, 0, 2, 0, couleur));
-            panelAventurier.setBackground(couleur);    
-        }
-        else{
-            mainPanel.setBorder(BorderFactory.createLineBorder(Color.GRAY, 2)) ;
-            this.panelCentre.setBorder(new MatteBorder(0, 0, 2, 0, Color.GRAY));
-            panelAventurier.setBackground(Color.GRAY);
-        }
-        for(int i = 0; i < panelBoutons.getComponentCount(); i++){
-            panelBoutons.getComponent(i).setEnabled(a);
-        }
-        
-    }
-    
     public void afficher() {
         this.window.setVisible(true);
+    }
+
+    public void setActive(int index){
+        for(int i = 0; i < labelsRoleAventurier.size(); i++){
+            labelsRoleAventurier.get(i).setBackground(Color.GRAY);
+        }
+        mainPanel.setBorder(BorderFactory.createLineBorder(couleurs.get(index), 2)) ;
+        labelsRoleAventurier.get(index).setBackground(couleurs.get(index));
+    }
+
+    public void setPosition(int index, String pos) {
+        positions.get(index).setText(pos);
     }
 }
