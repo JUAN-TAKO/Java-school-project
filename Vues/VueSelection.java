@@ -1,7 +1,7 @@
 package Vues;
 
-import Utils.MessageType;
-import Utils.TypeTuile;
+import Utils.*;
+
 import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.GridLayout;
@@ -10,7 +10,6 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.Observable;
-import javax.swing.ComboBoxModel;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JFrame;
@@ -29,11 +28,13 @@ public class VueSelection extends Observable{
     
     private JButton boutonValider;
     private JButton boutonRetour;
+    private ArrayList<TypeTuile> typeTuiles;
     
     public VueSelection(ArrayList<TypeTuile> t, ArrayList<String> coords){
         ArrayList<String> nomTuiles = new ArrayList<>();
+        typeTuiles = t;
         window = new JFrame();
-        window.setDefaultCloseOperation(javax.swing.JFrame.EXIT_ON_CLOSE);
+        window.setDefaultCloseOperation(javax.swing.JFrame.DISPOSE_ON_CLOSE);
         window.setSize(400, 250);
         Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
         window.setLocation(dim.width/2-window.getSize().width/2, dim.height/2-window.getSize().height/2);
@@ -60,8 +61,8 @@ public class VueSelection extends Observable{
         
         // =================================================================================
         // CENTRE
-        for (int i = 0; i < t.size(); i++) {
-            nomTuiles.add(t.get(i).toString() + coords.get(i));
+        for (int i = 0; i < typeTuiles.size(); i++) {
+            nomTuiles.add(typeTuiles.get(i).toString() + coords.get(i));
         }
         
         JPanel panelCentre = new JPanel(new GridLayout(1,2));
@@ -71,18 +72,17 @@ public class VueSelection extends Observable{
         panelCS1.add(new JLabel("Tuiles accessibles : ", JLabel.RIGHT));
         listeDeroulanteSelection = new JComboBox(nomTuiles.toArray());
         panelCS1.add(listeDeroulanteSelection);
-        //listeDeroulanteSelection.setSelectedIndex(0);
         
         // =================================================================================
         // SUD
         JPanel panelBas = new JPanel(new GridLayout(1,3)) ;
         mainPanel.add(panelBas, BorderLayout.SOUTH);
-        boutonRetour = new JButton("Retour");
+        boutonRetour = new JButton("Annuler");
         boutonRetour.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 setChanged();
-                notifyObservers(MessageType.QUITTER);
+                notifyObservers(new Message(MessageType.ANNULER_SELECTION));
                 clearChanged();
             }
         });
@@ -94,19 +94,12 @@ public class VueSelection extends Observable{
             @Override
             public void actionPerformed(ActionEvent e) {
                 setChanged();
-                notifyObservers(MessageType.VALIDER_SELECTION);
+                notifyObservers(new MessageTuile(MessageType.VALIDER_SELECTION, typeTuiles.get(listeDeroulanteSelection.getSelectedIndex())));
                 clearChanged();
             }
         });
         
         panelBas.add(boutonValider);
-        
-        listeDeroulanteSelection.addActionListener (new ActionListener () {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                
-            }
-        });
         
     }
 

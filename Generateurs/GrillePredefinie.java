@@ -46,7 +46,7 @@ public class GrillePredefinie extends Generateur{
             tuiles.addEmpty();
             tuiles.addEmpty();
             tuiles.add(TypeTuile.TOUR_GUET, Etat.SECHE);
-            tuiles.add(TypeTuile.JARDIN_HURLEMENTS, Etat.INNONDEE);
+            tuiles.add(TypeTuile.JARDIN_MURMURES, Etat.INNONDEE);
             tuiles.addEmpty();
             tuiles.addEmpty();
 	}
