@@ -65,7 +65,7 @@ public class VueAventuriers extends Observable{
             p.setHorizontalAlignment(CENTER);
             p.setEditable(false);
             positions.add(p);
-            a.setBorder(new MatteBorder(0, 1, 0, 1, Color.DARK_GRAY));
+            a.setBorder(new MatteBorder(0, 3, 0, 3, Color.LIGHT_GRAY));
             
             
             a.add(new JLabel(noms.get(i),SwingConstants.CENTER ));
@@ -89,16 +89,20 @@ public class VueAventuriers extends Observable{
         // =================================================================================
         // SUD : les boutons
         this.panelBoutons = new JPanel(new GridLayout(2,2));
+        panelBoutons.setBorder(new MatteBorder(0, 50, 0, 50, Color.LIGHT_GRAY));
         this.panelBoutons.setOpaque(false);
         Dimension d = new Dimension(-1, 75);
         panelBoutons.setPreferredSize(d);
         mainPanel.add(this.panelBoutons, BorderLayout.SOUTH);
 
         this.btnBouger = new JButton("Se deplacer") ;
+        btnBouger.setBorder(new MatteBorder(1, 1, 1, 1, Color.LIGHT_GRAY));
         this.btnAssecher = new JButton( "Assecher");
+        btnAssecher.setBorder(new MatteBorder(1, 1, 1, 1, Color.LIGHT_GRAY));
         this.btnSpecial = new JButton("Speciale") ;
+        btnSpecial.setBorder(new MatteBorder(1, 1, 1, 1, Color.LIGHT_GRAY));
         this.btnPasser = new JButton("Passer Tour") ;
-        
+        btnPasser.setBorder(new MatteBorder(1, 1, 1, 1, Color.LIGHT_GRAY));
         
         this.panelBoutons.add(btnBouger);
         this.panelBoutons.add(btnAssecher);
