@@ -57,6 +57,7 @@ public class Controleur implements Observer{
     }
     public void aventurierSuivant(){
         action = 0;
+        setBoutonsActives(true);
         jokerIngenieur = false;
         indexAventurierCourant++;
         if(indexAventurierCourant >= aventuriers.size()){
@@ -86,6 +87,9 @@ public class Controleur implements Observer{
     public void assecher(TypeTuile t){
         grille.getTuileByType(t).setEtat(Etat.SECHE);
     }
+    public void setBoutonsActives(boolean a){
+        vueAventuriers.setBoutonsActives(a);
+    }
     
     @Override
     public void update(Observable o, Object arg){ //gère la réception des messages des vues aventuriers
@@ -93,7 +97,6 @@ public class Controleur implements Observer{
         ArrayList<Tuile> l;
         ArrayList<TypeTuile> typeTuiles;
         ArrayList<String> coordsTuiles;
-        
         
         switch(m.getType()){
             case DEPLACER:  //clic sur le bouton déplacer
@@ -133,18 +136,27 @@ public class Controleur implements Observer{
                 MessageTuile mt = (MessageTuile)arg; //interprète le message reçu comme un message tuile 
                 boolean b = (getAventurierCourant() instanceof Ingenieur);
                 
+                if(!b){
+                    jokerIngenieur = false;
+                }
                 switch(lastMessage.getType()){
                     case DEPLACER:
+                        if(jokerIngenieur){
+                            actionSuivante();
+                        }
                         deplacer(mt.getTuile());
-                        jokerIngenieur = false;
                         actionSuivante();
+                        jokerIngenieur = false;
                         break;	
                     case ASSECHER:
                         assecher(mt.getTuile());
-                        if(!jokerIngenieur){
+                        if(!b || jokerIngenieur){
                             actionSuivante();
                         }
                         jokerIngenieur = (b && !jokerIngenieur);
+                        if(jokerIngenieur && action == 2){
+                            setBoutonsActives(false);
+                        }
                         break;
                     case SPECIAL:
                         //jokerIngenieur = false;

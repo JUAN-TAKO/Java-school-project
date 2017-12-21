@@ -162,4 +162,9 @@ public class VueAventuriers extends Observable{
     public void setPosition(int index, String pos) {
         positions.get(index).setText(pos);
     }
+
+    public void setBoutonsActives(boolean a) {
+        btnBouger.setEnabled(a);
+        btnSpecial.setEnabled(a);
+    }
 }
