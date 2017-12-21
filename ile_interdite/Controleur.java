@@ -10,27 +10,27 @@ import Utils.*;
 import Aventuriers.*;
 import java.awt.Color;
 import java.util.Collections;
-import java.util.HashSet;
 
 public class Controleur implements Observer{
     private VueParametres vueParametres; //paramètres de début de partie (nb de joueurs, noms etc)
 	
-    private Grille grille; 
+    private Grille grille;  //plateau de jeu
     private ArrayList<Aventurier> aventuriers; //liste des aventuriers
-    private VueAventuriers vueAventuriers; //liste des vues associées aux aventuriers
-    private VueSelection selection;
+    private VueAventuriers vueAventuriers; //pour afficher les aventuriers
+    private VueSelection selection;  //fenêtre de sélection de la tuile
     private int indexAventurierCourant; 
     private int action; //nombre d'actions effectuées par le joueur courant
     private int tour; //nombre de tours de jeu
-    private boolean jokerIngenieur;
-    private Message lastMessage;  //sauvegarde du dernier message reçu par le controleur
+    private boolean jokerIngenieur; //égal à true si l'ingénieur a déjà asseché une case pour cette action
+    private Message lastMessage;  //sauvegarde de contexte
     
     public Controleur(){
-        aventuriers = new ArrayList<Aventurier>();
+        aventuriers = new ArrayList<>();
 
         vueParametres = new VueParametres();
         vueParametres.addObserver(this);
-
+        
+        //Le generateur construit la grille
         Generateur g = new GrillePredefinie();
         
         grille = new Grille(g);
@@ -42,19 +42,22 @@ public class Controleur implements Observer{
     }
 	
     public void start(){
-        vueParametres.afficher();
+        vueParametres.afficher(); //ouvre la fenêtre des paramètres (inscription des joueurs)
     }
     
+    //renvoie l'aventurier courant
     public Aventurier getAventurierCourant(){
         return aventuriers.get(indexAventurierCourant);
     }
-
-    public void actionSuivante(){ //gere le nombre d'actions de l'aventurier courant et le passage au joueur suivant si le joueur a effectué ses trois actions
+    
+    //incrémentation du nombre d'actions de l'aventurier courant et le passage au joueur suivant si le joueur a effectué ses trois actions
+    public void actionSuivante(){ 
         action++;
         if(action >= 3){
             aventurierSuivant();
         }
     }
+    //passe a l'aventurier suivant et au tour suivant si tous les aventuriers ont joués
     public void aventurierSuivant(){
         action = 0;
         setBoutonsActives(true);
@@ -63,68 +66,81 @@ public class Controleur implements Observer{
         if(indexAventurierCourant >= aventuriers.size()){
             tourSuivant();
         }
-        afficherAventurier();
+        selectAventurier();
 
     }
-    public void afficherAventurier(){ //désactive les vues des aventuriers dont ce n'est pas le tour, et active celle de l'aventurier courant
+    
+    //désactive les aventuriers dont ce n'est pas le tour, et active l'aventurier courant (dans la vue)
+    public void selectAventurier(){ 
         vueAventuriers.setActive(indexAventurierCourant);
     }
 
+    //incrémente le nombre de tours et reviens au début de la liste des aventuriers
     public void tourSuivant(){
         tour++;
-        indexAventurierCourant = 0; //on revient au premier aventurier pour commencer un nouveau tour de jeu
+        indexAventurierCourant = 0;
     }
+    
+    //ouvre une fenêtre de séléction de tuile
     public void afficherSelection(ArrayList<TypeTuile> typeTuiles, ArrayList<String> coordsTuiles){
         selection = new VueSelection(typeTuiles, coordsTuiles);
         selection.addObserver(this);
         selection.afficher();
     }
-    
+    //déplace l'aventurier courant sur la tuile de type t
     public void deplacer(TypeTuile t){
         getAventurierCourant().setPosition(grille.getTuileByType(t));
         vueAventuriers.setPosition(indexAventurierCourant, getAventurierCourant().getPosition().getNom() + " (" + getAventurierCourant().getPosition().getX() + " ; " + getAventurierCourant().getPosition().getY() + ")");
     }
+    //assèche la tuile de type t
     public void assecher(TypeTuile t){
         grille.getTuileByType(t).setEtat(Etat.SECHE);
     }
+    //active ou désactive tous les boutons de la vue aventuriers
     public void setBoutonsActives(boolean a){
         vueAventuriers.setBoutonsActives(a);
     }
+    //active ou desactive certains boutons de la vue aventuriers
+    public void setBoutonsActivesIngenieur(boolean a){
+        vueAventuriers.setBoutonsActivesIngenieur(a);
+    }
     
+    //gère la réception des messages des vues
     @Override
-    public void update(Observable o, Object arg){ //gère la réception des messages des vues aventuriers
+    public void update(Observable o, Object arg){
         Message m = (Message)arg;
-        ArrayList<Tuile> l;
-        ArrayList<TypeTuile> typeTuiles;
-        ArrayList<String> coordsTuiles;
+        
+        ArrayList<Tuile> listeTuiles; //tableau temporaire pour stocker les tuiles accessibles 
+        ArrayList<TypeTuile> typeTuiles; //tableau temporaire pour stocker les types des tuiles accéssibles (TypeTuile est un enum avec toutes les différentes tuiles)
+        ArrayList<String> coordsTuiles; //on passeras les coordonées de la tuile sous forme de string a la vue Sélection
         
         switch(m.getType()){
             case DEPLACER:  //clic sur le bouton déplacer
-                l = getAventurierCourant().getTuilesAccessiblesDeplacement(grille);
+                listeTuiles = getAventurierCourant().getTuilesAccessiblesDeplacement(grille);
                 typeTuiles = new ArrayList<>();
                 coordsTuiles = new ArrayList<>();
-                for(Tuile t : l){
+                for(Tuile t : listeTuiles){
                     typeTuiles.add(t.getType());
                     coordsTuiles.add(" (" + t.getX() + " ; " + t.getY() + ")");
                 }
                 afficherSelection(typeTuiles, coordsTuiles);
-                
+                setBoutonsActives(false);
                 break;
             case ASSECHER:  //clic sur le bouton assecher
-                l = getAventurierCourant().getTuilesAccessiblesAssechement(grille);
+                listeTuiles = getAventurierCourant().getTuilesAccessiblesAssechement(grille);
                 typeTuiles = new ArrayList<>();
                 coordsTuiles = new ArrayList<>();
-                for(Tuile t : l){
+                for(Tuile t : listeTuiles){
                     typeTuiles.add(t.getType());
                     coordsTuiles.add(" (" + t.getX() + " ; " + t.getY() + ")");
                 }
                 
                 afficherSelection(typeTuiles, coordsTuiles);
-                
+                setBoutonsActives(false);
                 
                 
                 break;
-            case SPECIAL:   //clic sur le bouton spécial
+            case SPECIAL:   //clic sur le bouton spécial, pas implémenté pour l'instant
                 
                 
                 break;
@@ -133,61 +149,69 @@ public class Controleur implements Observer{
                 break;
 
             case VALIDER_SELECTION:   //effectuer l'action sur la case selectionnée
-                MessageTuile mt = (MessageTuile)arg; //interprète le message reçu comme un message tuile 
-                boolean b = (getAventurierCourant() instanceof Ingenieur);
+                MessageTuile mt = (MessageTuile)arg; //interprète le message reçu comme un message contenant une tuile 
+                boolean b = (getAventurierCourant() instanceof Ingenieur); // b = true si l'aventurier courant est un ingénieur
                 
                 if(!b){
                     jokerIngenieur = false;
                 }
-                switch(lastMessage.getType()){
+                switch(lastMessage.getType()){ //en fonction du contexte sauvegardé
                     case DEPLACER:
-                        if(jokerIngenieur){
+                        if(jokerIngenieur){ //si l'ingénieur avait asséché une tuile, on compte cette action
                             actionSuivante();
                         }
                         deplacer(mt.getTuile());
                         actionSuivante();
                         jokerIngenieur = false;
+                        setBoutonsActives(true);
                         break;	
                     case ASSECHER:
                         assecher(mt.getTuile());
-                        if(!b || jokerIngenieur){
+                        if(!b || jokerIngenieur){ //si l'aventurier n'est pas un ingénieur ou si l'ingénieur a déjà asséché une tuile, on compte une action. le premier assèchement de l'ingénieur ne seras donc pas compté comme une action
                             actionSuivante();
                         }
-                        jokerIngenieur = (b && !jokerIngenieur);
-                        if(jokerIngenieur && action == 2){
+                        jokerIngenieur = (b && !jokerIngenieur); 
+                        
+                        if(jokerIngenieur && action == 2){ //désactive le bouton déplacer si l'ingénieur en est a sa dernière action et a déjà asséché une tuile
                             setBoutonsActives(false);
                         }
+                        setBoutonsActives(true);
                         break;
                     case SPECIAL:
-                        //jokerIngenieur = false;
+                        jokerIngenieur = false;
                         break;    
                 }
-                selection.hide();
+                selection.hide(); //on cache la fenêtre de séléction
                 break;
                 
-            case ANNULER_SELECTION:
+            case ANNULER_SELECTION: //clic sur le bouton annuler (ou fermeture) de la fenêtre de séléction
                 selection.hide();
-             
+                setBoutonsActives(true);
                 break;
                 
             case QUITTER: 
                 vueParametres.hide();
                 break;
-            case VALIDER_PARAMETRES:
-                MessageNoms mn = (MessageNoms)arg;
-                ArrayList<String> noms = new ArrayList<>();
+                
+            case VALIDER_PARAMETRES: //réception des noms des joueurs
+                MessageNoms mn = (MessageNoms)arg; //interprète le message reçu comme un message contenant une liste de noms 
+                
+                ArrayList<String> noms = mn.getNoms();
                 ArrayList<String> roles = new ArrayList<>();
                 ArrayList<Color> couleurs = new ArrayList<>();
                 
-                ArrayList<Integer> indexes = new ArrayList<>();
                 
+                ArrayList<Integer> indexes = new ArrayList<>();
+                //on remplis un tableau avec les nombres de 0 à 5
                 for(int i = 0; i < 6; i++){
                     indexes.add(i);
                 }
+                //on mélange le tableau
                 Collections.shuffle(indexes);
                 int i = 0;
                 System.out.println(mn.getNoms().size());
-                for(String nom : mn.getNoms()){
+                //a chaque joueur seras attribué un role en fonction de la valeur du tableau a sa position
+                for(String nom : noms){
                     switch(indexes.get(i)){
                         case 0:
                             aventuriers.add(new Explorateur(nom));
@@ -209,8 +233,7 @@ public class Controleur implements Observer{
                             break;
                     }
                     Aventurier a = aventuriers.get(aventuriers.size()-1);
-                    a.setPosition(grille.getTuileByType(a.getTuileDepart()));
-                    noms.add(a.getNom());
+                    a.setPosition(grille.getTuileByType(a.getTuileDepart())); //on positionne les aventuriers sur leur tuile de départ
                     roles.add(a.getNomRole());
                     couleurs.add(a.getColor());
                    
@@ -220,21 +243,25 @@ public class Controleur implements Observer{
                 vueAventuriers.addObserver(this);
                 vueParametres.hide();
                 vueAventuriers.afficher();
+                
+                //on met a jour la position des aventuriers dans la vue aventuriers
                 for(int j = 0; j < aventuriers.size(); j++){
                     Aventurier a = aventuriers.get(j);
                     vueAventuriers.setPosition(j, a.getPosition().getNom() + " (" + a.getPosition().getX() + " ; " + a.getPosition().getY() + ")");
                 }
-                afficherAventurier();
+                selectAventurier();
                 break;
         }
+        //sauvegarde du contexte
         if(m.getType() != MessageType.VALIDER_SELECTION){
           lastMessage = m;  
         }
     }
     
+    
+    //fonction main
     public static void main(String [] args) {
         Controleur c = new Controleur();
         c.start();
-        System.out.println("test");
    }
 }	

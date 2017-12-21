@@ -97,11 +97,11 @@ public class VueAventuriers extends Observable{
 
         this.btnBouger = new JButton("Se deplacer") ;
         btnBouger.setBorder(new MatteBorder(1, 1, 1, 1, Color.LIGHT_GRAY));
-        this.btnAssecher = new JButton( "Assecher");
+        this.btnAssecher = new JButton( "Assecher une tuile");
         btnAssecher.setBorder(new MatteBorder(1, 1, 1, 1, Color.LIGHT_GRAY));
-        this.btnSpecial = new JButton("Speciale") ;
+        this.btnSpecial = new JButton("Action speciale") ;
         btnSpecial.setBorder(new MatteBorder(1, 1, 1, 1, Color.LIGHT_GRAY));
-        this.btnPasser = new JButton("Passer Tour") ;
+        this.btnPasser = new JButton("Terminer le tour") ;
         btnPasser.setBorder(new MatteBorder(1, 1, 1, 1, Color.LIGHT_GRAY));
         
         this.panelBoutons.add(btnBouger);
@@ -109,6 +109,7 @@ public class VueAventuriers extends Observable{
         this.panelBoutons.add(btnSpecial);
         this.panelBoutons.add(btnPasser);
 
+        btnSpecial.setEnabled(false);
         btnBouger.addActionListener(new ActionListener(){
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -165,6 +166,13 @@ public class VueAventuriers extends Observable{
 
     public void setBoutonsActives(boolean a) {
         btnBouger.setEnabled(a);
-        btnSpecial.setEnabled(a);
+        //btnSpecial.setEnabled(a);
+        btnAssecher.setEnabled(a);
+        btnPasser.setEnabled(a);
+    }
+
+    public void setBoutonsActivesIngenieur(boolean a) {
+        btnBouger.setEnabled(a);
+        //btnSpecial.setEnabled(a);
     }
 }

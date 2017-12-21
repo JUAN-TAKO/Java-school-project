@@ -34,7 +34,7 @@ public class VueSelection extends Observable{
         ArrayList<String> nomTuiles = new ArrayList<>();
         typeTuiles = t;
         window = new JFrame();
-        window.setDefaultCloseOperation(javax.swing.JFrame.DISPOSE_ON_CLOSE);
+        window.setDefaultCloseOperation(javax.swing.JFrame.DO_NOTHING_ON_CLOSE);
         window.setSize(400, 250);
         Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
         window.setLocation(dim.width/2-window.getSize().width/2, dim.height/2-window.getSize().height/2);
@@ -101,6 +101,14 @@ public class VueSelection extends Observable{
         
         panelBas.add(boutonValider);
         
+        window.addWindowListener(new java.awt.event.WindowAdapter() {
+        @Override
+        public void windowClosing(java.awt.event.WindowEvent e) {
+            setChanged();
+            notifyObservers(new Message(MessageType.ANNULER_SELECTION));
+            clearChanged();
+        }
+    });
     }
 
     public void afficher(){
