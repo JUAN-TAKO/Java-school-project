@@ -1,17 +1,12 @@
 package Vues;
 
 import java.awt.BorderLayout;
-import java.awt.Color;
 import java.awt.Dimension;
-import java.awt.Font;
 import java.awt.GridLayout;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
 import java.util.Observable;
-import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JFrame;
@@ -81,7 +76,7 @@ public class VueParametres extends Observable{
         panelCentre.add(panelC2 = new JPanel(new GridLayout(4,2)));
         
         for (int i = 1; i < 5; i++) {
-            panelC2.add(new JLabel("JOUEUR " + i + " :", JLabel.RIGHT));
+            panelC2.add(new JLabel("NOM JOUEUR " + i + " :", JLabel.RIGHT));
             panelC2.add(new JTextField());
         }
         
