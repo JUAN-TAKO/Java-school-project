@@ -179,7 +179,6 @@ public class Controleur implements Observer{
                 ArrayList<String> roles = new ArrayList<>();
                 ArrayList<Color> couleurs = new ArrayList<>();
                 
-                int randomIndex;
                 ArrayList<Integer> indexes = new ArrayList<>();
                 
                 for(int i = 0; i < 6; i++){

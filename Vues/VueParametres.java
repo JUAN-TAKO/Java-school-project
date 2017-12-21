@@ -67,7 +67,10 @@ public class VueParametres extends Observable{
         // selection du nombre de joueur
         panelCentre.add(panelC1 = new JPanel(new GridLayout(1,2)));
         panelC1.add(new JLabel("nombre de joueur : ", JLabel.RIGHT));
-        listeDeroulante = new JComboBox(NombreJoueurs.values());
+        listeDeroulante = new JComboBox();
+        listeDeroulante.addItem(2);
+        listeDeroulante.addItem(3);
+        listeDeroulante.addItem(4);
         panelC1.add(listeDeroulante);
         listeDeroulante.setSelectedIndex(0);
         
