@@ -21,7 +21,7 @@ public class Plongeur extends Aventurier{
 
         for(Tuile tu : adjacentes){
             if(tu != null){
-                if(tu.getEtat() == Etat.COULEE){
+                if(tu.getEtat() != Etat.SECHE){
                     if(tuilesCoulees.add(tu)){ //renvoie true si c'est une nouvelle tuile
                         checkTuile(g, tuilesAccessibles, tuilesCoulees, tu);
                     }
