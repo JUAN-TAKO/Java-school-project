@@ -43,7 +43,7 @@ public class Explorateur extends Aventurier{
     public TypeTuile getTuileDepart() {
         return TypeTuile.PORTE_FER;
     }
-    public Color getColor(){
-        return Color.GREEN;
+    public Pion getPion(){
+        return Pion.VERT;
     }
 }

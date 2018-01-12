@@ -14,7 +14,7 @@ public class Navigateur extends Aventurier{
     public TypeTuile getTuileDepart() {
         return TypeTuile.PORTE_OR;
     }
-    public Color getColor(){
-        return Color.YELLOW;
+    public Pion getPion(){
+        return Pion.JAUNE;
     }
 }

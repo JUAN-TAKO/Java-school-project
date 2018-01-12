@@ -49,7 +49,7 @@ public class Plongeur extends Aventurier{
         return TypeTuile.PORTE_CUIVRE;
     }
     @Override
-    public Color getColor(){
-        return Color.BLUE;
+    public Pion getPion(){
+        return Pion.NOIR;
     }
 }

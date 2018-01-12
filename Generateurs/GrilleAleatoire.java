@@ -25,7 +25,7 @@ public class GrilleAleatoire extends Generateur{
         
         g.setSize(6);
         tuilesInterdites = new HashSet(Arrays.asList(0,1,4,5,6,11,24,29,30));
-        tuilesMelangees = new ArrayList<>(Arrays.asList(TypeTuile.values())); //on recupere les differents types de tuile dans un tableau (obligatoirement car la methode .values() renvoie un tableau
+        tuilesMelangees = new ArrayList<>(Arrays.asList(TypeTuile.values())); //on recupere les differents types de tuile
         Collections.shuffle(tuilesMelangees);  //on melange les tuiles
         int indexMelangees = 0;
         for(int i = 0 ; i < g.getLength() ; i++){        //parcourt la grille pour la remplir

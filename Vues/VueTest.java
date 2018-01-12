@@ -5,6 +5,7 @@
  */
 package Vues;
 
+import Utils.*;
 import java.awt.Graphics;
 import java.awt.image.BufferedImage;
 import java.io.File;
@@ -16,57 +17,61 @@ import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JPanel;
 
 /**
  *
  * @author juan
  */
-public class VueTest {
+public class VueTest extends JPanel{
     private BufferedImage combined;
     private JLabel testLabel;
-    private JFrame window;
-    public VueTest(){
+    public VueTest(ArrayList<Pion> pions){
         try {
             testLabel = new JLabel();
-            window = new JFrame();
-            float margin = 0.07f;
+            float margin = 0.15f;
             ArrayList<BufferedImage> imagesPions = new ArrayList<>();
             int[] margins = new int[4]; 
             //charge les images
             BufferedImage imageTuile = ImageIO.read(new File("src/Images/tuiles/Heliport.png"));         
-            imagesPions.add(ImageIO.read(new File("src/Images/pions/pionBleu.png")));
-            imagesPions.add(ImageIO.read(new File("src/Images/pions/pionRouge.png")));
-            imagesPions.add(ImageIO.read(new File("src/Images/pions/pionJaune.png")));
+            for( Pion p : pions){
+                imagesPions.add(p.getIcon());
+            }
             
             BufferedImage combined = new BufferedImage(imageTuile.getWidth(), imageTuile.getHeight(), BufferedImage.TYPE_INT_ARGB);
             
-            margins[0] = (int)(margin * (float)imageTuile.getWidth());
-            if(imagesPions.size() >= 2)
-                margins[1] = imageTuile.getWidth() - margins[0] - imagesPions.get(1).getWidth();
-            
-            margins[2] = (int)(margin * (float)imageTuile.getHeight());
-            if(imagesPions.size() >= 4)
-                margins[3] = imageTuile.getHeight() - margins[2] - imagesPions.get(3).getHeight();
+            int w = imagesPions.get(1).getWidth();
+            int h = imagesPions.get(0).getHeight();
+            margins[0] = (int)(margin * (float)imageTuile.getWidth()); //marge gauche
+            margins[1] = imageTuile.getWidth() - w; //marge droite
+            margins[2] = (int)(margin * (float)imageTuile.getHeight()); //marge haut
+            margins[3] = imageTuile.getHeight() - margins[2] - h; //marge bas
             
             //dessine les images sur la tuile
             Graphics g = combined.getGraphics();
             g.drawImage(imageTuile, 0, 0, null);
             for(int i = 0; i < imagesPions.size(); i++){
+                System.out.println(margins[i]);
                 g.drawImage(imagesPions.get(i), margins[i % 2], margins[2+(i / 2)], null);
             }
           
             ImageIcon icon1 = new ImageIcon(combined);
             testLabel.setIcon(icon1);
-            window.add(testLabel);
+            add(testLabel);
         } catch (IOException ex) {
             System.out.println("AieAieAie !");
         }
     }
-    public void setVisible(boolean b){
-        window.setVisible(b);
-    }
     public static void main(String args[]){
-        VueTest v = new VueTest();
-        v.setVisible(true);
+        JFrame window = new JFrame();
+        ArrayList<Pion> pions = new ArrayList<>();
+        pions.add(Pion.GRIS);
+        pions.add(Pion.NOIR);
+        pions.add(Pion.ROUGE);
+        pions.add(Pion.VERT);
+  
+        VueTest v = new VueTest(pions);
+        window.add(v);
+        window.setVisible(true);
     }
 }
