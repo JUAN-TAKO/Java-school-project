@@ -29,10 +29,12 @@ public class VueSelection extends Observable{
     private JButton boutonValider;
     private JButton boutonRetour;
     private ArrayList<TypeTuile> typeTuiles;
+    private MessageType returnMessage;
     
-    public VueSelection(ArrayList<TypeTuile> t, ArrayList<String> coords){
+    public VueSelection(ArrayList<TypeTuile> t, ArrayList<String> coords, MessageType returnMess){
         ArrayList<String> nomTuiles = new ArrayList<>();
         typeTuiles = t;
+        returnMessage = returnMess;
         window = new JFrame();
         window.setDefaultCloseOperation(javax.swing.JFrame.DO_NOTHING_ON_CLOSE);
         window.setSize(400, 250);
@@ -94,7 +96,7 @@ public class VueSelection extends Observable{
             @Override
             public void actionPerformed(ActionEvent e) {
                 setChanged();
-                notifyObservers(new MessageTuile(MessageType.VALIDER_SELECTION, typeTuiles.get(listeDeroulanteSelection.getSelectedIndex())));
+                notifyObservers(new MessageTuile(returnMessage, typeTuiles.get(listeDeroulanteSelection.getSelectedIndex())));
                 clearChanged();
             }
         });

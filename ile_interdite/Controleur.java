@@ -22,7 +22,6 @@ public class Controleur implements Observer{
     private int action; //nombre d'actions effectuées par le joueur courant
     private int tour; //nombre de tours de jeu
     private boolean jokerIngenieur; //égal à true si l'ingénieur a déjà asseché une case pour cette action
-    private Message lastMessage;  //sauvegarde de contexte
     
     public Controleur(){
         aventuriers = new ArrayList<>();
@@ -82,8 +81,14 @@ public class Controleur implements Observer{
     }
     
     //ouvre une fenêtre de séléction de tuile
-    public void afficherSelection(ArrayList<TypeTuile> typeTuiles, ArrayList<String> coordsTuiles){
-        selection = new VueSelection(typeTuiles, coordsTuiles);
+    public void afficherSelection(ArrayList<Tuile> listeTuiles, MessageType returnMessage){
+        ArrayList<TypeTuile> typeTuiles = new ArrayList<>();
+        ArrayList<String> coordsTuiles = new ArrayList<>();
+        for(Tuile t : listeTuiles){
+            typeTuiles.add(t.getType());
+            coordsTuiles.add(" (" + t.getX() + " ; " + t.getY() + ")");
+        }
+        selection = new VueSelection(typeTuiles, coordsTuiles, returnMessage);
         selection.addObserver(this);
         selection.afficher();
     }
@@ -114,30 +119,22 @@ public class Controleur implements Observer{
         ArrayList<TypeTuile> typeTuiles; //tableau temporaire pour stocker les types des tuiles accéssibles (TypeTuile est un enum avec toutes les différentes tuiles)
         ArrayList<String> coordsTuiles; //on passeras les coordonées de la tuile sous forme de string a la vue Sélection
         
+        boolean b = (getAventurierCourant() instanceof Ingenieur); // b = true si l'aventurier courant est un ingénieur    
+        if(!b){
+            jokerIngenieur = false;
+        }
+                
         switch(m.getType()){
             case DEPLACER:  //clic sur le bouton déplacer
                 listeTuiles = getAventurierCourant().getTuilesAccessiblesDeplacement(grille);
-                typeTuiles = new ArrayList<>();
-                coordsTuiles = new ArrayList<>();
-                for(Tuile t : listeTuiles){
-                    typeTuiles.add(t.getType());
-                    coordsTuiles.add(" (" + t.getX() + " ; " + t.getY() + ")");
-                }
-                afficherSelection(typeTuiles, coordsTuiles);
+                afficherSelection(listeTuiles, MessageType.CHOISIR_DEPLACEMENT);
                 setBoutonsActives(false);
+                
                 break;
             case ASSECHER:  //clic sur le bouton assecher
                 listeTuiles = getAventurierCourant().getTuilesAccessiblesAssechement(grille);
-                typeTuiles = new ArrayList<>();
-                coordsTuiles = new ArrayList<>();
-                for(Tuile t : listeTuiles){
-                    typeTuiles.add(t.getType());
-                    coordsTuiles.add(" (" + t.getX() + " ; " + t.getY() + ")");
-                }
-                
-                afficherSelection(typeTuiles, coordsTuiles);
+                afficherSelection(listeTuiles, MessageType.CHOISIR_ASSECHEMENT);
                 setBoutonsActives(false);
-                
                 
                 break;
             case SPECIAL:   //clic sur le bouton spécial, pas implémenté pour l'instant
@@ -147,46 +144,38 @@ public class Controleur implements Observer{
             case PASSER:    //clic sur le bouton passer
                 aventurierSuivant();
                 break;
-
-            case VALIDER_SELECTION:   //effectuer l'action sur la case selectionnée
-                MessageTuile mt = (MessageTuile)arg; //interprète le message reçu comme un message contenant une tuile 
-                boolean b = (getAventurierCourant() instanceof Ingenieur); // b = true si l'aventurier courant est un ingénieur
-                
-                if(!b){
-                    jokerIngenieur = false;
+               
+            case CHOISIR_DEPLACEMENT:
+                MessageTuile mtd = (MessageTuile)arg; //interprète le message reçu comme un message contenant une tuile 
+                if(jokerIngenieur){ //si l'ingénieur avait asséché une tuile, on compte cette action
+                    actionSuivante();
                 }
-                switch(lastMessage.getType()){ //en fonction du contexte sauvegardé
-                    case DEPLACER:
-                        if(jokerIngenieur){ //si l'ingénieur avait asséché une tuile, on compte cette action
-                            actionSuivante();
-                        }
-                        deplacer(mt.getTuile());
-                        actionSuivante();
-                        jokerIngenieur = false;
-                        setBoutonsActives(true);
-                        break;	
-                    case ASSECHER:
-                        assecher(mt.getTuile());
-                        if(!b || jokerIngenieur){ //si l'aventurier n'est pas un ingénieur ou si l'ingénieur a déjà asséché une tuile, on compte une action. le premier assèchement de l'ingénieur ne seras donc pas compté comme une action
-                            actionSuivante();
-                        }
-                        jokerIngenieur = (b && !jokerIngenieur); 
-                        
-                        if(jokerIngenieur && action == 2){ //désactive le bouton déplacer si l'ingénieur en est a sa dernière action et a déjà asséché une tuile
-                            setBoutonsActives(false);
-                        }
-                        setBoutonsActives(true);
-                        break;
-                    case SPECIAL:
-                        jokerIngenieur = false;
-                        break;    
-                }
+                deplacer(mtd.getTuile());
+                actionSuivante();
+                jokerIngenieur = false;
+                setBoutonsActives(true);
                 selection.hide(); //on cache la fenêtre de séléction
                 break;
+   
+            case CHOISIR_ASSECHEMENT:
+                MessageTuile mta = (MessageTuile)arg; //interprète le message reçu comme un message contenant une tuile 
+                assecher(mta.getTuile());
+                if(!b || jokerIngenieur){ //si l'aventurier n'est pas un ingénieur ou si l'ingénieur a déjà asséché une tuile, on compte une action. le premier assèchement de l'ingénieur ne seras donc pas compté comme une action
+                    actionSuivante();
+                }
+                jokerIngenieur = (b && !jokerIngenieur); 
+
+                if(jokerIngenieur && action == 2){ //désactive le bouton déplacer si l'ingénieur en est a sa dernière action et a déjà asséché une tuile
+                    setBoutonsActives(false);
+                }
+                setBoutonsActives(true);
+                selection.hide(); //on cache la fenêtre de séléction
+                break;            
                 
             case ANNULER_SELECTION: //clic sur le bouton annuler (ou fermeture) de la fenêtre de séléction
                 selection.hide();
                 setBoutonsActives(true);
+                
                 break;
                 
             case QUITTER: 
@@ -251,10 +240,6 @@ public class Controleur implements Observer{
                 }
                 selectAventurier();
                 break;
-        }
-        //sauvegarde du contexte
-        if(m.getType() != MessageType.VALIDER_SELECTION){
-          lastMessage = m;  
         }
     }
     
