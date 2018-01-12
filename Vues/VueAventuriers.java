@@ -160,7 +160,7 @@ public class VueAventuriers extends Observable{
         labelsRoleAventurier.get(index).setBackground(couleurs.get(index));
     }
 
-    public void setPosition(int index, String pos) {
+    public void setPosition(int index, String pos) { // met à jour la position de l'Aventurier dans la vue
         positions.get(index).setText(pos);
     }
 

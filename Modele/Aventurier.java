@@ -16,14 +16,16 @@ public abstract class Aventurier extends Observable{
         this.nomRole = nomRole;
         System.out.println(nom + " est un " + nomRole);
     }
-	
+    
+    //vérifie qu'une tuile est accessible
     protected void checkDeplacement(Grille g, ArrayList<Tuile> tuilesAccessibles, int x, int y) {
         Tuile t;
-        t = g.at(getPosition().getX()+x, getPosition().getY()+y);
+        t = g.at(getPosition().getX() + x, getPosition().getY() + y);
         if(t != null && t.getEtat() != Etat.COULEE){
             tuilesAccessibles.add(t);
         }
     }
+    //vérifie qu'une tuile est asséchable
     protected void checkAssechement(Grille g, ArrayList<Tuile> tuilesAccessibles, int x, int y) {
         Tuile t;
         t = g.at(getPosition().getX()+x, getPosition().getY()+y);
@@ -54,7 +56,7 @@ public abstract class Aventurier extends Observable{
         return tuilesAccessibles;
     }
 	
-    public void actionSpeciale(Grille g){}
+//    public abstract void actionSpeciale(Grille g);
 	
     public String getNom(){
         return nom;
