@@ -8,12 +8,12 @@ public enum TypeTuile{
     PORTE_OR("Porte d'or", null),
     HELIPORT("Heliport", null),
     
-    PALAIS_CORAIL("Palais de corail", Tresor.CALYCE),
-    PALAIS_MAREES("Palais des marées", Tresor.CALYCE),
+    PALAIS_CORAIL("Palais de corail", Tresor.CALICE),
+    PALAIS_MAREES("Palais des marées", Tresor.CALICE),
     TEMPLE_SOLEIL("Temple du soleil", Tresor.PIERRE),
     TEMPLE_LUNE("Temple de la lune", Tresor.PIERRE),
-    JARDIN_HURLEMENTS("Jardin des hurlements", Tresor.STATUE),
-    JARDIN_MURMURES("Jardin des murmures", Tresor.STATUE),
+    JARDIN_HURLEMENTS("Jardin des hurlements", Tresor.ZEPHYR),
+    JARDIN_MURMURES("Jardin des murmures", Tresor.ZEPHYR),
     CAVERNE_OMBRES("Caverne des ombres", Tresor.CRISTAL),
     CAVERNE_BRASIER("Caverne du brasier", Tresor.CRISTAL),
     
