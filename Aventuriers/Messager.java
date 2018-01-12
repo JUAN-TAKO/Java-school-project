@@ -15,6 +15,6 @@ public class Messager extends Aventurier{
         return TypeTuile.PORTE_ARGENT;
     }
     public Pion getPion(){
-        return Pion.BLANC;
+        return Pion.GRIS;
     }
 }
