@@ -5,7 +5,9 @@ import Utils.*;
 import java.util.ArrayList;
 
 public class GrillePredefinie extends Generateur{
+    
 	public void generate(Grille tuiles){
+            
             tuiles.setSize(6);
             
             tuiles.addEmpty();
