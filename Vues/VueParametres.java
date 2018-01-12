@@ -123,7 +123,7 @@ public class VueParametres extends Observable{
         });
         updateNbr();
     }
-    private void updateNbr(){
+    private void updateNbr(){ //affiche le nombre de champs noms à remplir en fonction du nombre de joueurs sélectionnés
         for (int i = 0; i < 8; i+=2) {
             if(i < (listeDeroulante.getSelectedIndex() + 2) * 2){
                 panelC2.getComponent(i).setVisible(true);
@@ -143,9 +143,4 @@ public class VueParametres extends Observable{
     public void hide() {
         window.dispose();
     }
-    
-    public static void main(String [] args) {
-        VueParametres parametres = new VueParametres();
-        parametres.afficher();
-   }
 }

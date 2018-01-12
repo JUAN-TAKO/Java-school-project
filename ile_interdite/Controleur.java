@@ -18,6 +18,7 @@ public class Controleur implements Observer{
     private ArrayList<Aventurier> aventuriers; //liste des aventuriers
     private VueAventuriers vueAventuriers; //pour afficher les aventuriers
     private VueSelection selection;  //fenêtre de sélection de la tuile
+    
     private int indexAventurierCourant; 
     private int action; //nombre d'actions effectuées par le joueur courant
     private int tour; //nombre de tours de jeu
