@@ -225,7 +225,7 @@ public class Controleur implements Observer{
                     Aventurier a = aventuriers.get(aventuriers.size()-1);
                     a.setPosition(grille.getTuileByType(a.getTuileDepart())); //on positionne les aventuriers sur leur tuile de départ
                     roles.add(a.getNomRole());
-                    couleurs.add(a.getColor());
+                    couleurs.add(a.getPion().getColor());;
                    
                     i++;
                 }

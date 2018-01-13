@@ -7,6 +7,8 @@ package Vues;
 
 import Utils.*;
 import java.awt.Graphics;
+import java.awt.event.ComponentAdapter;
+import java.awt.event.ComponentEvent;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
@@ -23,13 +25,23 @@ import javax.swing.JPanel;
  *
  * @author juan
  */
-public class VueTest extends JPanel{
+public class PanelTuile extends JPanel{
     private BufferedImage combined;
     private JLabel testLabel;
-    public VueTest(ArrayList<Pion> pions){
+    private ImageIcon scaled;
+    public PanelTuile(ArrayList<Pion> pions){
         try {
             testLabel = new JLabel();
             float margin = 0.15f;
+            float rightAdjust = 0.7f;
+            float bottomAdjust = 1.1f;
+            
+            addComponentListener(new ComponentAdapter() {
+                public void componentResized(ComponentEvent e) {
+                    resizeIcon(Math.min(getWidth(), getHeight()-5));
+                }
+            });
+            
             ArrayList<BufferedImage> imagesPions = new ArrayList<>();
             int[] margins = new int[4]; 
             //charge les images
@@ -38,30 +50,36 @@ public class VueTest extends JPanel{
                 imagesPions.add(p.getIcon());
             }
             
-            BufferedImage combined = new BufferedImage(imageTuile.getWidth(), imageTuile.getHeight(), BufferedImage.TYPE_INT_ARGB);
+            combined = new BufferedImage(imageTuile.getWidth(), imageTuile.getHeight(), BufferedImage.TYPE_INT_ARGB);
             
             int w = imagesPions.get(1).getWidth();
             int h = imagesPions.get(0).getHeight();
             margins[0] = (int)(margin * (float)imageTuile.getWidth()); //marge gauche
-            margins[1] = imageTuile.getWidth() - w; //marge droite
+            margins[1] = imageTuile.getWidth() - margins[0] - (int)(rightAdjust * (float)w); //marge droite
             margins[2] = (int)(margin * (float)imageTuile.getHeight()); //marge haut
-            margins[3] = imageTuile.getHeight() - margins[2] - h; //marge bas
+            margins[3] = imageTuile.getHeight() - margins[2] - (int)(bottomAdjust * (float)h); //marge bas
             
             //dessine les images sur la tuile
             Graphics g = combined.getGraphics();
             g.drawImage(imageTuile, 0, 0, null);
             for(int i = 0; i < imagesPions.size(); i++){
-                System.out.println(margins[i]);
                 g.drawImage(imagesPions.get(i), margins[i % 2], margins[2+(i / 2)], null);
             }
-          
-            ImageIcon icon1 = new ImageIcon(combined);
-            testLabel.setIcon(icon1);
             add(testLabel);
         } catch (IOException ex) {
-            System.out.println("AieAieAie !");
+            System.out.println("Problème de chargement des images !");
         }
     }
+    
+    public void resizeIcon(int width){
+        if(combined != null){
+            scaled = new ImageIcon(combined.getScaledInstance(width, width, java.awt.Image.SCALE_AREA_AVERAGING));
+            testLabel.setIcon(scaled);
+            revalidate();
+            repaint();
+        }
+    }
+    
     public static void main(String args[]){
         JFrame window = new JFrame();
         ArrayList<Pion> pions = new ArrayList<>();
@@ -70,8 +88,10 @@ public class VueTest extends JPanel{
         pions.add(Pion.ROUGE);
         pions.add(Pion.VERT);
   
-        VueTest v = new VueTest(pions);
+        PanelTuile v = new PanelTuile(pions);
         window.add(v);
+        window.setSize(1150, 700);
+        
         window.setVisible(true);
     }
 }
