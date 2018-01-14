@@ -34,7 +34,6 @@ public class GrilleAleatoire extends Generateur{
           }
           else{     //sinon on ajoute une tuile d'un certain type à la grille, on retire cette tuile de la liste puis on re mélange la liste  
             g.add(tuilesMelangees.get(indexMelangees), Etat.SECHE);   
-            Collections.shuffle(tuilesMelangees);
             indexMelangees++;
           }
         }   

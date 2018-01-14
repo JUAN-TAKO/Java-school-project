@@ -28,6 +28,9 @@ public class Controleur implements Observer{
     private int tour; //nombre de tours de jeu
     private boolean jokerIngenieur; //égal à true si l'ingénieur a déjà asseché une case pour cette action
     
+    private int[] cartesPourNiveau = {2,2,3,3,3,4,4,5,5}; //nombre de cartes a piocher en fonction du niveau de l'eau
+    private int niveauEau;
+    
     private LinkedList<TypeTuile> pileInondation; //pile des cartes a piocher
     //LinkedList : comme les ArrayList mais la structure interne est différente, elle permet de supprimer des éléments plus facilement mais il faut un itérateur pour la parcourir 
     private ListIterator iteratorInondation; //iterateur sur la carte a piocher dans la pile, toutes les cartes avant cet iterateur seront considérés comme la défausse
@@ -43,7 +46,7 @@ public class Controleur implements Observer{
         vueParametres.addObserver(this);
         
         //Le generateur construit la grille
-        Generateur g = new GrillePredefinie();
+        Generateur g = new GrilleAleatoire();
         
         grille = new Grille(g);
         
@@ -65,7 +68,7 @@ public class Controleur implements Observer{
             t.setEtat(Etat.COULEE);  //on la coule
             iteratorInondation.remove();   //on retire la carte qui vient d'être tirée de la pile
         }
-        if(!iteratorInondation.hasNext()){
+        if(!iteratorInondation.hasNext()){ //on reinitialise la pile si on arrive a la fin
             reinitialiserPileInondation();
         }
     }
