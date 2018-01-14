@@ -13,7 +13,7 @@ public class GrillePredefinie extends Generateur{
             tuiles.addEmpty();
             tuiles.addEmpty();
             tuiles.add(TypeTuile.PONT_ABIMES, Etat.SECHE);
-            tuiles.add(TypeTuile.PORTE_BRONZE, Etat.INNONDEE);
+            tuiles.add(TypeTuile.PORTE_BRONZE, Etat.INONDEE);
             tuiles.addEmpty();
             tuiles.addEmpty();
             
@@ -32,11 +32,11 @@ public class GrillePredefinie extends Generateur{
             tuiles.add(TypeTuile.JARDIN_HURLEMENTS, Etat.SECHE);
             
             tuiles.add(TypeTuile.FORET_POURPRE, Etat.SECHE);
-            tuiles.add(TypeTuile.LAGON_PERDU, Etat.INNONDEE);
+            tuiles.add(TypeTuile.LAGON_PERDU, Etat.INONDEE);
             tuiles.add(TypeTuile.MARAIS_BRUMEUX, Etat.COULEE);
-            tuiles.add(TypeTuile.OBSERVATOIRE, Etat.INNONDEE);
+            tuiles.add(TypeTuile.OBSERVATOIRE, Etat.INONDEE);
             tuiles.add(TypeTuile.ROCHER_FANTOME, Etat.COULEE);
-            tuiles.add(TypeTuile.CAVERNE_BRASIER, Etat.INNONDEE);
+            tuiles.add(TypeTuile.CAVERNE_BRASIER, Etat.INONDEE);
             
             tuiles.addEmpty();
             tuiles.add(TypeTuile.TEMPLE_SOLEIL, Etat.SECHE);
@@ -48,7 +48,7 @@ public class GrillePredefinie extends Generateur{
             tuiles.addEmpty();
             tuiles.addEmpty();
             tuiles.add(TypeTuile.TOUR_GUET, Etat.SECHE);
-            tuiles.add(TypeTuile.JARDIN_MURMURES, Etat.INNONDEE);
+            tuiles.add(TypeTuile.JARDIN_MURMURES, Etat.INONDEE);
             tuiles.addEmpty();
             tuiles.addEmpty();
 	}

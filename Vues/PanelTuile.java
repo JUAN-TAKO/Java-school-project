@@ -70,7 +70,7 @@ public class PanelTuile extends JPanel{
             BufferedImage imageTuile = null;
             if(e == Etat.SECHE){
                 imageTuile = ImageIO.read(new File(tuile.getImagePath()));
-            }else if(e == Etat.INNONDEE){
+            }else if(e == Etat.INONDEE){
                 imageTuile = ImageIO.read(new File(tuile.getImagePathInonde()));  
             }
             combined = null;
@@ -108,7 +108,7 @@ public class PanelTuile extends JPanel{
         ArrayList<Pion> pions2 = new ArrayList<>();
         pions2.add(Pion.JAUNE);
         mainPanel.add(new PanelTuile(TypeTuile.CAVERNE_BRASIER, Etat.SECHE, pions));
-        mainPanel.add(new PanelTuile(TypeTuile.PORTE_CUIVRE, Etat.INNONDEE, pions2));
+        mainPanel.add(new PanelTuile(TypeTuile.PORTE_CUIVRE, Etat.INONDEE, pions2));
         mainPanel.add(new PanelTuile(TypeTuile.OBSERVATOIRE, Etat.COULEE, new ArrayList<>()));
         
         window.setSize(1150, 700);

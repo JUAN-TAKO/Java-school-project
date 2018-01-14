@@ -29,7 +29,7 @@ public abstract class Aventurier extends Observable{
     protected void checkAssechement(Grille g, ArrayList<Tuile> tuilesAccessibles, int x, int y) {
         Tuile t;
         t = g.at(getPosition().getX()+x, getPosition().getY()+y);
-        if(t != null && t.getEtat() == Etat.INNONDEE){
+        if(t != null && t.getEtat() == Etat.INONDEE){
             tuilesAccessibles.add(t);
         }
     }

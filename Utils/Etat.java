@@ -11,6 +11,6 @@ package Utils;
  */
 public enum Etat {
     SECHE,
-    INNONDEE,
+    INONDEE,
     COULEE;
 }

@@ -28,16 +28,16 @@ public class Controleur implements Observer{
     private int tour; //nombre de tours de jeu
     private boolean jokerIngenieur; //égal à true si l'ingénieur a déjà asseché une case pour cette action
     
-    private LinkedList<TypeTuile> pileInnondation; //pile des cartes a piocher
+    private LinkedList<TypeTuile> pileInondation; //pile des cartes a piocher
     //LinkedList : comme les ArrayList mais la structure interne est différente, elle permet de supprimer des éléments plus facilement mais il faut un itérateur pour la parcourir 
-    private ListIterator iteratorPile; //iterateur sur la carte a piocher dans la pile, toutes les cartes avant cet iterateur seront considérés comme la défausse
+    private ListIterator iteratorInondation; //iterateur sur la carte a piocher dans la pile, toutes les cartes avant cet iterateur seront considérés comme la défausse
     //Iterateur : équivalent des index mais pour les LinkedList
     
     
     public Controleur(){
         aventuriers = new ArrayList<>();
-        pileInnondation = new LinkedList<>(Arrays.asList(TypeTuile.values())); //On initialise la pile de cartes avec toutes les cartes possibles
-        iteratorPile = pileInnondation.listIterator(); //ont met l'iterateur au début de la pile (pas de défausse)
+        pileInondation = new LinkedList<>(Arrays.asList(TypeTuile.values())); //On initialise la pile de cartes avec toutes les cartes possibles
+        iteratorInondation = pileInondation.listIterator(); //ont met l'iterateur au début de la pile (pas de défausse)
         
         vueParametres = new VueParametres();
         vueParametres.addObserver(this);
@@ -52,18 +52,21 @@ public class Controleur implements Observer{
         action = 0;
         jokerIngenieur = false;
     }
-    public void reinitialiserPileInnondation(){
-        ArrayList<TypeTuile> sub = new ArrayList<>(pileInnondation.subList(0, iteratorPile.nextIndex() - 1)); //on récupère une sous-liste de 0 à l'iterateur (la défausse)
+    public void reinitialiserPileInondation(){
+        ArrayList<TypeTuile> sub = new ArrayList<>(pileInondation.subList(0, iteratorInondation.nextIndex() - 1)); //on récupère une sous-liste de 0 à l'iterateur (la défausse)
         Collections.shuffle(sub); //on la mélange
-        iteratorPile = pileInnondation.listIterator(); //on remet l'iterateur au début (on remet les cartes sur la pile)
+        iteratorInondation = pileInondation.listIterator(); //on remet l'iterateur au début (on remet les cartes sur la pile)
     }
-    public void tirerInnondation(){
-        Tuile t = grille.getTuileByType((TypeTuile)iteratorPile.next()); //on tire une carte, la place dans la défausse (méthode next()) et on récupère la tuile correspondante
-        if(t.getEtat() == Etat.SECHE){ //si elle est sèche, on l'innonde
-            t.setEtat(Etat.INNONDEE);
-        }else{                         //sinon c'est qu'elle est déjà innondee (elle ne peut pas être coulée parce qu'on enlève les cartes des tuiles coulées)
+    public void tirerInondation(){
+        Tuile t = grille.getTuileByType((TypeTuile)iteratorInondation.next()); //on tire une carte, la place dans la défausse (méthode next()) et on récupère la tuile correspondante
+        if(t.getEtat() == Etat.SECHE){ //si elle est sèche, on l'inonde
+            t.setEtat(Etat.INONDEE);
+        }else{                         //sinon c'est qu'elle est déjà inondee (elle ne peut pas être coulée parce qu'on enlève les cartes des tuiles coulées)
             t.setEtat(Etat.COULEE);  //on la coule
-            iteratorPile.remove();   //on retire la carte qui vient d'être tirée de la pile
+            iteratorInondation.remove();   //on retire la carte qui vient d'être tirée de la pile
+        }
+        if(!iteratorInondation.hasNext()){
+            reinitialiserPileInondation();
         }
     }
     public void start(){
