@@ -151,10 +151,7 @@ public class Controleur implements Observer{
         ArrayList<TypeTuile> typeTuiles; //tableau temporaire pour stocker les types des tuiles accéssibles (TypeTuile est un enum avec toutes les différentes tuiles)
         ArrayList<String> coordsTuiles; //on passeras les coordonées de la tuile sous forme de string a la vue Sélection
         
-        boolean b = (getAventurierCourant() instanceof Ingenieur); // b = true si l'aventurier courant est un ingénieur    
-        if(!b){
-            jokerIngenieur = false;
-        }
+        boolean b;
                 
         switch(m.getType()){
             case DEPLACER:  //clic sur le bouton déplacer
@@ -190,7 +187,11 @@ public class Controleur implements Observer{
                 break;
    
             case CHOISIR_ASSECHEMENT:
-                MessageTuile mta = (MessageTuile)arg; //interprète le message reçu comme un message contenant une tuile 
+                MessageTuile mta = (MessageTuile)arg; //interprète le message reçu comme un message contenant une tuile
+                b = (getAventurierCourant() instanceof Ingenieur); // b = true si l'aventurier courant est un ingénieur    
+                if(!b){
+                    jokerIngenieur = false;
+                }
                 assecher(mta.getTuile());
                 if(!b || jokerIngenieur){ //si l'aventurier n'est pas un ingénieur ou si l'ingénieur a déjà asséché une tuile, on compte une action. le premier assèchement de l'ingénieur ne seras donc pas compté comme une action
                     actionSuivante();
@@ -215,6 +216,7 @@ public class Controleur implements Observer{
                 break;
                 
             case VALIDER_PARAMETRES: //réception des noms des joueurs
+                System.out.println("test");
                 MessageNoms mn = (MessageNoms)arg; //interprète le message reçu comme un message contenant une liste de noms 
                 
                 ArrayList<String> noms = mn.getNoms();
