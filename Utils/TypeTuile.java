@@ -1,43 +1,51 @@
 package Utils;
 
 public enum TypeTuile{
-    PORTE_FER("Porte de fer", null),
-    PORTE_CUIVRE("Porte de cuivre", null),
-    PORTE_BRONZE("Porte de bronze", null),
-    PORTE_ARGENT("Porte d'argent", null),
-    PORTE_OR("Porte d'or", null),
-    HELIPORT("Heliport", null),
+    PORTE_FER("Porte de fer", "src/Images/tuiles/LaPorteDeFer", null),
+    PORTE_CUIVRE("Porte de cuivre", "src/Images/tuiles/LaPorteDeCuivre", null),
+    PORTE_BRONZE("Porte de bronze", "src/Images/tuiles/LaPorteDeBronze", null),
+    PORTE_ARGENT("Porte d'argent", "src/Images/tuiles/LaPortedArgent", null),
+    PORTE_OR("Porte d'or", "src/Images/tuiles/LaPortedOr", null),
+    HELIPORT("Heliport", "src/Images/tuiles/Heliport", null),
     
-    PALAIS_CORAIL("Palais de corail", Tresor.CALICE),
-    PALAIS_MAREES("Palais des marées", Tresor.CALICE),
-    TEMPLE_SOLEIL("Temple du soleil", Tresor.PIERRE),
-    TEMPLE_LUNE("Temple de la lune", Tresor.PIERRE),
-    JARDIN_HURLEMENTS("Jardin des hurlements", Tresor.ZEPHYR),
-    JARDIN_MURMURES("Jardin des murmures", Tresor.ZEPHYR),
-    CAVERNE_OMBRES("Caverne des ombres", Tresor.CRISTAL),
-    CAVERNE_BRASIER("Caverne du brasier", Tresor.CRISTAL),
+    PALAIS_CORAIL("Palais de corail", "src/Images/tuiles/LePalaisDeCorail", Tresor.CALICE),
+    PALAIS_MAREES("Palais des marées", "src/Images/tuiles/LePalaisDesMarees", Tresor.CALICE),
+    TEMPLE_SOLEIL("Temple du soleil", "src/Images/tuiles/LeTempleDuSoleil", Tresor.PIERRE),
+    TEMPLE_LUNE("Temple de la lune", "src/Images/tuiles/LeTempleDeLaLune", Tresor.PIERRE),
+    JARDIN_HURLEMENTS("Jardin des hurlements", "src/Images/tuiles/LeJardinDesHurlements", Tresor.ZEPHYR),
+    JARDIN_MURMURES("Jardin des murmures", "src/Images/tuiles/LeJardinDesMurmures", Tresor.ZEPHYR),
+    CAVERNE_OMBRES("Caverne des ombres", "src/Images/tuiles/LaCaverneDesOmbres", Tresor.CRISTAL),
+    CAVERNE_BRASIER("Caverne du brasier", "src/Images/tuiles/LaCaverneDuBrasier", Tresor.CRISTAL),
     
-    VAL_CREPUSCULE("Val du crépuscule", null),
-    MARAIS_BRUMEUX("Marais brumeux ", null),
-    TOUR_GUET("Tour de guet", null),
-    PONT_ABIMES("Pont des abîmes", null),
-    DUNES_ILLUSION("Dunes de l'illusion", null),
-    FALAISES_OUBLI("Les falaises de l'oubli", null),
-    ROCHER_FANTOME("Le rocher fantôme", null),
-    FORET_POURPRE("La forêt pourpre", null),
-    LAGON_PERDU("Le lagon perdu", null),
-    OBSERVATOIRE("L'observatoire", null);
+    VAL_CREPUSCULE("Val du crépuscule", "src/Images/tuiles/LeValDuCrepuscule", null),
+    MARAIS_BRUMEUX("Marais brumeux ", "src/Images/tuiles/LeMaraisBrumeux", null),
+    TOUR_GUET("Tour de guet", "src/Images/tuiles/LaTourDeGuet", null),
+    PONT_ABIMES("Pont des abîmes", "src/Images/tuiles/LePontDesAbimes", null),
+    DUNES_ILLUSION("Dunes de l'illusion", "src/Images/tuiles/LesDunesDeLIllusion", null),
+    FALAISES_OUBLI("Les falaises de l'oubli", "src/Images/tuiles/LesFalaisesDeLOubli", null),
+    ROCHER_FANTOME("Le rocher fantôme", "src/Images/tuiles/LeRocherFantome", null),
+    FORET_POURPRE("La forêt pourpre", "src/Images/tuiles/LaForetPourpre", null),
+    LAGON_PERDU("Le lagon perdu", "src/Images/tuiles/LeLagonPerdu", null),
+    OBSERVATOIRE("L'observatoire", "src/Images/tuiles/Observatoire", null);
     
     private String nomTuile;
+    private String imagePath;
     private Tresor tresor;
-    private TypeTuile(String nom, Tresor t){
+    private TypeTuile(String nom, String imPath, Tresor t){
         nomTuile = nom;
         tresor = t;
+        imagePath = imPath;
     }
     public String toString(){
         return nomTuile;
     }
     public Tresor getTresor(){
         return tresor;
+    }
+    public String getImagePath(){
+        return imagePath + ".png";
+    }
+    public String getImagePathInonde(){
+        return (imagePath + "_Inonde.png");
     }
 }
