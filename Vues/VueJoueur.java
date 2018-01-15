@@ -1,5 +1,8 @@
 package Vues;
 
+import Cartes.CartesTirage;
+import Modele.Aventurier;
+import Vues.PanelImage;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
@@ -20,6 +23,8 @@ import javax.swing.JPanel;
 import javax.swing.JTextField;
 import java.awt.*;
 import java.awt.image.BufferedImage;
+import java.util.ArrayList;
+import java.util.HashMap;
 import javax.swing.*;
 
 public class VueJoueur{
@@ -30,25 +35,15 @@ public class VueJoueur{
     private JPanel panelCentre;
     private JPanel panelBas;
     
-    
-     private ImageIcon explorateur = new ImageIcon("src/Images/personnages/explorateur.png");
-     
-     private ImageIcon baseCalice = new ImageIcon("src/Images/cartes/Calice.png");
-     private ImageIcon baseCristal = new ImageIcon("src/Images/cartes/Cristal.png");
-     private ImageIcon baseZephyr = new ImageIcon("src/Images/cartes/Zephyr.png");
-     private ImageIcon basePierre = new ImageIcon("src/Images/cartes/Pierre.png");
-     
-     private ImageIcon calice;
-     private ImageIcon cristal;
-     private ImageIcon zephyr;
-     private ImageIcon pierre;
+    private JPanel imagePanel;
+    private int indexSelect;    
+    private ArrayList<JPanel> cartesJoueur;
     
     
-    
-    public VueJoueur(){
+    public VueJoueur(String imageJoueur){
         window = new JFrame();
         window.setDefaultCloseOperation(javax.swing.JFrame.DISPOSE_ON_CLOSE);
-        window.setSize(400, 300);
+        window.setSize(600, 300);
         Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
         window.setLocation(dim.width/2-window.getSize().width/2, dim.height/2-window.getSize().height/2);
         window.setTitle("Joueur");
@@ -65,26 +60,33 @@ public class VueJoueur{
         // OUEST 
         panelOuest = new JPanel(new GridLayout(2,1));
         mainPanel.add(panelOuest, BorderLayout.WEST);
-        panelOuest.add(new JLabel(explorateur));
+        panelOuest.add(new PanelImage(imageJoueur));
         panelOuest.add(new JLabel("Joueur 1"));
         
         // =================================================================================
         // EST
-        panelEst = new JPanel(new GridLayout(1,5,0,10));
-        mainPanel.add(panelEst, BorderLayout.EAST);
+        panelEst = new JPanel();
+        mainPanel.add(panelEst, BorderLayout.EAST);       
+        
 
-        panelEst.add(new JLabel(calice));
-        panelEst.add(new JLabel(calice));
-        panelEst.add(new JLabel(calice));
-        panelEst.add(new JLabel(calice));
-        panelEst.add(new JLabel(calice));
         // =================================================================================
         // CENTRE
-        panelCentre = new JPanel();
+        panelCentre = new JPanel(new GridLayout(1,7));
         mainPanel.add(panelCentre, BorderLayout.CENTER);
+
+        cartesJoueur = new ArrayList<>();
         
+        for(int i=0 ; i<5 ; i++){
+            imagePanel = new PanelImage("src/Images/cartes/Calice.png");
+            panelCentre.add(imagePanel);
+            addListener(imagePanel, i);
+            cartesJoueur.add(imagePanel);
+            update();
+        }
         
-        panelCentre.add(new JLabel());        
+        ajouterCarte("src/Images/tresors/SacsDeSable.png", 5);
+        ajouterCarte("src/Images/Helicoptere.png", 6);
+        
                 
         // =================================================================================
         // SUD
@@ -92,6 +94,56 @@ public class VueJoueur{
         mainPanel.add(panelBas, BorderLayout.SOUTH);
                      
     }
+    
+    public void ajouterCarte(String chemin, int index){
+        imagePanel = new PanelImage(chemin);
+        panelCentre.add(imagePanel);
+        addListener(imagePanel, index);
+        cartesJoueur.add(imagePanel);
+        update();
+    }
+    
+    public void retirerCarte(String chemin, int index){
+        panelCentre.remove(new PanelImage(chemin));
+        cartesJoueur.remove(imagePanel);
+        imagePanel.remove(index);        
+        update();
+    }
+    
+    public void update(){
+        imagePanel.revalidate();
+        imagePanel.repaint();
+    }
+    
+    public void addListener(JPanel p, int index){
+        p.addMouseListener(new MouseListener(){
+
+                @Override
+                public void mouseClicked(MouseEvent e) {
+                    System.out.println("coucou");
+                    retirerCarte(p.toString(), index);
+                }
+
+                @Override
+                public void mousePressed(MouseEvent e) {
+                }
+                @Override
+                public void mouseReleased(MouseEvent e) {
+                     
+                }
+
+                @Override
+                public void mouseEntered(MouseEvent e) {
+                }
+
+                @Override
+                public void mouseExited(MouseEvent e) {
+                }
+                 
+            });
+    }
+
+    
     public void afficher() {
         this.window.setVisible(true);
     }
@@ -100,39 +152,8 @@ public class VueJoueur{
         window.dispose();
     }
     
-    
-    private void loadImages(){
-        JLabel l = ((JLabel)(panelEst.getComponent(0)));
-        int minSize = Math.min(l.getWidth(), l.getHeight());
-        calice = resizeIcon(baseCalice, minSize);
-        update();
-    }
-    
-    
-    
-    private ImageIcon resizeIcon(ImageIcon ii, int width){
-        return new ImageIcon(ii.getImage().getScaledInstance(width, width, java.awt.Image.SCALE_AREA_AVERAGING));
-    }
-    
-    public void update(){
-        JLabel c = ((JLabel)(panelCentre.getComponent()));
-        c.setHorizontalAlignment(SwingConstants.CENTER);
-        c.setVerticalAlignment(SwingConstants.CENTER);
-        //c.setIcon(getIcon(s));
-        panelCentre.revalidate();
-        panelCentre.repaint();
-    }
-    
-    public void updateCase(int i, Symbole s){
-        JLabel c = ((JLabel)(panelCentre.getComponent(i)));
-        c.setHorizontalAlignment(SwingConstants.CENTER);
-        c.setVerticalAlignment(SwingConstants.CENTER);
-        //c.setIcon(getIcon(s));
-    }
-    
-    
     public static void main(String [] args) {
-        VueJoueur joueur = new VueJoueur();
+        VueJoueur joueur = new VueJoueur("src/Images/personnages/explorateur.png");
         joueur.afficher();
    }
     

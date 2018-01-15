@@ -19,10 +19,19 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.util.ArrayList;
 import javax.swing.ImageIcon;
+import javax.swing.JTextArea;
+import javax.swing.JTextPane;
 
 public class VueParametres extends Observable{
     private final JFrame window ;
     private final JComboBox listeDeroulante;
+    private JPanel panelHaut;
+    private JPanel panelEst;
+    private JPanel panelOuest;
+    private JPanel panelBas;
+    private JPanel panelCentre;
+    
+    
     
     private JPanel panelNbJoueur;
     private JPanel panelNomJoueur;
@@ -33,9 +42,10 @@ public class VueParametres extends Observable{
     private JPanel panelElite;
     private JPanel panelLegendaire;
     
-    private JPanel fleche;
+    private JPanel panelFleche;
     
-    private ArrayList<JLabel> labelFleches;
+    private int indexSelect;
+    private ArrayList<JPanel> listePanelsFleche;
     
     private JButton boutonValider;
     private JButton boutonQuitter;
@@ -56,23 +66,23 @@ public class VueParametres extends Observable{
         
         // =================================================================================
         // NORD
-        JPanel panelHaut = new JPanel() ;
+        panelHaut = new JPanel() ;
         mainPanel.add(panelHaut, BorderLayout.NORTH);
         panelHaut.add(new JLabel("BIENVENUE AVENTURIERS")) ;
         
         // =================================================================================
         // OUEST 
-        JPanel panelOuest = new JPanel();
+        panelOuest = new JPanel();
         mainPanel.add(panelOuest, BorderLayout.WEST);
         
         // =================================================================================
         // EST
-        JPanel panelEst = new JPanel();
+        panelEst = new JPanel();
         mainPanel.add(panelEst, BorderLayout.EAST);
         
         // =================================================================================
         // CENTRE
-        JPanel panelCentre = new JPanel(new GridLayout(7,1));
+        panelCentre = new JPanel(new GridLayout(7,1));
         mainPanel.add(panelCentre, BorderLayout.CENTER);
         
         // selection du nombre de joueur
@@ -105,7 +115,7 @@ public class VueParametres extends Observable{
         panelDifficulte.add(panelNormal = new JPanel());
         panelDifficulte.add(panelElite = new JPanel());
         panelDifficulte.add(panelLegendaire = new JPanel());
-            
+        
         addListener(panelNovice,0);
         addListener(panelNormal,1);
         addListener(panelElite,2);
@@ -116,15 +126,13 @@ public class VueParametres extends Observable{
         panelElite.setBackground(Color.decode("#006DA6"));
         panelLegendaire.setBackground(Color.decode("#013B59"));
         
-        panelCentre.add(fleche = new JPanel(new GridLayout(1,4)));
+        panelCentre.add(panelFleche = new JPanel(new GridLayout(1,4)));
+        listePanelsFleche = new ArrayList<>();
         
-        labelFleches = new ArrayList<JLabel>();
-        
-        for(int i=0 ; i<4 ; i++){
-            JLabel l = new JLabel();
-            fleche.add(l);
-            labelFleches.add(l);            
+        for(int i = 0 ; i<4 ; i++){
+            listePanelsFleche.add(new JPanel());
         }
+        selectionner(0);
         
         
         
@@ -132,7 +140,7 @@ public class VueParametres extends Observable{
         
         // =================================================================================
         // SUD
-        JPanel panelBas = new JPanel(new GridLayout(1,3)) ;
+        panelBas = new JPanel(new GridLayout(1,3)) ;
         mainPanel.add(panelBas, BorderLayout.SOUTH);
         boutonQuitter = new JButton("Quitter");
         boutonQuitter.addActionListener(new ActionListener() {
@@ -187,20 +195,30 @@ public class VueParametres extends Observable{
          }
      }
      
-     public void addImage(int index){        
-         labelFleches.get(index).setIcon(flecheRouge);
-     }
+    public void selectionner(int index){
+        panelCentre.remove(panelFleche);
+        panelCentre.add(panelFleche = new JPanel(new GridLayout(1,4)));       
+        
+        listePanelsFleche.set(indexSelect, new JPanel());
+        listePanelsFleche.set(index, new PanelImage("src/Images/flecheRouge.png"));
+        
+        for(int i=0 ; i<4 ; i++){
+            panelFleche.add(listePanelsFleche.get(i));
+        }
+        panelFleche.revalidate();
+        panelFleche.repaint();
+        indexSelect = index;
+    }
+    
+    
      
-     public void addListener(JPanel p, int index){
-          p.addMouseListener(new MouseListener(){
+    public void addListener(JPanel p, int index){
+         p.addMouseListener(new MouseListener(){
 
-                 @Override
-                 public void mouseClicked(MouseEvent e) {
-                   setChanged();
-                     MessageIndex m = new MessageIndex(MessageType.CHOISIR_DIFFICULTE, index);
-                     notifyObservers(m);
-                     clearChanged();
-                 }
+                @Override
+                public void mouseClicked(MouseEvent e) {
+                    selectionner(index);
+                }
 
                  @Override
                  public void mousePressed(MouseEvent e) {

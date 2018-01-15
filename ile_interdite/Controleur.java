@@ -214,10 +214,6 @@ public class Controleur implements Observer{
             case QUITTER: 
                 vueParametres.hide();
                 break;
-            case CHOISIR_DIFFICULTE :
-                
-                
-                break;
                 
             case VALIDER_PARAMETRES: //réception des noms des joueurs
                 System.out.println("test");
