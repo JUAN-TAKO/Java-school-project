@@ -19,17 +19,29 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 import java.awt.*;
+import java.awt.image.BufferedImage;
 import javax.swing.*;
 
 public class VueJoueur{
     private final JFrame window ;
+    private JPanel panelHaut;
+    private JPanel panelOuest;
+    private JPanel panelEst;
+    private JPanel panelCentre;
+    private JPanel panelBas;
     
-     private ImageIcon explorateur = new ImageIcon("src/Images.personnages/explorateur.png");
+    
+     private ImageIcon explorateur = new ImageIcon("src/Images/personnages/explorateur.png");
      
-     private ImageIcon calice = new ImageIcon("src/Images.cartes/Calice.png");
-     private ImageIcon cristal = new ImageIcon("src/Images.cartes/Cristal.png");
-     private ImageIcon zephyr = new ImageIcon("src/Images.cartes/Zephyr.png");
-     private ImageIcon pierre = new ImageIcon("src/Images.cartes/Pierre.png");
+     private ImageIcon baseCalice = new ImageIcon("src/Images/cartes/Calice.png");
+     private ImageIcon baseCristal = new ImageIcon("src/Images/cartes/Cristal.png");
+     private ImageIcon baseZephyr = new ImageIcon("src/Images/cartes/Zephyr.png");
+     private ImageIcon basePierre = new ImageIcon("src/Images/cartes/Pierre.png");
+     
+     private ImageIcon calice;
+     private ImageIcon cristal;
+     private ImageIcon zephyr;
+     private ImageIcon pierre;
     
     
     
@@ -46,20 +58,21 @@ public class VueJoueur{
         
         // =================================================================================
         // NORD
-        JPanel panelHaut = new JPanel() ;
+        panelHaut = new JPanel() ;
         mainPanel.add(panelHaut, BorderLayout.NORTH);
         
         // =================================================================================
         // OUEST 
-        JPanel panelOuest = new JPanel(new GridLayout(2,1));
+        panelOuest = new JPanel(new GridLayout(2,1));
         mainPanel.add(panelOuest, BorderLayout.WEST);
         panelOuest.add(new JLabel(explorateur));
         panelOuest.add(new JLabel("Joueur 1"));
         
         // =================================================================================
         // EST
-        JPanel panelEst = new JPanel(new GridLayout(5,1,0,10));
+        panelEst = new JPanel(new GridLayout(1,5,0,10));
         mainPanel.add(panelEst, BorderLayout.EAST);
+
         panelEst.add(new JLabel(calice));
         panelEst.add(new JLabel(calice));
         panelEst.add(new JLabel(calice));
@@ -67,7 +80,7 @@ public class VueJoueur{
         panelEst.add(new JLabel(calice));
         // =================================================================================
         // CENTRE
-        JPanel panelCentre = new JPanel();
+        panelCentre = new JPanel();
         mainPanel.add(panelCentre, BorderLayout.CENTER);
         
         
@@ -75,7 +88,7 @@ public class VueJoueur{
                 
         // =================================================================================
         // SUD
-        JPanel panelBas = new JPanel() ;
+        panelBas = new JPanel() ;
         mainPanel.add(panelBas, BorderLayout.SOUTH);
                      
     }
@@ -87,6 +100,35 @@ public class VueJoueur{
         window.dispose();
     }
     
+    
+    private void loadImages(){
+        JLabel l = ((JLabel)(panelEst.getComponent(0)));
+        int minSize = Math.min(l.getWidth(), l.getHeight());
+        calice = resizeIcon(baseCalice, minSize);
+        update();
+    }
+    
+    
+    
+    private ImageIcon resizeIcon(ImageIcon ii, int width){
+        return new ImageIcon(ii.getImage().getScaledInstance(width, width, java.awt.Image.SCALE_AREA_AVERAGING));
+    }
+    
+    public void update(){
+        JLabel c = ((JLabel)(panelCentre.getComponent()));
+        c.setHorizontalAlignment(SwingConstants.CENTER);
+        c.setVerticalAlignment(SwingConstants.CENTER);
+        //c.setIcon(getIcon(s));
+        panelCentre.revalidate();
+        panelCentre.repaint();
+    }
+    
+    public void updateCase(int i, Symbole s){
+        JLabel c = ((JLabel)(panelCentre.getComponent(i)));
+        c.setHorizontalAlignment(SwingConstants.CENTER);
+        c.setVerticalAlignment(SwingConstants.CENTER);
+        //c.setIcon(getIcon(s));
+    }
     
     
     public static void main(String [] args) {
