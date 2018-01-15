@@ -28,7 +28,7 @@ public class Controleur implements Observer{
     private int tour; //nombre de tours de jeu
     private boolean jokerIngenieur; //égal à true si l'ingénieur a déjà asseché une case pour cette action
     
-    private int[] cartesPourNiveau = {2,2,3,3,3,4,4,5,5}; //nombre de cartes a piocher en fonction du niveau de l'eau
+    private int[] cartesPourNiveau = {2,2,3,3,3,4,4,5,5,0}; //nombre de cartes a piocher en fonction du niveau de l'eau
     private int niveauEau;
     
     private LinkedList<TypeTuile> pileInondation; //pile des cartes a piocher
@@ -56,20 +56,22 @@ public class Controleur implements Observer{
         jokerIngenieur = false;
     }
     public void reinitialiserPileInondation(){
-        ArrayList<TypeTuile> sub = new ArrayList<>(pileInondation.subList(0, iteratorInondation.nextIndex() - 1)); //on récupère une sous-liste de 0 à l'iterateur (la défausse)
+        LinkedList<TypeTuile> sub = new LinkedList<>(pileInondation.subList(0, iteratorInondation.nextIndex() - 1)); //on récupère une sous-liste de 0 à l'iterateur (la défausse)
         Collections.shuffle(sub); //on la mélange
         iteratorInondation = pileInondation.listIterator(); //on remet l'iterateur au début (on remet les cartes sur la pile)
     }
-    public void tirerInondation(){
-        Tuile t = grille.getTuileByType((TypeTuile)iteratorInondation.next()); //on tire une carte, la place dans la défausse (méthode next()) et on récupère la tuile correspondante
-        if(t.getEtat() == Etat.SECHE){ //si elle est sèche, on l'inonde
-            t.setEtat(Etat.INONDEE);
-        }else{                         //sinon c'est qu'elle est déjà inondee (elle ne peut pas être coulée parce qu'on enlève les cartes des tuiles coulées)
-            t.setEtat(Etat.COULEE);  //on la coule
-            iteratorInondation.remove();   //on retire la carte qui vient d'être tirée de la pile
-        }
-        if(!iteratorInondation.hasNext()){ //on reinitialise la pile si on arrive a la fin
-            reinitialiserPileInondation();
+    public void tirerCartesInondation(int n){
+        for(int i = 0; i < n; i++){
+            Tuile t = grille.getTuileByType((TypeTuile)iteratorInondation.next()); //on tire une carte, la place dans la défausse (méthode next()) et on récupère la tuile correspondante
+            if(t.getEtat() == Etat.SECHE){ //si elle est sèche, on l'inonde
+                t.setEtat(Etat.INONDEE);
+            }else{                         //sinon c'est qu'elle est déjà inondee (elle ne peut pas être coulée parce qu'on enlève les cartes des tuiles coulées)
+                t.setEtat(Etat.COULEE);  //on la coule
+                iteratorInondation.remove();   //on retire la carte qui vient d'être tirée de la pile
+            }
+            if(!iteratorInondation.hasNext()){ //on reinitialise la pile si on arrive a la fin
+                reinitialiserPileInondation();
+            }
         }
     }
     public void start(){

@@ -32,7 +32,7 @@ public class GrilleAleatoire extends Generateur{
           if(tuilesInterdites.contains(i)){   //si la tuile est interdite on l'instancie en tant que tel avec la methode addEmpty
             g.addEmpty();        
           }
-          else{     //sinon on ajoute une tuile d'un certain type à la grille, on retire cette tuile de la liste puis on re mélange la liste  
+          else{     //sinon on ajoute une tuile d'un certain type à la grille
             g.add(tuilesMelangees.get(indexMelangees), Etat.SECHE);   
             indexMelangees++;
           }
