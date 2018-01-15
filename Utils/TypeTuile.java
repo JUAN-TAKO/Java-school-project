@@ -28,14 +28,15 @@ public enum TypeTuile{
     LAGON_PERDU("Le lagon perdu", "src/Images/tuiles/LeLagonPerdu", null),
     OBSERVATOIRE("L'observatoire", "src/Images/tuiles/Observatoire", null);
     
-    private String nomTuile;
-    private String imagePath;
-    private Tresor tresor;
+    private final String nomTuile;
+    private final String imagePath;
+    private final Tresor tresor;
     private TypeTuile(String nom, String imPath, Tresor t){
         nomTuile = nom;
         tresor = t;
         imagePath = imPath;
     }
+    @Override
     public String toString(){
         return nomTuile;
     }
