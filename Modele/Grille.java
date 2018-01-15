@@ -16,10 +16,7 @@ public class Grille {
     }
     public Tuile at(int x, int y){
         int index = y*size + x;
-        if(index < tuiles.size() && index >= 0){
-            return tuiles.get(index);
-        }
-        return null;
+        return get(index);
     }
     public Tuile getTuileByType(TypeTuile type){
         return tuilesMap.get(type);
@@ -27,8 +24,14 @@ public class Grille {
     public void setSize(int s){
         size = s;
     }
-    public int getLength(){
+    public int length(){
         return size*size;
+    }
+    public Tuile get(int index){
+        if(index < tuiles.size() && index >= 0){
+            return tuiles.get(index);
+        }
+        return null;
     }
     public void add(TypeTuile t, Etat e){
         Tuile tuile = new Tuile((tuiles.size())%size, (tuiles.size())/size, t, e);

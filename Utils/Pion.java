@@ -28,7 +28,7 @@ public enum Pion {
     GRIS(Color.GRAY, "src/Images/pions/pionGris.png");
     
     private Color couleur;
-    private Image image;
+    private BufferedImage image;
     Pion(Color c, String icon){
         couleur = c;
         image = ImagePool.getImage(icon);
@@ -36,7 +36,7 @@ public enum Pion {
     public Color getColor(){
         return couleur;
     }
-    public Image getIcon(){
+    public BufferedImage getIcon(){
         return image;
     }
 }

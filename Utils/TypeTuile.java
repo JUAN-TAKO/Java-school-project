@@ -19,7 +19,7 @@ public enum TypeTuile{
     
     VAL_CREPUSCULE("Val du crépuscule", "src/Images/tuiles/LeValDuCrepuscule", null),
     MARAIS_BRUMEUX("Marais brumeux ", "src/Images/tuiles/LeMaraisBrumeux", null),
-    TOUR_GUET("Tour de guet", "src/Images/tuiles/LaTourDeGuet", null),
+    TOUR_GUET("Tour du guet", "src/Images/tuiles/LaTourDuGuet", null),
     PONT_ABIMES("Pont des abîmes", "src/Images/tuiles/LePontDesAbimes", null),
     DUNES_ILLUSION("Dunes de l'illusion", "src/Images/tuiles/LesDunesDeLIllusion", null),
     FALAISES_OUBLI("Les falaises de l'oubli", "src/Images/tuiles/LesFalaisesDeLOubli", null),

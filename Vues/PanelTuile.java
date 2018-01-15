@@ -8,6 +8,7 @@ package Vues;
 import Utils.*;
 import java.awt.Graphics;
 import java.awt.GridLayout;
+import java.awt.Image;
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
 import java.awt.image.BufferedImage;
@@ -43,11 +44,16 @@ public class PanelTuile extends JPanel{
             }
         });
         imagesPions = new ArrayList<>();
-        for(Pion p : pions){
-            imagesPions.add(p.getIcon());
+        if(pions != null){
+            for(Pion p : pions){
+                imagesPions.add(p.getIcon());
+            }
         }
-        update(e);
+        setEtat(e);
         add(labelTuile);
+    }
+    public PanelTuile(){
+        
     }
     
     private void resizeIcon(){
@@ -62,7 +68,7 @@ public class PanelTuile extends JPanel{
             labelTuile.setIcon(null);
         }
     }
-    public void update(Etat e){
+    public void setEtat(Etat e){
         try {
             float margin = 0.15f;
             float rightAdjust = 0.7f;
