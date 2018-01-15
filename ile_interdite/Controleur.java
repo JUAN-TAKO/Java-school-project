@@ -28,7 +28,10 @@ public class Controleur implements Observer{
     private int tour; //nombre de tours de jeu
     private boolean jokerIngenieur; //égal à true si l'ingénieur a déjà asseché une case pour cette action
     
-    private LinkedList<TypeTuile> pileInondation; //pile des cartes innondation a piocher
+    private int[] cartesPourNiveau = {2,2,3,3,3,4,4,5,5}; //nombre de cartes a piocher en fonction du niveau de l'eau
+    private int niveauEau;
+    
+    private LinkedList<TypeTuile> pileInondation; //pile des cartes a piocher
     //LinkedList : comme les ArrayList mais la structure interne est différente, elle permet de supprimer des éléments plus facilement mais il faut un itérateur pour la parcourir 
     private ListIterator iteratorInondation; //iterateur sur la carte a piocher dans la pile, toutes les cartes avant cet iterateur seront considérés comme la défausse
     //Iterateur : équivalent des index mais pour les LinkedList
@@ -50,7 +53,7 @@ public class Controleur implements Observer{
         vueParametres.addObserver(this);
         
         //Le generateur construit la grille
-        Generateur g = new GrillePredefinie();
+        Generateur g = new GrilleAleatoire();
         
         grille = new Grille(g);
         
@@ -75,7 +78,7 @@ public class Controleur implements Observer{
             t.setEtat(Etat.COULEE);  //on la coule
             iteratorInondation.remove();   //on retire la carte qui vient d'être tirée de la pile
         }
-        if(!iteratorInondation.hasNext()){
+        if(!iteratorInondation.hasNext()){ //on reinitialise la pile si on arrive a la fin
             reinitialiserPileInondation();
         }
     }
@@ -161,10 +164,7 @@ public class Controleur implements Observer{
         ArrayList<TypeTuile> typeTuiles; //tableau temporaire pour stocker les types des tuiles accéssibles (TypeTuile est un enum avec toutes les différentes tuiles)
         ArrayList<String> coordsTuiles; //on passeras les coordonées de la tuile sous forme de string a la vue Sélection
         
-        boolean b = (getAventurierCourant() instanceof Ingenieur); // b = true si l'aventurier courant est un ingénieur    
-        if(!b){
-            jokerIngenieur = false;
-        }
+        boolean b;
                 
         switch(m.getType()){
             case DEPLACER:  //clic sur le bouton déplacer
@@ -200,7 +200,11 @@ public class Controleur implements Observer{
                 break;
    
             case CHOISIR_ASSECHEMENT:
-                MessageTuile mta = (MessageTuile)arg; //interprète le message reçu comme un message contenant une tuile 
+                MessageTuile mta = (MessageTuile)arg; //interprète le message reçu comme un message contenant une tuile
+                b = (getAventurierCourant() instanceof Ingenieur); // b = true si l'aventurier courant est un ingénieur    
+                if(!b){
+                    jokerIngenieur = false;
+                }
                 assecher(mta.getTuile());
                 if(!b || jokerIngenieur){ //si l'aventurier n'est pas un ingénieur ou si l'ingénieur a déjà asséché une tuile, on compte une action. le premier assèchement de l'ingénieur ne seras donc pas compté comme une action
                     actionSuivante();
@@ -225,6 +229,7 @@ public class Controleur implements Observer{
                 break;
                 
             case VALIDER_PARAMETRES: //réception des noms des joueurs
+                System.out.println("test");
                 MessageNoms mn = (MessageNoms)arg; //interprète le message reçu comme un message contenant une liste de noms 
                 
                 ArrayList<String> noms = mn.getNoms();
@@ -278,6 +283,8 @@ public class Controleur implements Observer{
                 //on met a jour la position des aventuriers dans la vue aventuriers
                 for(int j = 0; j < aventuriers.size(); j++){
                     Aventurier a = aventuriers.get(j);
+                    System.out.println(a);
+                    System.out.println(vueAventuriers);
                     vueAventuriers.setPosition(j, a.getPosition().getNom() + " (" + a.getPosition().getX() + " ; " + a.getPosition().getY() + ")");
                 }
                 selectAventurier();
