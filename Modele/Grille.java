@@ -28,7 +28,7 @@ public class Grille {
         size = s;
     }
     public int getLength(){
-        return tuiles.size();
+        return size*size;
     }
     public void add(TypeTuile t, Etat e){
         Tuile tuile = new Tuile((tuiles.size())%size, (tuiles.size())/size, t, e);

@@ -274,6 +274,8 @@ public class Controleur implements Observer{
                 //on met a jour la position des aventuriers dans la vue aventuriers
                 for(int j = 0; j < aventuriers.size(); j++){
                     Aventurier a = aventuriers.get(j);
+                    System.out.println(a);
+                    System.out.println(vueAventuriers);
                     vueAventuriers.setPosition(j, a.getPosition().getNom() + " (" + a.getPosition().getX() + " ; " + a.getPosition().getY() + ")");
                 }
                 selectAventurier();
