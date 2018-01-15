@@ -39,18 +39,19 @@ public class PanelTuile extends JPanel{
         
         addComponentListener(new ComponentAdapter() {
             public void componentResized(ComponentEvent e) {
-                resizeIcon(Math.min(getWidth(), getHeight()-5));
+                resizeIcon();
             }
         });
         imagesPions = new ArrayList<>();
-        for( Pion p : pions){
+        for(Pion p : pions){
             imagesPions.add(p.getIcon());
         }
         update(e);
         add(labelTuile);
     }
     
-    public void resizeIcon(int width){
+    private void resizeIcon(){
+        int width = Math.min(getWidth(), getHeight()-5);
         if(combined != null){
             scaled = new ImageIcon(combined.getScaledInstance(width, width, java.awt.Image.SCALE_AREA_AVERAGING));
             labelTuile.setIcon(scaled);
