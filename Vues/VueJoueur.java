@@ -104,9 +104,10 @@ public class VueJoueur{
     }
     
     public void retirerCarte(String chemin, int index){
-        panelCentre.remove(new PanelImage(chemin));
+        //panelCentre.remove(new PanelImage(chemin));
+        imagePanel.remove(index);
         cartesJoueur.remove(imagePanel);
-        imagePanel.remove(index);        
+                
         update();
     }
     
