@@ -21,6 +21,7 @@ public class GrilleAleatoire extends Generateur{
     private ArrayList<TypeTuile> tuilesMelangees;
     private HashSet<Integer> tuilesInterdites; //indexes des tuiles nulles
     
+    //génére un plateau de jeu de manière aléatoire
     public void generate(Grille g){
         
         g.setSize(6);
