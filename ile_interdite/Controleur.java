@@ -36,11 +36,18 @@ public class Controleur implements Observer{
     private ListIterator iteratorInondation; //iterateur sur la carte a piocher dans la pile, toutes les cartes avant cet iterateur seront considérés comme la défausse
     //Iterateur : équivalent des index mais pour les LinkedList
     
+    private LinkedList<CartesTirage> pileTirage; //pile des cartes tirage à piocher
+    private ListIterator iteratorTirage;
+    
     
     public Controleur(){
         aventuriers = new ArrayList<>();
         pileInondation = new LinkedList<>(Arrays.asList(TypeTuile.values())); //On initialise la pile de cartes avec toutes les cartes possibles
-        iteratorInondation = pileInondation.listIterator(); //ont met l'iterateur au début de la pile (pas de défausse)
+        iteratorInondation = pileInondation.listIterator(); //on met l'iterateur au début de la pile (pas de défausse)
+       
+        //de même pour la pile de cartes Tirage
+        pileTirage = new LinkedList<>();
+        iteratorTirage = pileTirage.listIterator();
         
         vueParametres = new VueParametres();
         vueParametres.addObserver(this);
@@ -55,11 +62,14 @@ public class Controleur implements Observer{
         action = 0;
         jokerIngenieur = false;
     }
+    
+    //reformer la pile de cartes inondation à partir de la défausse
     public void reinitialiserPileInondation(){
         ArrayList<TypeTuile> sub = new ArrayList<>(pileInondation.subList(0, iteratorInondation.nextIndex() - 1)); //on récupère une sous-liste de 0 à l'iterateur (la défausse)
         Collections.shuffle(sub); //on la mélange
         iteratorInondation = pileInondation.listIterator(); //on remet l'iterateur au début (on remet les cartes sur la pile)
     }
+    //tirage automatique d'autant de cartes inondation que nécessaire (par rapport au niveau d'eau)
     public void tirerInondation(){
         Tuile t = grille.getTuileByType((TypeTuile)iteratorInondation.next()); //on tire une carte, la place dans la défausse (méthode next()) et on récupère la tuile correspondante
         if(t.getEtat() == Etat.SECHE){ //si elle est sèche, on l'inonde
@@ -71,6 +81,10 @@ public class Controleur implements Observer{
         if(!iteratorInondation.hasNext()){ //on reinitialise la pile si on arrive a la fin
             reinitialiserPileInondation();
         }
+    }
+    
+    public void tirerTirage(){
+        
     }
     public void start(){
         vueParametres.afficher(); //ouvre la fenêtre des paramètres (inscription des joueurs)
@@ -98,7 +112,6 @@ public class Controleur implements Observer{
             tourSuivant();
         }
         selectAventurier();
-
     }
     
     //désactive les aventuriers dont ce n'est pas le tour, et active l'aventurier courant (dans la vue)
