@@ -30,9 +30,10 @@ import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.TreeSet;
 import javax.swing.*;
 
-public class VueJoueur extends JPanel{
+public class PanelJoueur extends JPanel{
     private JPanel panelHaut;
     private JPanel panelOuest;
     private JPanel panelEst;
@@ -40,12 +41,13 @@ public class VueJoueur extends JPanel{
     private JPanel panelBas;
     
            
-    private HashSet<JPanel> imagePanels;
+    //private TreeSet<PanelImage> imagePanels;
+    private HashSet<PanelImage> imagePanels;
    
 
     
     
-    public VueJoueur(Aventurier joueur, String imageJoueur){
+    public PanelJoueur(Aventurier joueur, String imageJoueur){
         
         super(new BorderLayout());
         // =================================================================================
@@ -71,6 +73,7 @@ public class VueJoueur extends JPanel{
         panelCentre = new JPanel(new GridLayout(1,7));
         add(panelCentre, BorderLayout.CENTER);
         
+        //imagePanels = new TreeSet<>();
         imagePanels = new HashSet<>();
         
         for(int i=0 ; i<5 ; i++){
@@ -141,10 +144,12 @@ public class VueJoueur extends JPanel{
 
                 @Override
                 public void mouseEntered(MouseEvent e) {
+                    p.setBackground(Color.DARK_GRAY);
                 }
 
                 @Override
                 public void mouseExited(MouseEvent e) {
+                    p.setBackground(null);
                 }
                  
             });
@@ -152,11 +157,9 @@ public class VueJoueur extends JPanel{
     
     public void afficher() {
          this.setVisible(true);
-     }
+    }
      
-//     public void hide() {
-//         this.dispose();
-//     }
+   
 
     
     public static void main(String [] args) {
@@ -173,8 +176,7 @@ public class VueJoueur extends JPanel{
             
         
         Explorateur joueur = new Explorateur("tibo");
-        VueJoueur vueJoueur = new VueJoueur(joueur, "src/Images/personnages/explorateur.png");
-        //vueJoueur.afficher();
+        PanelJoueur vueJoueur = new PanelJoueur(joueur, "src/Images/personnages/explorateur.png");
         window.add(vueJoueur);
         window.setVisible(true);
    }
