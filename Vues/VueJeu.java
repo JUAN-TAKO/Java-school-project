@@ -3,6 +3,7 @@ package Vues;
 import Generateurs.GrilleAleatoire;
 import Modele.Grille;
 import Modele.Tuile;
+import Utils.Etat;
 import Utils.TypeTuile;
 import java.awt.BorderLayout;
 import java.awt.Color;
@@ -135,6 +136,11 @@ public class VueJeu{
         panelCentre = new PanelGrille(types);
         mainPanel.add(panelCentre, BorderLayout.CENTER);
         panelCentre.setBorder(BorderFactory.createLineBorder(Color.BLACK, 2));
+        
+        panelCentre.setEtat(2, Etat.INONDEE);
+        panelCentre.setEtat(7, Etat.INONDEE);
+        panelCentre.setEtat(17, Etat.INONDEE);
+        panelCentre.setEtat(26, Etat.INONDEE);
         
         
         // =================================================================================
