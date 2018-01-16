@@ -1,7 +1,11 @@
 package Vues;
 
+import Aventuriers.Explorateur;
 import Cartes.CartesTirage;
 import Modele.Aventurier;
+import Modele.Tuile;
+import static Utils.Etat.*;
+import static Utils.TypeTuile.*;
 import Vues.PanelImage;
 import java.awt.BorderLayout;
 import java.awt.Color;
@@ -25,95 +29,97 @@ import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import javax.swing.*;
 
-public class VueJoueur{
-    private final JFrame window ;
+public class VueJoueur extends JPanel{
     private JPanel panelHaut;
     private JPanel panelOuest;
     private JPanel panelEst;
     private JPanel panelCentre;
     private JPanel panelBas;
     
-    private JPanel imagePanel;
-    private int indexSelect;    
-    private ArrayList<JPanel> cartesJoueur;
+           
+    private HashSet<JPanel> imagePanels;
+   
+
     
     
-    public VueJoueur(String imageJoueur){
-        window = new JFrame();
-        window.setDefaultCloseOperation(javax.swing.JFrame.DISPOSE_ON_CLOSE);
-        window.setSize(600, 300);
-        Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
-        window.setLocation(dim.width/2-window.getSize().width/2, dim.height/2-window.getSize().height/2);
-        window.setTitle("Joueur");
+    public VueJoueur(Aventurier joueur, String imageJoueur){
         
-        JPanel mainPanel = new JPanel(new BorderLayout());
-        window.add(mainPanel) ;
-        
+        super(new BorderLayout());
         // =================================================================================
         // NORD
         panelHaut = new JPanel() ;
-        mainPanel.add(panelHaut, BorderLayout.NORTH);
+        add(panelHaut, BorderLayout.NORTH);
         
         // =================================================================================
         // OUEST 
         panelOuest = new JPanel(new GridLayout(2,1));
-        mainPanel.add(panelOuest, BorderLayout.WEST);
+        add(panelOuest, BorderLayout.WEST);
         panelOuest.add(new PanelImage(imageJoueur));
         panelOuest.add(new JLabel("Joueur 1"));
         
         // =================================================================================
         // EST
         panelEst = new JPanel();
-        mainPanel.add(panelEst, BorderLayout.EAST);       
+        add(panelEst, BorderLayout.EAST);       
         
 
         // =================================================================================
         // CENTRE
         panelCentre = new JPanel(new GridLayout(1,7));
-        mainPanel.add(panelCentre, BorderLayout.CENTER);
-
-        cartesJoueur = new ArrayList<>();
+        add(panelCentre, BorderLayout.CENTER);
+        
+        imagePanels = new HashSet<>();
         
         for(int i=0 ; i<5 ; i++){
-            imagePanel = new PanelImage("src/Images/cartes/Calice.png");
-            panelCentre.add(imagePanel);
-            addListener(imagePanel, i);
-            cartesJoueur.add(imagePanel);
-            update();
+            ajouterCarte("src/Images/cartes/Calice.png", i);
         }
-        
+       
         ajouterCarte("src/Images/tresors/SacsDeSable.png", 5);
         ajouterCarte("src/Images/Helicoptere.png", 6);
-        
+  
+        update();
                 
         // =================================================================================
         // SUD
         panelBas = new JPanel() ;
-        mainPanel.add(panelBas, BorderLayout.SOUTH);
+        add(panelBas, BorderLayout.SOUTH);
                      
     }
     
     public void ajouterCarte(String chemin, int index){
-        imagePanel = new PanelImage(chemin);
-        panelCentre.add(imagePanel);
-        addListener(imagePanel, index);
-        cartesJoueur.add(imagePanel);
+        PanelImage p = new PanelImage(chemin);        
+        imagePanels.add(p);
+        addListener(p,index);
         update();
     }
     
-    public void retirerCarte(String chemin, int index){
-        //panelCentre.remove(new PanelImage(chemin));
-        imagePanel.remove(index);
-        cartesJoueur.remove(imagePanel);
-                
+    public void retirerCarte(JPanel p){
+       imagePanels.remove(p);
+       update();
+    }
+    
+    public void afficherCartes(ArrayList<PanelImage> listes){
+        for(int i=0 ; i<5 ; i++){           
+            panelCentre.add(listes.get(i));
+        }      
         update();
     }
+    
+
     
     public void update(){
-        imagePanel.revalidate();
-        imagePanel.repaint();
+        remove(panelCentre);
+        panelCentre = new JPanel(new GridLayout(1,7));
+        for(JPanel p : imagePanels){               
+            panelCentre.add(p);
+        }
+        add(panelCentre);
+        
+        panelCentre.revalidate();
+        panelCentre.repaint();
     }
     
     public void addListener(JPanel p, int index){
@@ -122,7 +128,7 @@ public class VueJoueur{
                 @Override
                 public void mouseClicked(MouseEvent e) {
                     System.out.println("coucou");
-                    retirerCarte(p.toString(), index);
+                    retirerCarte(p);
                 }
 
                 @Override
@@ -143,19 +149,34 @@ public class VueJoueur{
                  
             });
     }
-
     
     public void afficher() {
-        this.window.setVisible(true);
-    }
-    
-    public void hide() {
-        window.dispose();
-    }
+         this.setVisible(true);
+     }
+     
+//     public void hide() {
+//         this.dispose();
+//     }
+
     
     public static void main(String [] args) {
-        VueJoueur joueur = new VueJoueur("src/Images/personnages/explorateur.png");
-        joueur.afficher();
+        
+        JFrame  window = new JFrame();
+        window.setDefaultCloseOperation(javax.swing.JFrame.DISPOSE_ON_CLOSE);
+        window.setSize(600, 300);
+        Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
+        window.setLocation(dim.width/2-window.getSize().width/2, dim.height/2-window.getSize().height/2);
+        window.setTitle("Joueur");
+        
+        JPanel mainPanel = new JPanel(new BorderLayout());
+        window.add(mainPanel) ;
+            
+        
+        Explorateur joueur = new Explorateur("tibo");
+        VueJoueur vueJoueur = new VueJoueur(joueur, "src/Images/personnages/explorateur.png");
+        //vueJoueur.afficher();
+        window.add(vueJoueur);
+        window.setVisible(true);
    }
     
     

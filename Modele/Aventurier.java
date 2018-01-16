@@ -1,5 +1,6 @@
 package Modele;
 
+import Cartes.CartesTirage;
 import Utils.*;
 import java.awt.Color;
 
@@ -10,6 +11,7 @@ public abstract class Aventurier extends Observable{
     private Tuile position;
     private String nom;
     private String nomRole;
+    private ArrayList<CartesTirage> inventaire;
         
     public Aventurier(String nom, String nomRole){
         this.nom = nom;
