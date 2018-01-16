@@ -8,7 +8,8 @@ package Cartes;
  *
  * @author claryd
  */
-import Utils.*;
+import Vues.ImagePool;
+import java.awt.image.BufferedImage;
 public enum CarteTirage {
     
     TRESOR_CALICE,
@@ -18,11 +19,8 @@ public enum CarteTirage {
     MONTEE_DES_EAUX,
     HELICOPTERE,
     SABLE;
-    
-    
-    
-    
-    
-    
-    
+    private BufferedImage image;
+    CarteTirage(String imagePath){
+        image = ImagePool.getImage(imagePath);
+    }
 }
