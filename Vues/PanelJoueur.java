@@ -166,7 +166,7 @@ public class PanelJoueur extends JPanel{
         
         JFrame  window = new JFrame();
         window.setDefaultCloseOperation(javax.swing.JFrame.DISPOSE_ON_CLOSE);
-        window.setSize(600, 300);
+        window.setSize(600, 200);
         Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
         window.setLocation(dim.width/2-window.getSize().width/2, dim.height/2-window.getSize().height/2);
         window.setTitle("Joueur");
