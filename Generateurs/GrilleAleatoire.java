@@ -29,11 +29,14 @@ public class GrilleAleatoire extends Generateur{
         tuilesMelangees = new ArrayList<>(Arrays.asList(TypeTuile.values())); //on recupere les differents types de tuile
         Collections.shuffle(tuilesMelangees);  //on melange les tuiles
         int indexMelangees = 0;
-        for(int i = 0 ; i < g.getLength() ; i++){  //parcourt la grille pour la remplir
+
+
+        for(int i = 0 ; i < g.length() ; i++){ //parcourt la grille pour la remplir
+
           if(tuilesInterdites.contains(i)){   //si la tuile est interdite on l'instancie en tant que tel avec la methode addEmpty
             g.addEmpty();        
           }
-          else{     //sinon on ajoute une tuile d'un certain type à la grille liste puis on re mélange la liste  5
+          else{     //sinon on ajoute une tuile d'un certain type à la grille
             g.add(tuilesMelangees.get(indexMelangees), Etat.SECHE);   
             indexMelangees++;
           }

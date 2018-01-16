@@ -5,7 +5,9 @@
  */
 package Utils;
 
+import Vues.ImagePool;
 import java.awt.Color;
+import java.awt.Image;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
@@ -29,11 +31,7 @@ public enum Pion {
     private BufferedImage image;
     Pion(Color c, String icon){
         couleur = c;
-        try {
-            image = ImageIO.read(new File(icon));
-        } catch (IOException ex) {
-            System.out.println("AAHAAA hha ahhahaah hhhhhh \n" + ex.getMessage());
-        }
+        image = ImagePool.getImage(icon);
     }
     public Color getColor(){
         return couleur;

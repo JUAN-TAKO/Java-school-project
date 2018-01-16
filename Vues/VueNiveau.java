@@ -1,5 +1,6 @@
 package view;
 
+import Utils.Etat;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
@@ -16,176 +17,93 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.border.MatteBorder;
 import Utils.Parameters;
+import Vues.ImagePool;
+import java.awt.Graphics;
+import java.awt.event.ComponentAdapter;
+import java.awt.event.ComponentEvent;
+import java.awt.image.BufferedImage;
+import java.io.IOException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.ImageIcon;
  
-public class VueNiveau {
+public class VueNiveau extends JPanel{
     
-    private Integer niveau ;
-    private final JFrame window ;
-    HashMap<Integer, JPanel> panelsGauches ;
-    Integer cellWidth = 50 ;
-    Integer cellHeight = (Parameters.HAUTEUR_AUTRES_VUES - 25 - (Parameters.UNDECORATED ? 0 : Parameters.DECORATION_HEIGHT)) / 10 ;
-    private final JPanel mainPanel;
+    private int niveau;
+    private BufferedImage combined;
+    private JLabel labelImage;
+    private ImageIcon scaled;
         
-    public VueNiveau(Integer niveauInitial) {
-        this.niveau = niveauInitial;
-        panelsGauches = new HashMap<>();
-
-        window = new JFrame() ;
-        window.setSize(cellWidth*2+Parameters.SWING_BORDERS_HEIGHT, Parameters.HAUTEUR_AUTRES_VUES);        
-        window.setLocation(30, Parameters.TOP_AUTRES_VUES);
-        window.setDefaultCloseOperation(javax.swing.JFrame.EXIT_ON_CLOSE);
-        
-        window.setUndecorated(Parameters.UNDECORATED);
-        window.setResizable(Parameters.RESIZABLE);
-        
-        this.mainPanel = new JPanel() ;
-        this.window.add(mainPanel);
-        this.mainPanel.setLayout(new BorderLayout());
-        this.mainPanel.setBackground(Color.WHITE);
-        this.mainPanel.setBorder(BorderFactory.createLineBorder(Color.BLACK, 2, false));
-        
-        JLabel labelTitre = new JLabel("Niveau", JLabel.CENTER);
-        this.mainPanel.add(labelTitre, BorderLayout.NORTH);
-        // labelTitre.setFont(labelTitre.getFont().deriveFont(Font.BOLD));
-        labelTitre.setFont(new Font("Copperplate Gothic Bold", Font.BOLD, 14));
-        
-        JPanel panelNiveaux = new JPanel(new GridBagLayout());
-        panelNiveaux.setOpaque(false);
-        mainPanel.add(panelNiveaux, BorderLayout.CENTER);
-        
-        GridBagConstraints c = new GridBagConstraints();
-        c.weightx = 2 ;
-        c.weighty = 10 ;
-        c.insets = new Insets(0, 0, 0, 0);
-        c.fill = GridBagConstraints.VERTICAL ;
-        
-        // Insertion de la cellule gauche de niveauInitial 10
-        for (int i=0; i < 10; i++) {
-            c.gridx = 0 ;
-            c.gridy = i ;
-            JPanel panelGauche = new JPanel();
-            panelGauche.setLayout(new BoxLayout(panelGauche, BoxLayout.Y_AXIS));
-            panelGauche.setBackground(getBgColor(10-i));
-            panelGauche.setPreferredSize(new Dimension(cellWidth, cellHeight));
-            if (i < 9) {
-                panelGauche.setBorder(new MatteBorder(0, 0, 1, 0, Color.WHITE));
-            } else {
-                panelGauche.setBorder(new MatteBorder(1, 0, 0, 0, Color.WHITE));
+    public VueNiveau(int niveauInitial) {
+        niveau = niveauInitial;
+        labelImage = new JLabel();
+        addComponentListener(new ComponentAdapter() {
+            public void componentResized(ComponentEvent e) {
+                resizeIcon();
             }
-
-            panelNiveaux.add(panelGauche, c);
-
-            JLabel labelGauche = new JLabel("", JLabel.LEFT);
-            labelGauche.setPreferredSize(new Dimension(cellWidth, cellHeight));
-            labelGauche.setForeground(i==0 ? new Color(223, 168, 169) : Color.BLACK);
-            labelGauche.setFont(new Font(labelGauche.getFont().getFamily(), labelGauche.getFont().getStyle(), 8));
-            labelGauche.setText(getLibelle(10-i));
-            panelGauche.add(labelGauche);
-            panelsGauches.put((10-i), panelGauche) ;
+        });
+        redraw();
+        add(labelImage);
+    }
+    public void setNiveau(int n){
+        niveau = n;
+        System.out.println("niveau : " + niveau);
+        redraw();
+    }
+    private void resizeIcon(){
+        int wi = combined.getWidth();
+        int hi = combined.getHeight();
+        float ratioImage = (float)wi / (float)hi;
+        int wp = getWidth();
+        int hp = getHeight();
+        float ratioPanel = (float)wp / (float)hp;
+        int wn, hn;
+        if(ratioPanel > ratioImage){
+            hn = hp;
+            wn = (int)((float)hp * ratioImage);
         }
-            
-        // Insertion de la cellule droite de niveauInitial 10
-        for (int iPanel=0; iPanel < 4; iPanel++) {
-            c.gridx = 1 ;
-            c.gridy = (iPanel==0 ? 0 : (iPanel==1 ? 3 : (iPanel==2 ? 5 : 8))) ;
-            c.gridheight = (iPanel==0 || iPanel==2 ? 3 : 2) ;
-            JPanel panelDroit = new JPanel();
-            panelDroit.setPreferredSize(new Dimension(cellWidth, cellHeight));
-            panelDroit.setLayout(new GridBagLayout());
-            panelNiveaux.add(panelDroit, c);
-
-            JLabel labelDroit;
-            switch (iPanel) {
-                case 0:
-                    panelDroit.setBackground(getBgColor(10));
-                    labelDroit = new JLabel("5", JLabel.CENTER) ;
-                    break;
-                case 1:
-                    panelDroit.setBackground(getBgColor(7));
-                    labelDroit = new JLabel("4", JLabel.CENTER) ;
-                    break;
-                case 2:
-                    panelDroit.setBackground(getBgColor(5));
-                    labelDroit = new JLabel("3", JLabel.CENTER) ;
-                    break;
-                default:
-                    panelDroit.setBackground(getBgColor(1));
-                    labelDroit = new JLabel("2", JLabel.CENTER) ;
-                    break;
-            }
-            labelDroit.setPreferredSize(new Dimension(cellWidth, cellHeight));
-            labelDroit.setForeground(Color.WHITE);
-            labelDroit.setFont(new Font("Copperplate Gothic Bold", Font.BOLD, 40));
-            GridBagConstraints gbc = new GridBagConstraints();
-            panelDroit.add(labelDroit, gbc);
+        else{
+            wn = wp;
+            hn = (int)((float)wp / ratioImage);
         }
-        panelsGauches.get(niveauInitial).setBackground(Color.YELLOW);
-        this.window.setVisible(true);
-    }
-
-    public void setNiveau(Integer niveau) {
-        System.out.println("VueNiveau_nopic.setNiveau(" + niveau + ")");
-        panelsGauches.get(this.niveau).setBackground(getBgColor(this.niveau - 1));
-        this.niveau = niveau ;
-        panelsGauches.get(this.niveau).setBackground(this.niveau == 10 ? Color.RED : Color.YELLOW);
-        this.mainPanel.repaint();
-    }
-
-    public Integer getNiveau() {
-        return this.niveau ;
-    }
-
-    public Integer getColoredNiveau() {
-        for (Integer coloredNiveau : panelsGauches.keySet()) {
-            if (panelsGauches.get(coloredNiveau).getBackground() == Color.YELLOW) {
-                return coloredNiveau;
-            }
-        }
-        return -1 ;
-    }
-
-    private Color getBgColor(Integer niveau) {
-        if (niveau <= 2)
-            return new Color(169, 215, 226) ;
         
-        if (niveau <= 5)
-            return new Color(129, 194, 212) ;
-            
-        
-        if (niveau <= 7)
-            return new Color(67, 119, 204) ;
-        
-        return new Color(42, 76, 127) ;
+        scaled = new ImageIcon(combined.getScaledInstance(wn, hn, java.awt.Image.SCALE_AREA_AVERAGING));
+        labelImage.setIcon(scaled);
+        revalidate();
+        repaint();
     }
-
-    private String getLibelle(int i) {
-        switch (i) {
-            case 1 : 
-                return " novice" ;
-            case 2 : 
-                return " normal" ;
-            case 3 : 
-                return " élite" ;
-            case 4 : 
-                return " légendaire" ;
-            case 10 : 
-                return " mortel" ;
-            default :
-                return "" ;
+    
+    public void redraw(){
+        float step = 0.0825f;
+        float offset = 0.05f;
+        BufferedImage imageNiveau = ImagePool.getImage("src/Images/Niveau.png");
+        BufferedImage selector = ImagePool.getImage("src/Images/stick.png");
+        combined = new BufferedImage(imageNiveau.getWidth(), imageNiveau.getHeight(), BufferedImage.TYPE_INT_ARGB);
+        
+        Graphics g = combined.getGraphics();
+        g.drawImage(imageNiveau, 0, 0, null);
+        int posX = 0;
+        int posY = (int)((offset + (float)(9-niveau) * step) * (float)imageNiveau.getHeight());
+        g.drawImage(selector, posX, posY, null);
+        if(getWidth() != 0){
+            resizeIcon();
         }
     }
     
-    public static void main(String[] args) {   
-        VueNiveau vueNiveau = new VueNiveau(1);
-
-        Scanner scanner = new Scanner(System.in);
-
-        System.out.println("Pour passer au niveau 5, appuyer sur entrée");
-        String suite = scanner.nextLine();        
-        vueNiveau.setNiveau(5);
-
-        System.out.println("Pour passer au niveau 5, appuyer sur entrée");
-        suite = scanner.nextLine();
-        vueNiveau.setNiveau(10);
+    public static void main(String[] args){   
+        VueNiveau vueNiveau = new VueNiveau(0);
+        JFrame window = new JFrame();
+        window.add(vueNiveau);
+        window.setSize(400, 900);
+        window.setVisible(true);
+        for(int i = 1; i < 10; i++){
+            System.out.println("Appuyez sur une touche");
+            try {
+                System.in.read();
+            } catch (IOException ex) {
+                System.out.println(ex.getMessage());
+            }
+            vueNiveau.setNiveau(i);
+        }
     }    
 }

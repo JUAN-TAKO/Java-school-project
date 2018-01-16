@@ -29,7 +29,7 @@ public class PanelImage extends JPanel{
                 resizeIcon();
             }
         });
-        image = new ImageIcon(path);
+        image = ImagePool.getImageIcon(path);
         add(imageLabel);
     }
     
