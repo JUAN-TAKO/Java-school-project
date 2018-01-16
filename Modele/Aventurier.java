@@ -1,7 +1,7 @@
 package Modele;
 
-
 import Cartes.CarteTirage;
+
 import Utils.*;
 import java.awt.Color;
 
