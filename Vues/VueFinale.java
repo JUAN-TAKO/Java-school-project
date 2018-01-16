@@ -11,6 +11,7 @@ import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.GridLayout;
 import java.awt.Toolkit;
+import java.util.ArrayList;
 import java.util.Observable;
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
@@ -22,7 +23,7 @@ import javax.swing.JPanel;
  *
  * @author damien
  */
-public class VueVictoire extends Observable{
+public class VueFinale extends Observable{
     private final JFrame window;
     
     private JPanel panelNord;
@@ -33,14 +34,17 @@ public class VueVictoire extends Observable{
     
     private JPanel panelTresor;
     
+    private PanelImage panelCristal;
+    private PanelImage panelPierre;
+    private PanelImage panelCalice;
+    private PanelImage panelZephyr;
+    
     private JButton boutonQuitter;
     private JButton boutonMenu;
     
-    private JLabel victoire;
+    private JLabel resultat;
     
-    
-    
-    public VueVictoire(){
+    public VueFinale(ArrayList<Boolean> b){
         Font f = new Font("arial", 0, 30);
         Font fBouton = new Font("arial", 0, 20);
         window = new JFrame();
@@ -55,12 +59,25 @@ public class VueVictoire extends Observable{
         
         // =================================================================================
         // NORD
+        Boolean gagne = true;
         panelNord = new JPanel() ;
         mainPanel.add(panelNord, BorderLayout.NORTH);
-        victoire =new JLabel("VOUS AVEZ GAGNÉ!");
-        victoire.setFont(f);
-        victoire.setForeground(Color.green);
-        panelNord.add(victoire);
+        for (Boolean bool : b) {
+            gagne &= bool;
+            if (bool) {
+                
+            }
+        }
+        
+        if (gagne) {
+            resultat = new JLabel("VOUS AVEZ GAGNÉ!");
+        }else{
+            resultat = new JLabel("VOUS AVEZ PERDU!");
+        }
+        
+        resultat.setFont(f);
+        resultat.setForeground(Color.green);
+        panelNord.add(resultat);
         panelNord.setBorder(BorderFactory.createLineBorder(Color.BLACK, 2));
         
         // =================================================================================
@@ -78,11 +95,13 @@ public class VueVictoire extends Observable{
         panelCentre = new JPanel(new GridLayout(1,4,2,2));
         mainPanel.add(panelCentre, BorderLayout.CENTER);
         
-        for (int i = 0; i < 4; i++) {
-            panelTresor = new JPanel();
-            panelTresor.setBorder(BorderFactory.createLineBorder(Color.BLACK, 2));
-            panelCentre.add(panelTresor);
-        }
+        
+        
+//        for (int i = 0; i < 4; i++) {
+//            panelTresor = new JPanel();
+//            panelTresor.setBorder(BorderFactory.createLineBorder(Color.BLACK, 2));
+//            panelCentre.add(panelTresor);
+//        }
         
         // =================================================================================
         // SUD
@@ -110,7 +129,7 @@ public class VueVictoire extends Observable{
     }
      
     public static void main(String[] args) { 
-        VueVictoire vueVic = new VueVictoire();
-        vueVic.afficher();
+//        VueFinale vueVic = new VueFinale();
+//        vueVic.afficher();
     }
 }
