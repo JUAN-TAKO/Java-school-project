@@ -1,10 +1,6 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package Vues;
 
+import Utils.Tresor;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
@@ -32,12 +28,7 @@ public class VueFinale extends Observable{
     private JPanel panelSud;
     private JPanel panelCentre;
     
-    private JPanel panelTresor;
     
-    private PanelImage panelCristal;
-    private PanelImage panelPierre;
-    private PanelImage panelCalice;
-    private PanelImage panelZephyr;
     
     private JButton boutonQuitter;
     private JButton boutonMenu;
@@ -58,25 +49,38 @@ public class VueFinale extends Observable{
         window.add(mainPanel);
         
         // =================================================================================
+        // CENTRE
+        panelCentre = new JPanel(new GridLayout(1,4,2,2));
+        mainPanel.add(panelCentre, BorderLayout.CENTER);
+        
+        // =================================================================================
         // NORD
         Boolean gagne = true;
         panelNord = new JPanel() ;
         mainPanel.add(panelNord, BorderLayout.NORTH);
-        for (Boolean bool : b) {
+        for (int i = 0; i < 4; i++) {
+            Boolean bool = b.get(i);
             gagne &= bool;
+            PanelImage panelTresor;
             if (bool) {
-                
+                panelTresor = new PanelImage(Tresor.values()[i].getTresor());
+            }else{
+                panelTresor = new PanelImage(Tresor.values()[i].getTresorGris());
             }
+            panelTresor.setBorder(BorderFactory.createLineBorder(Color.BLACK, 2));
+            panelCentre.add(panelTresor);
         }
         
         if (gagne) {
             resultat = new JLabel("VOUS AVEZ GAGNÉ!");
+            resultat.setForeground(Color.blue);
         }else{
             resultat = new JLabel("VOUS AVEZ PERDU!");
+            resultat.setForeground(Color.red);
         }
         
         resultat.setFont(f);
-        resultat.setForeground(Color.green);
+        
         panelNord.add(resultat);
         panelNord.setBorder(BorderFactory.createLineBorder(Color.BLACK, 2));
         
@@ -90,18 +94,6 @@ public class VueFinale extends Observable{
         panelEst = new JPanel();
         mainPanel.add(panelEst, BorderLayout.EAST);
         
-        // =================================================================================
-        // CENTRE
-        panelCentre = new JPanel(new GridLayout(1,4,2,2));
-        mainPanel.add(panelCentre, BorderLayout.CENTER);
-        
-        
-        
-//        for (int i = 0; i < 4; i++) {
-//            panelTresor = new JPanel();
-//            panelTresor.setBorder(BorderFactory.createLineBorder(Color.BLACK, 2));
-//            panelCentre.add(panelTresor);
-//        }
         
         // =================================================================================
         // SUD
@@ -129,7 +121,12 @@ public class VueFinale extends Observable{
     }
      
     public static void main(String[] args) { 
-//        VueFinale vueVic = new VueFinale();
-//        vueVic.afficher();
+        ArrayList<Boolean> b = new ArrayList<>();
+        b.add(false);
+        b.add(true);
+        b.add(true);
+        b.add(false);
+        VueFinale vueVic = new VueFinale(b);
+        vueVic.afficher();
     }
 }
