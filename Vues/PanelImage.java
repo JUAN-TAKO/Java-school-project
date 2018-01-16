@@ -23,37 +23,43 @@ public class PanelImage extends JPanel{
     private JLabel imageLabel;
     
     public PanelImage(String path){
+        super();
         imageLabel = new JLabel();
+        image = ImagePool.getImageIcon(path);
         addComponentListener(new ComponentAdapter() {
             public void componentResized(ComponentEvent e) {
                 resizeIcon();
             }
         });
-        image = ImagePool.getImageIcon(path);
         add(imageLabel);
     }
-    
+    public PanelImage(){
+        super();
+        imageLabel = new JLabel();
+        add(imageLabel);
+    }
     private void resizeIcon(){
-        int wi = image.getIconWidth();
-        int hi = image.getIconHeight();
-        float ratioImage = (float)wi / (float)hi;
-        int wp = getWidth();
-        int hp = getHeight();
-        float ratioPanel = (float)wp / (float)hp;
-        int wn, hn;
-        if(ratioPanel > ratioImage){
-            hn = hp;
-            wn = (int)((float)hp * ratioImage);
+        if(image != null){
+            int wi = image.getIconWidth();
+            int hi = image.getIconHeight();
+            float ratioImage = (float)wi / (float)hi;
+            int wp = getWidth();
+            int hp = getHeight();
+            float ratioPanel = (float)wp / (float)hp;
+            int wn, hn;
+            if(ratioPanel > ratioImage){
+                hn = hp;
+                wn = (int)((float)hp * ratioImage);
+            }
+            else{
+                wn = wp;
+                hn = (int)((float)wp / ratioImage);
+            }
+            scaled = new ImageIcon(image.getImage().getScaledInstance(wn, hn, java.awt.Image.SCALE_AREA_AVERAGING));
+            imageLabel.setIcon(scaled);
+            revalidate();
+            repaint();
         }
-        else{
-            wn = wp;
-            hn = (int)((float)wp / ratioImage);
-        }
-        
-        scaled = new ImageIcon(image.getImage().getScaledInstance(wn, hn, java.awt.Image.SCALE_AREA_AVERAGING));
-        imageLabel.setIcon(scaled);
-        revalidate();
-        repaint();
     }
     public static void main(String args[]){
         JFrame window = new JFrame();

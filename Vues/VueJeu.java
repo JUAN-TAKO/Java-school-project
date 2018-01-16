@@ -113,7 +113,7 @@ public class VueJeu{
         // EST
         panelEst = new JPanel(new BorderLayout());
         mainPanel.add(panelEst, BorderLayout.EAST);
-        panelNiveau = new PanelNiveau(0);
+        panelNiveau = new PanelNiveau(3);
         panelEst.add(panelVideEst, BorderLayout.EAST);
         panelEst.add(panelVideOuest, BorderLayout.WEST);
         panelEst.add(panelVideNord, BorderLayout.NORTH);

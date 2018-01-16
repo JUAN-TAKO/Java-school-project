@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package Cartes;
+package Utils;
 /**
  *
  * @author claryd
@@ -15,14 +15,17 @@ public enum CarteTirage {
     
     TRESOR_CALICE("src/Images/cartes/Calice.png"),
     TRESOR_PIERRE("src/Images/cartes/Pierre.png"),
-    TRESOR_STATUE("src/Images/cartes/zephyr.png"),
-    TRESOR_CRISTAL("src/Images/cartes/cristal.png"),
+    TRESOR_STATUE("src/Images/cartes/Zephyr.png"),
+    TRESOR_CRISTAL("src/Images/cartes/Cristal.png"),
     HELICOPTERE("src/Images/cartes/Helicoptere.png"),
     SABLE("src/Images/cartes/SacsDeSable.png"),
     MONTEE_DES_EAUX("src/Images/cartes/MonteeDesEaux.png");
     
-    private BufferedImage image;
+    private String image;
     CarteTirage(String imagePath){
-        image = ImagePool.getImage(imagePath);
+        image = imagePath;
+    }
+    public String getImage(){
+        return image;
     }
 }
