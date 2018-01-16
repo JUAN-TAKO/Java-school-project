@@ -1,4 +1,4 @@
-package view;
+package Vues;
 
 import Utils.Etat;
 import java.awt.BorderLayout;
@@ -27,14 +27,14 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.ImageIcon;
  
-public class VueNiveau extends JPanel{
+public class PanelNiveau extends JPanel{
     
     private int niveau;
     private BufferedImage combined;
     private JLabel labelImage;
     private ImageIcon scaled;
         
-    public VueNiveau(int niveauInitial) {
+    public PanelNiveau(int niveauInitial) {
         niveau = niveauInitial;
         labelImage = new JLabel();
         addComponentListener(new ComponentAdapter() {
@@ -91,7 +91,7 @@ public class VueNiveau extends JPanel{
     }
     
     public static void main(String[] args){   
-        VueNiveau vueNiveau = new VueNiveau(0);
+        PanelNiveau vueNiveau = new PanelNiveau(0);
         JFrame window = new JFrame();
         window.add(vueNiveau);
         window.setSize(400, 900);
