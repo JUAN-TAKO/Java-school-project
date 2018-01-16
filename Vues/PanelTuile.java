@@ -69,7 +69,7 @@ public class PanelTuile extends JPanel{
         imagesPions = new ArrayList<>();
         if(pions != null){
             for(Pion p : pions){
-                imagesPions.add(p.getIcon());
+                imagesPions.add(ImagePool.getImage(p.getIcon()));
             }
         }
     }

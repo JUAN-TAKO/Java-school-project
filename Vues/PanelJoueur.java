@@ -1,11 +1,11 @@
 package Vues;
 
 import Aventuriers.Explorateur;
-import Cartes.CartesTirage;
+import Cartes.*;
 import Modele.Aventurier;
 import Modele.Tuile;
-import static Utils.Etat.*;
-import static Utils.TypeTuile.*;
+import Utils.Pion;
+import Utils.*;
 import Vues.PanelImage;
 import java.awt.BorderLayout;
 import java.awt.Color;
@@ -17,10 +17,6 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
-import java.util.Observable;
-import javax.swing.BorderFactory;
-import javax.swing.JButton;
-import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -28,67 +24,27 @@ import javax.swing.JTextField;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.TreeSet;
-import javax.swing.*;
+import javax.swing.SwingConstants;
 
 public class PanelJoueur extends JPanel{
-    private JPanel panelHaut;
-    private JPanel panelOuest;
-    private JPanel panelEst;
-    private JPanel panelCentre;
-    private JPanel panelBas;
-    
-           
-    //private TreeSet<PanelImage> imagePanels;
-    private HashSet<PanelImage> imagePanels;
-   
 
-    
-    
-    public PanelJoueur(Aventurier joueur, String imageJoueur){
+    private ArrayList<PanelImage> listePanelsCartes;
+    private JPanel panelJoueur;
+    public PanelJoueur(int coin, String nomJoueur, Pion pionJoueur){
         
-        super(new BorderLayout());
-        // =================================================================================
-        // NORD
-        panelHaut = new JPanel() ;
-        add(panelHaut, BorderLayout.NORTH);
+        super(new GridLayout(1, 8));
         
-        // =================================================================================
-        // OUEST 
-        panelOuest = new JPanel(new GridLayout(2,1));
-        add(panelOuest, BorderLayout.WEST);
-        panelOuest.add(new PanelImage(imageJoueur));
-        panelOuest.add(new JLabel("Joueur 1"));
+        panelJoueur = new JPanel(new BorderLayout());
         
-        // =================================================================================
-        // EST
-        panelEst = new JPanel();
-        add(panelEst, BorderLayout.EAST);       
+        //condition ternaire. la syntaxe est : "variable = condition ? retourQuandVrai : retourQuandFaux;"
+        int pos = coin >= 2 ? SwingConstants.NORTH : SwingConstants.SOUTH; // si coin >= 2 (en bas), pos = NORTH; sinon pos = SOUTH
         
-
-        // =================================================================================
-        // CENTRE
-        panelCentre = new JPanel(new GridLayout(1,7));
-        add(panelCentre, BorderLayout.CENTER);
+        panelJoueur.add(new JLabel(nomJoueur), pos);
+        panelJoueur.add(new PanelImage(pionJoueur.getJoueur()), SwingConstants.CENTER);
+        listePanelsCartes = new ArrayList<>();
         
-        //imagePanels = new TreeSet<>();
-        imagePanels = new HashSet<>();
-        
-        for(int i=0 ; i<5 ; i++){
-            ajouterCarte("src/Images/cartes/Calice.png", i);
-        }
-       
-        ajouterCarte("src/Images/tresors/SacsDeSable.png", 5);
-        ajouterCarte("src/Images/Helicoptere.png", 6);
   
         update();
-                
-        // =================================================================================
-        // SUD
-        panelBas = new JPanel() ;
-        add(panelBas, BorderLayout.SOUTH);
                      
     }
     
@@ -163,7 +119,6 @@ public class PanelJoueur extends JPanel{
 
     
     public static void main(String [] args) {
-        
         JFrame  window = new JFrame();
         window.setDefaultCloseOperation(javax.swing.JFrame.DISPOSE_ON_CLOSE);
         window.setSize(600, 200);
