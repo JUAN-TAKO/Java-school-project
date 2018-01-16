@@ -4,19 +4,25 @@
  * and open the template in the editor.
  */
 package Cartes;
-
-import Utils.Tresor;
-
 /**
  *
  * @author claryd
  */
-public class CarteTresor extends CartesTirage{
+import Utils.*;
+public enum CarteTirage {
     
-       private Tresor tresor;
+    TRESOR_CALICE,
+    TRESOR_PIERRE,
+    TRESOR_STATUE,
+    TRESOR_CRISTAL,
+    MONTEE_DES_EAUX,
+    HELICOPTERE,
+    SABLE;
     
-    public CarteTresor(Tresor tresor){
-        this.tresor = tresor;
-    }
+    
+    
+    
+    
+    
     
 }

@@ -1,6 +1,7 @@
 package Modele;
 
-import Cartes.CartesTirage;
+import Cartes.CarteTirage;
+
 import Utils.*;
 import java.awt.Color;
 
@@ -11,12 +12,12 @@ public abstract class Aventurier extends Observable{
     private Tuile position;
     private String nom;
     private String nomRole;
-    private ArrayList<CartesTirage> inventaire;
-        
+    private ArrayList<CarteTirage> inventaire;
+
     public Aventurier(String nom, String nomRole){
         this.nom = nom;
         this.nomRole = nomRole;
-        System.out.println(nom + " est un " + nomRole);
+        inventaire = new ArrayList<>();
     }
     
     //vérifie qu'une tuile est accessible
@@ -82,4 +83,8 @@ public abstract class Aventurier extends Observable{
     }
     
     public abstract TypeTuile getTuileDepart();  
+    
+    public void ajouterCarte(CarteTirage c){
+        inventaire.add(c);
+    }
 }

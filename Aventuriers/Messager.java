@@ -17,4 +17,7 @@ public class Messager extends Aventurier{
     public Pion getPion(){
         return Pion.GRIS;
     }
+    
+    
+    
 }

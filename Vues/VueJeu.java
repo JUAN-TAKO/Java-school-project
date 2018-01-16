@@ -1,10 +1,16 @@
 package Vues;
 
+import Generateurs.GrilleAleatoire;
+import Modele.Grille;
+import Modele.Tuile;
+import Utils.Etat;
+import Utils.TypeTuile;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.GridLayout;
 import java.awt.Toolkit;
+import java.util.ArrayList;
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -13,6 +19,9 @@ import javax.swing.JPanel;
 
 public class VueJeu{
     private final JFrame window ;
+    
+    Grille g = new Grille(new GrilleAleatoire());
+    
     //Déclaration pour le panel Nord
     private JPanel panelNord;
     private JPanel panelJoueur1;
@@ -37,16 +46,17 @@ public class VueJeu{
     
     //déclaration pour le panel Est
     private JPanel panelEst;
-    private JPanel panelNiveau;
+    private PanelNiveau panelNiveau;
     
     //déclaration pour le panel Sud
     private JPanel panelSud;
-    
-    //déclaration pour le panel Sud
-    private JPanel panelCentre;
     private JPanel panelJoueur3;
     private JPanel panelJoueur4;
     private JPanel panelVideCentre;
+    
+    
+    //déclaration pour le panel Centre
+    private PanelGrille panelCentre;
     
     public VueJeu(){
         
@@ -103,7 +113,7 @@ public class VueJeu{
         // EST
         panelEst = new JPanel(new BorderLayout());
         mainPanel.add(panelEst, BorderLayout.EAST);
-        panelNiveau = new JPanel();
+        panelNiveau = new PanelNiveau(0);
         panelEst.add(panelVideEst, BorderLayout.EAST);
         panelEst.add(panelVideOuest, BorderLayout.WEST);
         panelEst.add(panelVideNord, BorderLayout.NORTH);
@@ -113,9 +123,25 @@ public class VueJeu{
 
         // =================================================================================
         // CENTRE
-        panelCentre = new JPanel();
+        ArrayList<TypeTuile> types = new ArrayList<>();
+        for(int i = 0; i < g.length(); i++){
+            Tuile t = g.get(i);
+            if(t == null){
+                types.add(null);
+            }else{
+                types.add(t.getType());
+            }
+        }
+        
+        panelCentre = new PanelGrille(types);
         mainPanel.add(panelCentre, BorderLayout.CENTER);
         panelCentre.setBorder(BorderFactory.createLineBorder(Color.BLACK, 2));
+        
+        panelCentre.setEtat(2, Etat.INONDEE);
+        panelCentre.setEtat(7, Etat.INONDEE);
+        panelCentre.setEtat(17, Etat.INONDEE);
+        panelCentre.setEtat(26, Etat.INONDEE);
+        
         
         // =================================================================================
         // SUD

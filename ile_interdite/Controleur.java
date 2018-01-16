@@ -36,7 +36,7 @@ public class Controleur implements Observer{
     private ListIterator iteratorInondation; //iterateur sur la carte a piocher dans la pile, toutes les cartes avant cet iterateur seront considérés comme la défausse
     //Iterateur : équivalent des index mais pour les LinkedList
     
-    private LinkedList<CartesTirage> pileTirage; //pile des cartes tirage à piocher
+    private LinkedList<CarteTirage> pileTirage; //pile des cartes tirage à piocher
     private ListIterator iteratorTirage;
     
     
@@ -65,16 +65,20 @@ public class Controleur implements Observer{
     
     //reformer la pile de cartes inondation à partir de la défausse
     public void reinitialiserPileInondation(){
-        LinkedList<TypeTuile> sub = new LinkedList<>(pileInondation.subList(0, iteratorInondation.nextIndex() - 1)); //on récupère une sous-liste de 0 à l'iterateur (la défausse)
-        Collections.shuffle(sub); //on la mélange
+        ArrayList<TypeTuile> defausse = new ArrayList<>(pileInondation.subList(0, iteratorInondation.nextIndex() - 1)); //on récupère une sous-liste de 0 à l'iterateur (la défausse)
+        Collections.shuffle(defausse); //on la mélange
         iteratorInondation = pileInondation.listIterator(); //on remet l'iterateur au début (on remet les cartes sur la pile)
     }
-    public void tirerCartesInondation(int n){
+    //tirage automatique d'autant de cartes inondation que nécessaire (par rapport au niveau d'eau)
+    public void piocherInondation(int n){
+        
         for(int i = 0; i < n; i++){
             Tuile t = grille.getTuileByType((TypeTuile)iteratorInondation.next()); //on tire une carte, la place dans la défausse (méthode next()) et on récupère la tuile correspondante
+
             if(t.getEtat() == Etat.SECHE){ //si elle est sèche, on l'inonde
                 t.setEtat(Etat.INONDEE);
-            }else{                         //sinon c'est qu'elle est déjà inondee (elle ne peut pas être coulée parce qu'on enlève les cartes des tuiles coulées)
+            }
+            else{                         //sinon c'est qu'elle est déjà inondee (elle ne peut pas être coulée parce qu'on enlève les cartes des tuiles coulées)
                 t.setEtat(Etat.COULEE);  //on la coule
                 iteratorInondation.remove();   //on retire la carte qui vient d'être tirée de la pile
             }
@@ -84,7 +88,29 @@ public class Controleur implements Observer{
         }
     }
     
-    public void tirerTirage(){
+    public void reinitialiserPileTirage(){
+        
+        ArrayList<CarteTirage> defausse = new ArrayList<>(pileTirage.subList(0, iteratorTirage.nextIndex()-1));
+        Collections.shuffle(defausse);
+        iteratorTirage = pileTirage.listIterator();
+    }
+    
+    //pioche d'une carte tirage de la meme maniere
+    public void piocherTirage(){
+        
+        CarteTirage t = (CarteTirage)iteratorTirage.next();
+        
+        if(t == CarteTirage.MONTEE_DES_EAUX){ //si la carte piochée est une carte montee des eaux 
+            niveauEau++; //alors on incremente d'un le niveau d'eau
+        }
+        else{ 
+            
+            aventuriers.get(tour).ajouterCarte(t); //sinon on l'ajoute à la collection de cartes de l'aventurier courant
+        }
+        
+        if(!iteratorTirage.hasNext()){ //si on arrive à la fin de la pile alors on mélange la défausse et on la remet dans la pile
+            reinitialiserPileTirage();
+        }
         
     }
     public void start(){
