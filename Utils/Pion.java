@@ -20,23 +20,28 @@ import javax.imageio.ImageIO;
  * @author juan
  */
 public enum Pion {
-    ROUGE(Color.RED, "src/Images/pions/pionRouge.png"),
-    BLEU(Color.BLUE, "src/Images/pions/pionBleu.png"),
-    VERT(Color.GREEN, "src/Images/pions/pionVert.png"),
-    JAUNE(Color.YELLOW, "src/Images/pions/pionJaune.png"),
-    NOIR(Color.BLACK, "src/Images/pions/pionNoir.png"),
-    GRIS(Color.GRAY, "src/Images/pions/pionGris.png");
+    ROUGE(Color.RED, "src/Images/pions/pionRouge.png", "src/Images/personnages/IngenieurDetour.png"),
+    BLEU(Color.BLUE, "src/Images/pions/pionBleu.png", "src/Images/personnages/PiloteDetour.png"),
+    VERT(Color.GREEN, "src/Images/pions/pionVert.png", "src/Images/personnages/ExplorateurDetour.png"),
+    JAUNE(Color.YELLOW, "src/Images/pions/pionJaune.png", "src/Images/personnages/NaviguateurDetour.png"),
+    NOIR(Color.BLACK, "src/Images/pions/pionNoir.png", "src/Images/personnages/PlongeurDetour.png"),
+    GRIS(Color.GRAY, "src/Images/pions/pionGris.png", "src/Images/personnages/MessagerDetour.png");
     
     private Color couleur;
-    private BufferedImage image;
-    Pion(Color c, String icon){
+    private String image;
+    private String imageJoueur;
+    Pion(Color c, String icon, String pathJoueur){
         couleur = c;
-        image = ImagePool.getImage(icon);
+        image = icon;
+        imageJoueur = pathJoueur;
     }
     public Color getColor(){
         return couleur;
     }
-    public BufferedImage getIcon(){
+    public String getIcon(){
         return image;
+    }
+    public String getJoueur(){
+        return imageJoueur;
     }
 }

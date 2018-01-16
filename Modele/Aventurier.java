@@ -7,17 +7,18 @@ import java.awt.Color;
 
 import java.util.ArrayList;
 import java.util.Observable;
+import java.util.TreeMap;
 
 public abstract class Aventurier extends Observable{
     private Tuile position;
     private String nom;
     private String nomRole;
-    private ArrayList<CarteTirage> inventaire;
+    private int[] cartes;
 
     public Aventurier(String nom, String nomRole){
         this.nom = nom;
         this.nomRole = nomRole;
-        inventaire = new ArrayList<>();
+        cartes = new int[6];
     }
     
     //vérifie qu'une tuile est accessible
@@ -84,7 +85,26 @@ public abstract class Aventurier extends Observable{
     
     public abstract TypeTuile getTuileDepart();  
     
-    public void ajouterCarte(CarteTirage c){
-        inventaire.add(c);
+    public void addCarte(CarteTirage c){
+        cartes[c.ordinal()]++;
+    }
+    public void removeCarte(CarteTirage c){
+        removeCarte(c, 1);
+    }
+    public void removeCarte(CarteTirage c, int nbCartes){
+        cartes[c.ordinal()] -= nbCartes;
+        if(cartes[c.ordinal()] < 0){
+            cartes[c.ordinal()] = 0;
+        }
+    }
+    public int getCartes(CarteTirage c){
+        return cartes[c.ordinal()];
+    }
+    public int getNbCartes(){
+        int nb = 0;
+        for(int i = 0; i < 6; i++){
+            nb += cartes[i];
+        }
+        return nb;
     }
 }
