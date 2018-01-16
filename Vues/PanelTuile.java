@@ -33,28 +33,22 @@ public class PanelTuile extends JPanel{
     private JLabel labelTuile;
     private ImageIcon scaled;
     private TypeTuile tuile;
+    Etat etat;
     
-    public PanelTuile(TypeTuile t, Etat e, ArrayList<Pion> pions){
+    public PanelTuile(TypeTuile t){
         tuile = t;
         labelTuile = new JLabel();
-        
+        imagesPions = new ArrayList<>();
         addComponentListener(new ComponentAdapter() {
             public void componentResized(ComponentEvent e) {
                 resizeIcon();
             }
         });
-        imagesPions = new ArrayList<>();
-        if(pions != null){
-            for(Pion p : pions){
-                imagesPions.add(p.getIcon());
-            }
-        }
-        setEtat(e);
+        etat = Etat.SECHE;
+        redraw();
         add(labelTuile);
     }
-    public PanelTuile(){
-        
-    }
+    public PanelTuile(){}
     
     private void resizeIcon(){
         int width = Math.min(getWidth(), getHeight()-5);
@@ -69,36 +63,43 @@ public class PanelTuile extends JPanel{
         }
     }
     public void setEtat(Etat e){
-        try {
-            float margin = 0.15f;
-            float rightAdjust = 0.7f;
-            float bottomAdjust = 1.1f;
-            int[] margins = new int[4];
-            BufferedImage imageTuile = null;
-            if(e == Etat.SECHE){
-                imageTuile = ImageIO.read(new File(tuile.getImagePath()));
-            }else if(e == Etat.INONDEE){
-                imageTuile = ImageIO.read(new File(tuile.getImagePathInonde()));  
+        etat = e;
+    }
+    public void setPions(ArrayList<Pion> pions){
+        imagesPions = new ArrayList<>();
+        if(pions != null){
+            for(Pion p : pions){
+                imagesPions.add(p.getIcon());
             }
-            combined = null;
-            if(imageTuile != null){
-                combined = new BufferedImage(imageTuile.getWidth(), imageTuile.getHeight(), BufferedImage.TYPE_INT_ARGB);
-                if(imagesPions.size() != 0){
-                    int w = imagesPions.get(0).getWidth();
-                    int h = imagesPions.get(0).getHeight();
-                    margins[0] = (int)(margin * (float)imageTuile.getWidth());
-                    margins[1] = imageTuile.getWidth() - margins[0] - (int)(rightAdjust * (float)w);
-                    margins[2] = (int)(margin * (float)imageTuile.getHeight());
-                    margins[3] = imageTuile.getHeight() - margins[2] - (int)(bottomAdjust * (float)h);
-                }
-                Graphics g = combined.getGraphics();
-                g.drawImage(imageTuile, 0, 0, null);
-                for(int i = 0; i < imagesPions.size(); i++){
-                    g.drawImage(imagesPions.get(i), margins[i % 2], margins[2+(i / 2)], null);
-                }
+        }
+    }
+    public void redraw(){
+        float margin = 0.15f;
+        float rightAdjust = 0.7f;
+        float bottomAdjust = 1.1f;
+        int[] margins = new int[4];
+        BufferedImage imageTuile = null;
+        if(etat == Etat.SECHE){
+            imageTuile = ImagePool.getImage(tuile.getImagePath());
+        }else if(etat == Etat.INONDEE){
+            imageTuile = ImagePool.getImage(tuile.getImagePathInonde());
+        }  
+        combined = null;
+        if(imageTuile != null){
+            combined = new BufferedImage(imageTuile.getWidth(), imageTuile.getHeight(), BufferedImage.TYPE_INT_ARGB);
+            if(imagesPions.size() != 0){
+                int w = imagesPions.get(0).getWidth();
+                int h = imagesPions.get(0).getHeight();
+                margins[0] = (int)(margin * (float)imageTuile.getWidth());
+                margins[1] = imageTuile.getWidth() - margins[0] - (int)(rightAdjust * (float)w);
+                margins[2] = (int)(margin * (float)imageTuile.getHeight());
+                margins[3] = imageTuile.getHeight() - margins[2] - (int)(bottomAdjust * (float)h);
             }
-        } catch (IOException ex) {
-            System.out.println("AieAieAie ! " + ex.getMessage());
+            Graphics g = combined.getGraphics();
+            g.drawImage(imageTuile, 0, 0, null);
+            for(int i = 0; i < imagesPions.size(); i++){
+                g.drawImage(imagesPions.get(i), margins[i % 2], margins[2+(i / 2)], null);
+            }
         }
         
         
@@ -114,9 +115,10 @@ public class PanelTuile extends JPanel{
         pions.add(Pion.VERT);
         ArrayList<Pion> pions2 = new ArrayList<>();
         pions2.add(Pion.JAUNE);
-        mainPanel.add(new PanelTuile(TypeTuile.CAVERNE_BRASIER, Etat.SECHE, pions));
-        mainPanel.add(new PanelTuile(TypeTuile.PORTE_CUIVRE, Etat.INONDEE, pions2));
-        mainPanel.add(new PanelTuile(TypeTuile.OBSERVATOIRE, Etat.COULEE, new ArrayList<>()));
+        mainPanel.add(new PanelTuile(TypeTuile.CAVERNE_BRASIER));
+        mainPanel.add(new PanelTuile(TypeTuile.PORTE_CUIVRE));
+        mainPanel.add(new PanelTuile(TypeTuile.OBSERVATOIRE));
+        
         
         window.setSize(1150, 700);
         

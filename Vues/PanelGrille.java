@@ -27,12 +27,22 @@ public class PanelGrille extends JPanel{
             if(t == null){
                 add(new PanelTuile());
             }else{
-                add(new PanelTuile(t, Etat.SECHE, null));
+                add(new PanelTuile(t));
             }
         }
     }
     public void setEtat(int index, Etat e){
-        ((PanelTuile)getComponent(index)).setEtat(e);
+        PanelTuile pt = ((PanelTuile)getComponent(index));
+        pt.setEtat(e);
+        pt.redraw();
+    }
+    public void setPions(int index, ArrayList<Pion> pions){
+        PanelTuile pt = ((PanelTuile)getComponent(index));
+        pt.setPions(pions);
+        pt.redraw();
+    }
+    public void redraw(int index){
+        ((PanelTuile)getComponent(index)).redraw();
     }
     public static void main(String args[]){
         Grille g = new Grille(new GrilleAleatoire());
@@ -51,6 +61,9 @@ public class PanelGrille extends JPanel{
         panelGrille.setEtat(7, Etat.INONDEE);
         panelGrille.setEtat(17, Etat.INONDEE);
         panelGrille.setEtat(26, Etat.INONDEE);
+        ArrayList<Pion> pions = new ArrayList<>();
+        pions.add(Pion.BLEU);
+        panelGrille.setPions(9, pions);
         window.add(panelGrille);
         window.setSize(1000, 1000);
         window.setVisible(true);
