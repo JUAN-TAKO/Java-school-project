@@ -14,7 +14,6 @@ import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
 import java.util.ArrayList;
 import javax.swing.BorderFactory;
-import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -35,9 +34,10 @@ public class VueJeu{
     
     private JLabel labelActionsRestantes;
     private JPanel panelCentreSud;
+    
     private PanelGrille grille;
     private PanelNiveau niveau;
-    
+    private PanelTresor panelTresor;
     
     private PanelJoueur[] panelsJoueurs = new PanelJoueur[4];
     public VueJeu(ArrayList<String> noms, ArrayList<Pion> pions){
@@ -118,22 +118,32 @@ public class VueJeu{
         panelSud.add(panelCentreSud);
         
         panelSud.add(panelsJoueurs[3], BorderLayout.EAST);
-        //resize();
+        niveau = new PanelNiveau(3, 1);
+        defausseInondation = new PanelImage("src/Images/cache/inondation_cache.png", 2);
+        panelEst = new JPanel(new BorderLayout());
+        panelEst.add(niveau, BorderLayout.CENTER);
+        panelEst.add(defausseInondation, BorderLayout.SOUTH);
+        mainPanel.add(panelEst, BorderLayout.EAST);
+        
+        ArrayList<Boolean> tf = new ArrayList<>();
+        tf.add(true);
+        tf.add(true);
+        tf.add(true);
+        tf.add(true);
+        
+        panelTresor = new PanelTresor(tf);
+        defausseTirage = new PanelImage("src/Images/cache/tresor_cache.png", 2);
+        panelOuest = new JPanel(new BorderLayout());
+        panelOuest.add(panelTresor, BorderLayout.CENTER);
+        panelOuest.add(defausseTirage, BorderLayout.SOUTH);
+        mainPanel.add(panelOuest, BorderLayout.WEST);
+        
         mainPanel.addComponentListener(new ComponentAdapter() {
             public void componentResized(ComponentEvent e) {
                 resize();
             }
         });
         
-        niveau = new PanelNiveau(3, 1);
-        defausseInondation = new PanelImage("src/Images/cache/inondation_cache.png", 2);
-        panelEst = new JPanel();
-        BoxLayout b = new BoxLayout(panelEst, BoxLayout.Y_AXIS);
-        panelEst.setLayout(b);
-        panelEst.add(niveau);
-        panelEst.add(defausseInondation);
-        mainPanel.add(new JPanel(), BorderLayout.WEST);
-        mainPanel.add(panelEst, BorderLayout.EAST);
     }
     public void resize(){
         int w = mainPanel.getWidth();
@@ -147,17 +157,6 @@ public class VueJeu{
             int h = panelsJoueurs[0].getH() + 6;
             panelNord.setPreferredSize(new Dimension(w, h));
             panelSud.setPreferredSize(new Dimension(w, h));
-        }
-        int ht = panelEst.getHeight();
-        float rn = niveau.getRatio();
-        float rd = defausseInondation.getRatio();
-        
-        int largeur = (int)((float)ht / (rn + rd));
-        int hauteur = (int)((float)largeur / rd);
-        System.out.println(largeur + ", " + hauteur);
-        if(hauteur != 0){
-            defausseInondation.setMaximumSize(new Dimension(largeur, hauteur));
-            panelEst.setMaximumSize(new Dimension(largeur, ht));
         }
         mainPanel.revalidate();
         mainPanel.repaint();
