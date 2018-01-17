@@ -16,7 +16,13 @@ import java.util.LinkedList;
 import java.util.ListIterator;
 
 public class Controleur implements Observer{
-    private VueParametres vueParametres; //paramètres de début de partie (nb de joueurs, noms etc)
+    private VueDebut vueDebut;
+    private VueParametres vueParametres; //paramètres de début de partie (nb de joueurs, noms etc)    
+    private VueConfirm vueConfirm;
+    
+    
+    boolean parametre = false;
+    boolean debut = true;
     
     
     private Grille grille;  //plateau de jeu
@@ -52,8 +58,8 @@ public class Controleur implements Observer{
         pileTirage = new LinkedList<>();
         iteratorTirage = pileTirage.listIterator();
         
-        vueParametres = new VueParametres();
-        vueParametres.addObserver(this);
+        vueDebut = new VueDebut();
+        vueDebut.addObserver(this);
         this.start();
         
         //Le generateur construit la grille
@@ -118,7 +124,7 @@ public class Controleur implements Observer{
         
     }
     public void start(){
-        vueParametres.afficher(); //ouvre la fenêtre des paramètres (inscription des joueurs)
+        vueDebut.afficher(); //ouvre la fenêtre des paramètres (inscription des joueurs)
     }
     
     //renvoie l'aventurier courant
@@ -258,8 +264,54 @@ public class Controleur implements Observer{
                 setBoutonsActives(true);
                 break;
                 
-            case QUITTER: 
-                vueParametres.hide();
+            case JOUER :
+                vueDebut.hide();
+                debut = false;
+                
+                vueParametres = new VueParametres();
+                vueParametres.addObserver(this);
+                vueParametres.afficher();
+                parametre = true;
+                               
+                break;
+                
+            case QUITTER:
+                
+                vueConfirm = new VueConfirm();
+                vueConfirm.addObserver(this);
+                vueConfirm.afficher();
+                
+                if(debut){
+                    vueDebut.desactive();
+                }else if(parametre){
+                    vueParametres.desactive();
+                }
+                
+                break;      
+                
+                
+                
+            case OUI :
+                vueConfirm.hide();
+                if(debut){
+                    vueDebut.hide();
+                    debut = false;
+                }else if(parametre){
+                    vueParametres.hide();
+                    parametre = false;
+                }
+                
+                break;
+                
+            case NON :
+                vueConfirm.hide();
+                if(debut){
+                    vueDebut.active();
+                }else if(parametre){
+                    vueParametres.active();
+                }
+                
+                
                 break;
                 
       

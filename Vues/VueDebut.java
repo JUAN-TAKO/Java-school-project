@@ -1,6 +1,8 @@
 package Vues;
 
+import Utils.Message;
 import Utils.MessageType;
+import static Utils.MessageType.*;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
@@ -54,7 +56,7 @@ public class VueDebut extends Observable{
             @Override
             public void actionPerformed(ActionEvent e) {
                 setChanged();
-                notifyObservers(MessageType.QUITTER);
+                notifyObservers(new Message(MessageType.QUITTER));
                 clearChanged();
             }
         });
@@ -68,7 +70,7 @@ public class VueDebut extends Observable{
             @Override
             public void actionPerformed(ActionEvent e) {
                 setChanged();
-                notifyObservers(MessageType.JOUER);
+                notifyObservers(new Message(MessageType.JOUER));
                 clearChanged();
             }
         });

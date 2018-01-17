@@ -1,5 +1,6 @@
 package Vues;
 
+import Utils.Message;
 import Utils.MessageType;
 import java.awt.BorderLayout;
 import java.awt.Color;
@@ -69,7 +70,7 @@ public class VueConfirm extends Observable{
             @Override
             public void actionPerformed(ActionEvent e) {
                 setChanged();
-                notifyObservers(MessageType.NON);
+                notifyObservers(new Message(MessageType.NON));
                 clearChanged();
             }
         });
@@ -83,7 +84,7 @@ public class VueConfirm extends Observable{
             @Override
             public void actionPerformed(ActionEvent e) {
                 setChanged();
-                notifyObservers(MessageType.OUI);
+                notifyObservers(new Message(MessageType.OUI));
                 clearChanged();
             }
         });
