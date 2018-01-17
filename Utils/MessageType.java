@@ -8,7 +8,11 @@ public enum MessageType{
         CHOISIR_DEPLACEMENT,
 	CHOISIR_ASSECHEMENT,
         CHOISIR_DIFFICULTE,
-        VALIDER_PARAMETRES,        
+        VALIDER_PARAMETRES, 
+        JOUER,
 	QUITTER,
-        ANNULER_SELECTION;
+        RETOUR_MENU,
+        ANNULER_SELECTION,
+        GAGNE_PERDU,
+        PERDU;
 }

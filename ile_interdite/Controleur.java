@@ -23,6 +23,8 @@ public class Controleur implements Observer{
     private VueAventuriers vueAventuriers; //pour afficher les aventuriers
     private VueSelection selection;  //fenêtre de sélection de la tuile
     
+    private VueFinale vueFinale;
+    
     private int indexAventurierCourant; 
     private int action; //nombre d'actions effectuées par le joueur courant
     private int tour; //nombre de tours de jeu
@@ -51,6 +53,7 @@ public class Controleur implements Observer{
         
         vueParametres = new VueParametres();
         vueParametres.addObserver(this);
+        this.start();
         
         //Le generateur construit la grille
         Generateur g = new GrilleAleatoire();
@@ -105,7 +108,7 @@ public class Controleur implements Observer{
         }
         else{ 
             
-            aventuriers.get(tour).ajouterCarte(t); //sinon on l'ajoute à la collection de cartes de l'aventurier courant
+            aventuriers.get(tour).addCarte(t); //sinon on l'ajoute à la collection de cartes de l'aventurier courant
         }
         
         if(!iteratorTirage.hasNext()){ //si on arrive à la fin de la pile alors on mélange la défausse et on la remet dans la pile
@@ -190,8 +193,9 @@ public class Controleur implements Observer{
         ArrayList<Tuile> listeTuiles; //tableau temporaire pour stocker les tuiles accessibles 
         ArrayList<TypeTuile> typeTuiles; //tableau temporaire pour stocker les types des tuiles accéssibles (TypeTuile est un enum avec toutes les différentes tuiles)
         ArrayList<String> coordsTuiles; //on passeras les coordonées de la tuile sous forme de string a la vue Sélection
-        
+        ArrayList<Boolean> boolTresors = new ArrayList<>();
         boolean b;
+        VueFinale vueFinale;
                 
         switch(m.getType()){
             case DEPLACER:  //clic sur le bouton déplacer
@@ -200,16 +204,19 @@ public class Controleur implements Observer{
                 setBoutonsActives(false);
                 
                 break;
+                
             case ASSECHER:  //clic sur le bouton assecher
                 listeTuiles = getAventurierCourant().getTuilesAccessiblesAssechement(grille);
                 afficherSelection(listeTuiles, MessageType.CHOISIR_ASSECHEMENT);
                 setBoutonsActives(false);
                 
                 break;
+                
             case SPECIAL:   //clic sur le bouton spécial, pas implémenté pour l'instant
                 
                 
                 break;
+                
             case PASSER:    //clic sur le bouton passer
                 aventurierSuivant();
                 break;
@@ -248,18 +255,37 @@ public class Controleur implements Observer{
             case ANNULER_SELECTION: //clic sur le bouton annuler (ou fermeture) de la fenêtre de séléction
                 selection.hide();
                 setBoutonsActives(true);
-                
                 break;
                 
             case QUITTER: 
                 vueParametres.hide();
                 break;
                 
+      
+            case GAGNE_PERDU:
+                
+                boolTresors = vueJeu.getBoolTresors();  //recuperation de l'état des trésors (à créer)
+                vueFinale = new VueFinale(boolTresors);
+                vueFinale.addObserver(this);
+                vueFinale.afficher();
+                break;
+                
+            case RETOUR_MENU:
+                vueFinale.hide();
+                vueParametres.afficher();
+                break;
+                
+
+                
+           
+                
+                
             case VALIDER_PARAMETRES: //réception des noms des joueurs
                 System.out.println("test");
-                MessageNoms mn = (MessageNoms)arg; //interprète le message reçu comme un message contenant une liste de noms 
+                MessageParametre mp = (MessageParametre)arg; //interprète le message reçu comme un message contenant une liste de noms 
                 
-                ArrayList<String> noms = mn.getNoms();
+                int difficulte = mp.getIndex();
+                ArrayList<String> noms = mp.getNoms();
                 ArrayList<String> roles = new ArrayList<>();
                 ArrayList<Color> couleurs = new ArrayList<>();
                 
@@ -272,7 +298,7 @@ public class Controleur implements Observer{
                 //on mélange le tableau
                 Collections.shuffle(indexes);
                 int i = 0;
-                System.out.println(mn.getNoms().size());
+                System.out.println(mp.getNoms().size());
                 //a chaque joueur seras attribué un role en fonction de la valeur du tableau a sa position
                 for(String nom : noms){
                     switch(indexes.get(i)){
