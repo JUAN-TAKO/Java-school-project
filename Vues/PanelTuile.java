@@ -6,6 +6,7 @@
 package Vues;
 
 import Utils.*;
+import java.awt.BorderLayout;
 import java.awt.Graphics;
 import java.awt.GridLayout;
 import java.awt.Image;
@@ -36,6 +37,7 @@ public class PanelTuile extends JPanel{
     Etat etat;
     
     public PanelTuile(TypeTuile t){
+        super(new BorderLayout());
         tuile = t;
         labelTuile = new JLabel();
         imagesPions = new ArrayList<>();
@@ -46,7 +48,7 @@ public class PanelTuile extends JPanel{
         });
         etat = Etat.SECHE;
         redraw();
-        add(labelTuile);
+        add(labelTuile, BorderLayout.CENTER);
     }
     public PanelTuile(){}
     

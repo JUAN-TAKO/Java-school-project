@@ -70,15 +70,15 @@ public class VueJeu{
         
         // =================================================================================
         // NORD
-        panelNord = new JPanel(new GridLayout(1,3));
+        panelNord = new JPanel(new BorderLayout());
         mainPanel.add(panelNord, BorderLayout.NORTH);
         
         panelJoueur1 = new JPanel();
         panelActionPasser = new JPanel(new GridLayout(2,1));
         panelJoueur2 = new JPanel();
-        panelNord.add(panelJoueur1);
-        panelNord.add(panelActionPasser);
-        panelNord.add(panelJoueur2);
+        panelNord.add(panelJoueur1, BorderLayout.WEST);
+        panelNord.add(panelActionPasser, BorderLayout.CENTER);
+        panelNord.add(panelJoueur2, BorderLayout.EAST);
         
         panelActionRestantes = new JPanel(new GridLayout(1,2));
         panelBoutonAction = new JPanel();
@@ -111,14 +111,8 @@ public class VueJeu{
         
         // =================================================================================
         // EST
-        panelEst = new JPanel(new BorderLayout());
-        mainPanel.add(panelEst, BorderLayout.EAST);
-        panelNiveau = new PanelNiveau(3);
-        panelEst.add(panelVideEst, BorderLayout.EAST);
-        panelEst.add(panelVideOuest, BorderLayout.WEST);
-        panelEst.add(panelVideNord, BorderLayout.NORTH);
-        panelEst.add(panelVideSud, BorderLayout.SOUTH);
-        panelEst.add(panelNiveau, BorderLayout.CENTER);
+        panelNiveau = new PanelNiveau(3, 1);
+        mainPanel.add(panelNiveau, BorderLayout.EAST);
         
 
         // =================================================================================
@@ -141,7 +135,6 @@ public class VueJeu{
         panelCentre.setEtat(7, Etat.INONDEE);
         panelCentre.setEtat(17, Etat.INONDEE);
         panelCentre.setEtat(26, Etat.INONDEE);
-        
         
         // =================================================================================
         // SUD

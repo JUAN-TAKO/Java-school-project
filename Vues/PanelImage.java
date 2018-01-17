@@ -5,6 +5,7 @@
  */
 package Vues;
 
+import java.awt.BorderLayout;
 import java.awt.GridLayout;
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
@@ -23,7 +24,7 @@ public class PanelImage extends JPanel{
     private JLabel imageLabel;
     
     public PanelImage(String path){
-        super();
+        super(new BorderLayout());
         imageLabel = new JLabel();
         image = ImagePool.getImageIcon(path);
         addComponentListener(new ComponentAdapter() {
@@ -31,12 +32,13 @@ public class PanelImage extends JPanel{
                 resizeIcon();
             }
         });
-        add(imageLabel);
+        add(imageLabel, BorderLayout.CENTER);
+        
     }
     public PanelImage(){
-        super();
+        super(new BorderLayout());
         imageLabel = new JLabel();
-        add(imageLabel);
+        add(imageLabel, BorderLayout.CENTER);
     }
     private void resizeIcon(){
         if(image != null){

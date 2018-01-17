@@ -33,8 +33,10 @@ public class PanelNiveau extends JPanel{
     private BufferedImage combined;
     private JLabel labelImage;
     private ImageIcon scaled;
+    private int fit;
         
-    public PanelNiveau(int niveauInitial) {
+    public PanelNiveau(int niveauInitial, int f) {
+        fit = f;
         niveau = niveauInitial;
         labelImage = new JLabel();
         addComponentListener(new ComponentAdapter() {
@@ -51,26 +53,29 @@ public class PanelNiveau extends JPanel{
         redraw();
     }
     private void resizeIcon(){
-        int wi = combined.getWidth();
-        int hi = combined.getHeight();
-        float ratioImage = (float)wi / (float)hi;
-        int wp = getWidth();
-        int hp = getHeight();
-        float ratioPanel = (float)wp / (float)hp;
-        int wn, hn;
-        if(ratioPanel > ratioImage){
-            hn = hp;
-            wn = (int)((float)hp * ratioImage);
+        System.out.println(getHeight());
+        if(getWidth() != 0){
+            int wi = combined.getWidth();
+            int hi = combined.getHeight();
+            float ratioImage = (float)wi / (float)hi;
+            int wp = getWidth();
+            int hp = getHeight();
+            float ratioPanel = (float)wp / (float)hp;
+            int wn, hn;
+            if((fit == 1 || ratioPanel > ratioImage) && fit != 2){
+                hn = hp;
+                wn = (int)((float)hp * ratioImage);
+            }
+            else{
+                wn = wp;
+                hn = (int)((float)wp / ratioImage);
+            }
+
+            scaled = new ImageIcon(combined.getScaledInstance(wn, hn, java.awt.Image.SCALE_AREA_AVERAGING));
+            labelImage.setIcon(scaled);
+            revalidate();
+            repaint();
         }
-        else{
-            wn = wp;
-            hn = (int)((float)wp / ratioImage);
-        }
-        
-        scaled = new ImageIcon(combined.getScaledInstance(wn, hn, java.awt.Image.SCALE_AREA_AVERAGING));
-        labelImage.setIcon(scaled);
-        revalidate();
-        repaint();
     }
     
     public void redraw(){
@@ -91,7 +96,7 @@ public class PanelNiveau extends JPanel{
     }
     
     public static void main(String[] args){   
-        PanelNiveau vueNiveau = new PanelNiveau(0);
+        PanelNiveau vueNiveau = new PanelNiveau(0, 0);
         JFrame window = new JFrame();
         window.add(vueNiveau);
         window.setSize(400, 900);
