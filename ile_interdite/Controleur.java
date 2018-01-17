@@ -282,9 +282,10 @@ public class Controleur implements Observer{
                 
             case VALIDER_PARAMETRES: //réception des noms des joueurs
                 System.out.println("test");
-                MessageNoms mn = (MessageNoms)arg; //interprète le message reçu comme un message contenant une liste de noms 
+                MessageParametre mp = (MessageParametre)arg; //interprète le message reçu comme un message contenant une liste de noms 
                 
-                ArrayList<String> noms = mn.getNoms();
+                int difficulte = mp.getIndex();
+                ArrayList<String> noms = mp.getNoms();
                 ArrayList<String> roles = new ArrayList<>();
                 ArrayList<Color> couleurs = new ArrayList<>();
                 
@@ -297,7 +298,7 @@ public class Controleur implements Observer{
                 //on mélange le tableau
                 Collections.shuffle(indexes);
                 int i = 0;
-                System.out.println(mn.getNoms().size());
+                System.out.println(mp.getNoms().size());
                 //a chaque joueur seras attribué un role en fonction de la valeur du tableau a sa position
                 for(String nom : noms){
                     switch(indexes.get(i)){

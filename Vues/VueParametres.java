@@ -54,11 +54,10 @@ public class VueParametres extends Observable{
     private JButton boutonQuitter;
     
     private ImageIcon flecheRouge = new ImageIcon("src/Images/flecheRouge.png");
-    private Image image ;
     
     
     public VueParametres(){              
-        Font fTextField = new Font("arial", 0, 15);
+        Font fontText = new Font("arial", 0, 15);
         window = new JFrame();
         window.setDefaultCloseOperation(javax.swing.JFrame.DISPOSE_ON_CLOSE);
         window.setSize(700, 500);
@@ -67,8 +66,7 @@ public class VueParametres extends Observable{
         window.setTitle("PARAMETRES");
 
         JPanel mainPanel = new JPanel(new BorderLayout());
-        
-        mainPanel.add(new JLabel(new ImageIcon("src/Images/flecheRouge.png"))); //window.pack();
+        window.add(mainPanel);
 
         
         
@@ -95,7 +93,9 @@ public class VueParametres extends Observable{
         
         // selection du nombre de joueur
         panelCentre.add(panelNbJoueur = new JPanel(new GridLayout(1,2)));
-        panelNbJoueur.add(new JLabel("nombre de joueur : ", JLabel.RIGHT));
+        JLabel labelJoueur;
+        panelNbJoueur.add(labelJoueur = new JLabel("nombre de joueur : ", JLabel.RIGHT));
+        labelJoueur.setFont(fontText);
         
         listeDeroulante = new JComboBox();
         listeDeroulante.addItem(2);
@@ -112,12 +112,12 @@ public class VueParametres extends Observable{
         //Choix des pseudos
         panelCentre.add(panelNomJoueur = new JPanel(new GridLayout(4,2)));
         JTextField t;
-        JLabel j;
+        JLabel labelNom;
         for (int i = 1; i < 5; i++) {
-            panelNomJoueur.add(j = new JLabel("NOM JOUEUR " + i + " :", JLabel.RIGHT));
+            panelNomJoueur.add(labelNom = new JLabel("Nom joueur " + i + " :", JLabel.RIGHT));
             panelNomJoueur.add(t = new JTextField());
-            t.setFont(fTextField);
-            j.setFont(fTextField);
+            t.setFont(fontText);
+            labelNom.setFont(fontText);
         }
         
         
@@ -166,12 +166,12 @@ public class VueParametres extends Observable{
             @Override
             public void actionPerformed(ActionEvent e) {
                 ArrayList<String> listeNoms = new ArrayList<>();
-                for(int i = 1; i < (listeDeroulante.getSelectedIndex() + 2) * 2; i += 2){
+                for(int i = 1; i < (getListeDeroulante().getSelectedIndex() + 2) * 2; i += 2){
                     listeNoms.add(((JTextField)panelNomJoueur.getComponent(i)).getText());
                 }
                 
                 setChanged();
-                notifyObservers(new MessageNoms(MessageType.VALIDER_PARAMETRES, listeNoms));
+                notifyObservers(new MessageParametre(MessageType.VALIDER_PARAMETRES, listeNoms, getIndexSelect()));
                 clearChanged();
             }
         });
@@ -214,7 +214,7 @@ public class VueParametres extends Observable{
     }
     private void updateNbr(){ //affiche le nombre de champs noms à remplir en fonction du nombre de joueurs sélectionnés
         for (int i = 0; i < 8; i+=2) {
-            if(i < (listeDeroulante.getSelectedIndex() + 2) * 2){
+            if(i < (getListeDeroulante().getSelectedIndex() + 2) * 2){
                 panelNomJoueur.getComponent(i).setVisible(true);
                 panelNomJoueur.getComponent(i+1).setVisible(true);
             }
@@ -230,11 +230,11 @@ public class VueParametres extends Observable{
         panelCentre.remove(panelFleche);
         panelCentre.add(panelFleche = new JPanel(new GridLayout(1,4)));       
         
-        listePanelsFleche.set(indexSelect, new JPanel());
-        listePanelsFleche.set(index, new PanelImage("src/Images/flecheRouge.png",0));
+        getListePanelsFleche().set(getIndexSelect(), new JPanel());
+        getListePanelsFleche().set(index, new PanelImage("src/Images/flecheRouge.png",0));
         
         for(int i=0 ; i<4 ; i++){
-            panelFleche.add(listePanelsFleche.get(i));
+            panelFleche.add(getListePanelsFleche().get(i));
         }
         panelFleche.revalidate();
         panelFleche.repaint();
@@ -249,6 +249,9 @@ public class VueParametres extends Observable{
                 @Override
                 public void mouseClicked(MouseEvent e) {
                     selectionner(index);
+                    setChanged();
+                    notifyObservers(index);
+                    clearChanged();
                 }
 
                  @Override
@@ -285,4 +288,25 @@ public class VueParametres extends Observable{
          VueParametres vueParam = new VueParametres();
          vueParam.afficher();
      }
+
+    /**
+     * @return the listeDeroulante
+     */
+    public JComboBox getListeDeroulante() {
+        return listeDeroulante;
+    }
+
+    /**
+     * @return the indexSelect
+     */
+    public int getIndexSelect() {
+        return indexSelect;
+    }
+
+    /**
+     * @return the listePanelsFleche
+     */
+    public ArrayList<JPanel> getListePanelsFleche() {
+        return listePanelsFleche;
+    }
 } 
