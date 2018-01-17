@@ -15,6 +15,7 @@ import javax.swing.JPanel;
 import javax.swing.JTextField;
 import Utils.*;
 import java.awt.Color;
+import java.awt.Image;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.util.ArrayList;
@@ -63,6 +64,7 @@ public class VueParametres extends Observable{
         
         JPanel mainPanel = new JPanel(new BorderLayout());
         window.add(mainPanel) ;
+        
         
         // =================================================================================
         // NORD
@@ -116,15 +118,9 @@ public class VueParametres extends Observable{
         panelDifficulte.add(panelElite = new JPanel());
         panelDifficulte.add(panelLegendaire = new JPanel());
         
-        addListener(panelNovice,0);
-        addListener(panelNormal,1);
-        addListener(panelElite,2);
-        addListener(panelLegendaire,3);
-        
-        panelNovice.setBackground(Color.decode("#43A5D9"));
-        panelNormal.setBackground(Color.decode("#028FD9"));
-        panelElite.setBackground(Color.decode("#006DA6"));
-        panelLegendaire.setBackground(Color.decode("#013B59"));
+        for(int i = 0 ; i < 4 ; i++){
+            addListener(returnPanel(i),i);
+        }
         
         panelCentre.add(panelFleche = new JPanel(new GridLayout(1,4)));
         listePanelsFleche = new ArrayList<>();
@@ -133,9 +129,6 @@ public class VueParametres extends Observable{
             listePanelsFleche.add(new JPanel());
         }
         selectionner(0);
-        
-        
-        
         
         
         // =================================================================================
@@ -180,6 +173,29 @@ public class VueParametres extends Observable{
             }
         });
         updateNbr();
+    }
+    
+    public JPanel returnPanel(int i){
+        JPanel temp = new JPanel();
+        switch(i){
+            case 0 :
+                temp =  panelNovice;
+                temp.setBackground(Color.decode("#43A5D9"));
+                break;
+            case 1 :
+                temp = panelNormal;
+                temp.setBackground(Color.decode("#028FD9"));
+                break;
+            case 2 :
+                temp = panelElite;
+                temp.setBackground(Color.decode("#006DA6"));
+                break;
+            case 3 :
+                temp = panelLegendaire;
+                temp.setBackground(Color.decode("#013B59"));
+                break;
+        }
+        return temp;
     }
     private void updateNbr(){ //affiche le nombre de champs noms à remplir en fonction du nombre de joueurs sélectionnés
         for (int i = 0; i < 8; i+=2) {
