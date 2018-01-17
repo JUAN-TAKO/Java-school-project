@@ -17,7 +17,8 @@ import java.util.ListIterator;
 
 public class Controleur implements Observer{
     private VueParametres vueParametres; //paramètres de début de partie (nb de joueurs, noms etc)
-	
+    
+    
     private Grille grille;  //plateau de jeu
     private ArrayList<Aventurier> aventuriers; //liste des aventuriers
     private VueAventuriers vueAventuriers; //pour afficher les aventuriers

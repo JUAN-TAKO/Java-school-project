@@ -22,7 +22,7 @@ import javax.swing.JTextField;
 import java.awt.*;
 import javax.swing.*;
 
-public class VueConfirm{
+public class VueConfirm extends Observable{
     private final JFrame window ;
     
     private JButton boutonOui;
@@ -83,7 +83,7 @@ public class VueConfirm{
             @Override
             public void actionPerformed(ActionEvent e) {
                 setChanged();
-                notifyObservers(Messages.OUI);
+                notifyObservers(MessageType.OUI);
                 clearChanged();
             }
         });
