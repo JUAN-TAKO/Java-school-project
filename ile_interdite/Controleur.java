@@ -24,6 +24,8 @@ public class Controleur implements Observer{
     private VueAventuriers vueAventuriers; //pour afficher les aventuriers
     private VueSelection selection;  //fenêtre de sélection de la tuile
     
+    private VueFinale vueFinale;
+    
     private int indexAventurierCourant; 
     private int action; //nombre d'actions effectuées par le joueur courant
     private int tour; //nombre de tours de jeu
@@ -52,6 +54,7 @@ public class Controleur implements Observer{
         
         vueParametres = new VueParametres();
         vueParametres.addObserver(this);
+        this.start();
         
         //Le generateur construit la grille
         Generateur g = new GrilleAleatoire();
@@ -202,16 +205,19 @@ public class Controleur implements Observer{
                 setBoutonsActives(false);
                 
                 break;
+                
             case ASSECHER:  //clic sur le bouton assecher
                 listeTuiles = getAventurierCourant().getTuilesAccessiblesAssechement(grille);
                 afficherSelection(listeTuiles, MessageType.CHOISIR_ASSECHEMENT);
                 setBoutonsActives(false);
                 
                 break;
+                
             case SPECIAL:   //clic sur le bouton spécial, pas implémenté pour l'instant
                 
                 
                 break;
+                
             case PASSER:    //clic sur le bouton passer
                 aventurierSuivant();
                 break;
@@ -250,7 +256,6 @@ public class Controleur implements Observer{
             case ANNULER_SELECTION: //clic sur le bouton annuler (ou fermeture) de la fenêtre de séléction
                 selection.hide();
                 setBoutonsActives(true);
-                
                 break;
                 
             case QUITTER: 
@@ -262,6 +267,8 @@ public class Controleur implements Observer{
                 
                 boolTresors = vueJeu.getBoolTresors();  //recuperation de l'état des trésors (à créer)
                 vueFinale = new VueFinale(boolTresors);
+                vueFinale.addObserver(this);
+                vueFinale.afficher();
                 break;
                 
             case RETOUR_MENU:

@@ -99,7 +99,7 @@ public class VueJeu{
         
         panelBoutonAction.add(boutonPasserTour);
         
-        labelActionText = new JLabel("Actions Restantes", JLabel.CENTER);
+        labelActionText = new JLabel("Actions Restantes", JLabel.RIGHT);
         labelNbAction = new JLabel("", JLabel.CENTER);
         panelActionRestantes.add(labelActionText);
         panelActionRestantes.add(labelNbAction);
