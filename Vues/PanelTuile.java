@@ -36,6 +36,8 @@ public class PanelTuile extends JPanel{
     private TypeTuile tuile;
     Etat etat;
     
+    private Image image;
+    
     public PanelTuile(TypeTuile t){
         super(new BorderLayout());
         tuile = t;
@@ -106,6 +108,15 @@ public class PanelTuile extends JPanel{
         
         
     }
+    
+    @Override
+    public void paintComponent(Graphics g) {
+        super.paintComponent(g);
+        if (image != null) {
+            g.drawImage(image, 0, 0, null, this);
+        }
+    }
+    
     public static void main(String args[]){
         JFrame window = new JFrame();
         JPanel mainPanel = new JPanel(new GridLayout(1, 3));

@@ -15,6 +15,8 @@ import javax.swing.JPanel;
 import javax.swing.JTextField;
 import Utils.*;
 import java.awt.Color;
+import java.awt.Font;
+import java.awt.Graphics;
 import java.awt.Image;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
@@ -52,18 +54,22 @@ public class VueParametres extends Observable{
     private JButton boutonQuitter;
     
     private ImageIcon flecheRouge = new ImageIcon("src/Images/flecheRouge.png");
+    private Image image ;
     
     
-    public VueParametres(){
+    public VueParametres(){              
+        Font fTextField = new Font("arial", 0, 15);
         window = new JFrame();
         window.setDefaultCloseOperation(javax.swing.JFrame.DISPOSE_ON_CLOSE);
-        window.setSize(500, 400);
+        window.setSize(700, 500);
         Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
         window.setLocation(dim.width/2-window.getSize().width/2, dim.height/2-window.getSize().height/2);
         window.setTitle("PARAMETRES");
-        
+
         JPanel mainPanel = new JPanel(new BorderLayout());
-        window.add(mainPanel) ;
+        
+        mainPanel.add(new JLabel(new ImageIcon("src/Images/flecheRouge.png"))); //window.pack();
+
         
         
         // =================================================================================
@@ -90,6 +96,7 @@ public class VueParametres extends Observable{
         // selection du nombre de joueur
         panelCentre.add(panelNbJoueur = new JPanel(new GridLayout(1,2)));
         panelNbJoueur.add(new JLabel("nombre de joueur : ", JLabel.RIGHT));
+        
         listeDeroulante = new JComboBox();
         listeDeroulante.addItem(2);
         listeDeroulante.addItem(3);
@@ -97,15 +104,20 @@ public class VueParametres extends Observable{
         panelNbJoueur.add(listeDeroulante);
         listeDeroulante.setSelectedIndex(0);
         
+        
+        
         // titre selection des pseudos
         panelCentre.add(new JLabel("SELECTION DES PSEUDOS", JLabel.CENTER));
         
         //Choix des pseudos
         panelCentre.add(panelNomJoueur = new JPanel(new GridLayout(4,2)));
-        
+        JTextField t;
+        JLabel j;
         for (int i = 1; i < 5; i++) {
-            panelNomJoueur.add(new JLabel("NOM JOUEUR " + i + " :", JLabel.RIGHT));
-            panelNomJoueur.add(new JTextField());
+            panelNomJoueur.add(j = new JLabel("NOM JOUEUR " + i + " :", JLabel.RIGHT));
+            panelNomJoueur.add(t = new JTextField());
+            t.setFont(fTextField);
+            j.setFont(fTextField);
         }
         
         
@@ -175,6 +187,9 @@ public class VueParametres extends Observable{
         updateNbr();
     }
     
+    
+    
+    
     public JPanel returnPanel(int i){
         JPanel temp = new JPanel();
         switch(i){
@@ -216,7 +231,7 @@ public class VueParametres extends Observable{
         panelCentre.add(panelFleche = new JPanel(new GridLayout(1,4)));       
         
         listePanelsFleche.set(indexSelect, new JPanel());
-        listePanelsFleche.set(index, new PanelImage("src/Images/flecheRouge.png"));
+        listePanelsFleche.set(index, new PanelImage("src/Images/flecheRouge.png",0));
         
         for(int i=0 ; i<4 ; i++){
             panelFleche.add(listePanelsFleche.get(i));
@@ -255,6 +270,8 @@ public class VueParametres extends Observable{
                  
              });
      }
+    
+    
      
      public void afficher() {
          this.window.setVisible(true);
