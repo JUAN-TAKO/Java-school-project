@@ -62,10 +62,10 @@ public class VueFinale extends Observable{
             gagne &= bool;
             PanelImage panelTresor;
             if (bool) {
-                panelTresor = new PanelImage(Tresor.values()[i].getTresor());
+                panelTresor = new PanelImage(Tresor.values()[i].getTresor(),0);
                 somme++;
             }else{
-                panelTresor = new PanelImage(Tresor.values()[i].getTresorGris());
+                panelTresor = new PanelImage(Tresor.values()[i].getTresorGris(),0);
             }
             panelCentre.add(panelTresor);
         }
