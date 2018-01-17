@@ -1,5 +1,6 @@
 package ile_interdite;
 
+import Utils.CarteTirage;
 import Generateurs.*;
 import java.util.ArrayList;
 import java.util.Observable;
@@ -8,7 +9,6 @@ import Modele.*;
 import Vues.*;
 import Utils.*;
 import Aventuriers.*;
-import Cartes.*;
 import java.awt.Color;
 import java.util.Arrays;
 import java.util.Collections;

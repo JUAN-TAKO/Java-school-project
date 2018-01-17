@@ -1,16 +1,13 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package Vues;
 
+import Utils.Tresor;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.GridLayout;
 import java.awt.Toolkit;
+import java.util.ArrayList;
 import java.util.Observable;
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
@@ -22,7 +19,7 @@ import javax.swing.JPanel;
  *
  * @author damien
  */
-public class VueVictoire extends Observable{
+public class VueFinale extends Observable{
     private final JFrame window;
     
     private JPanel panelNord;
@@ -31,18 +28,19 @@ public class VueVictoire extends Observable{
     private JPanel panelSud;
     private JPanel panelCentre;
     
-    private JPanel panelTresor;
+    
     
     private JButton boutonQuitter;
     private JButton boutonMenu;
     
-    private JLabel victoire;
+    private JLabel resultat;
+    private JLabel tresorGagne;
+    private int somme = 0;
     
-    
-    
-    public VueVictoire(){
+    public VueFinale(ArrayList<Boolean> b){
         Font f = new Font("arial", 0, 30);
-        Font fBouton = new Font("arial", 0, 20);
+        Font fBouton = new Font("arial", 0, 15);
+        Font fTresorGagne = new Font("arial", 0, 20);
         window = new JFrame();
         window.setDefaultCloseOperation(javax.swing.JFrame.DISPOSE_ON_CLOSE);
         window.setSize(500, 400);
@@ -54,14 +52,45 @@ public class VueVictoire extends Observable{
         window.add(mainPanel);
         
         // =================================================================================
+        // CENTRE
+        Boolean gagne = true;
+        panelCentre = new JPanel(new GridLayout(1,4,2,2));
+        mainPanel.add(panelCentre, BorderLayout.CENTER);
+        
+        for (int i = 0; i < 4; i++) {
+            Boolean bool = b.get(i);
+            gagne &= bool;
+            PanelImage panelTresor;
+            if (bool) {
+                panelTresor = new PanelImage(Tresor.values()[i].getTresor());
+                somme++;
+            }else{
+                panelTresor = new PanelImage(Tresor.values()[i].getTresorGris());
+            }
+            panelCentre.add(panelTresor);
+        }
+        
+        // =================================================================================
         // NORD
-        panelNord = new JPanel() ;
+        
+        panelNord = new JPanel(new GridLayout(2,1)) ;
         mainPanel.add(panelNord, BorderLayout.NORTH);
-        victoire =new JLabel("VOUS AVEZ GAGNÉ!");
-        victoire.setFont(f);
-        victoire.setForeground(Color.green);
-        panelNord.add(victoire);
-        panelNord.setBorder(BorderFactory.createLineBorder(Color.BLACK, 2));
+        
+        if (gagne) {
+            resultat = new JLabel("VOUS AVEZ GAGNÉ!", JLabel.CENTER);
+            resultat.setForeground(Color.blue);
+            
+        }else{
+            resultat = new JLabel("VOUS AVEZ PERDU!", JLabel.CENTER);
+            resultat.setForeground(Color.red);
+        }
+        
+        tresorGagne = new JLabel("Vous avez récupéré " + somme + " trésors", JLabel.CENTER);
+        resultat.setFont(f);
+        tresorGagne.setFont(fTresorGagne);
+        
+        panelNord.add(resultat);
+        panelNord.add(tresorGagne);
         
         // =================================================================================
         // OUEST 
@@ -73,16 +102,6 @@ public class VueVictoire extends Observable{
         panelEst = new JPanel();
         mainPanel.add(panelEst, BorderLayout.EAST);
         
-        // =================================================================================
-        // CENTRE
-        panelCentre = new JPanel(new GridLayout(1,4,2,2));
-        mainPanel.add(panelCentre, BorderLayout.CENTER);
-        
-        for (int i = 0; i < 4; i++) {
-            panelTresor = new JPanel();
-            panelTresor.setBorder(BorderFactory.createLineBorder(Color.BLACK, 2));
-            panelCentre.add(panelTresor);
-        }
         
         // =================================================================================
         // SUD
@@ -110,7 +129,12 @@ public class VueVictoire extends Observable{
     }
      
     public static void main(String[] args) { 
-        VueVictoire vueVic = new VueVictoire();
+        ArrayList<Boolean> b = new ArrayList<>();
+        b.add(false);
+        b.add(true);
+        b.add(true);
+        b.add(false);
+        VueFinale vueVic = new VueFinale(b);
         vueVic.afficher();
     }
 }

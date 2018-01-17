@@ -3,8 +3,7 @@ package Vues;
 import Generateurs.GrilleAleatoire;
 import Modele.Grille;
 import Modele.Tuile;
-import Utils.Etat;
-import Utils.TypeTuile;
+import Utils.*;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
@@ -24,8 +23,7 @@ public class VueJeu{
     
     //Déclaration pour le panel Nord
     private JPanel panelNord;
-    private JPanel panelJoueur1;
-    private JPanel panelJoueur2;
+    private PanelJoueur[] panelsJoueurs = new PanelJoueur[4];
     private JPanel panelActionPasser;
     
     private JPanel panelActionRestantes;
@@ -33,7 +31,7 @@ public class VueJeu{
     private JButton boutonPasserTour;
     
     private JLabel labelActionText;
-    private JPanel panelNbAction;
+    private JLabel labelNbAction;
     
     //déclaration pour le panel Ouest
     private JPanel panelOuest;
@@ -50,15 +48,13 @@ public class VueJeu{
     
     //déclaration pour le panel Sud
     private JPanel panelSud;
-    private JPanel panelJoueur3;
-    private JPanel panelJoueur4;
     private JPanel panelVideCentre;
     
     
     //déclaration pour le panel Centre
     private PanelGrille panelCentre;
     
-    public VueJeu(){
+    public VueJeu(ArrayList<String> noms, ArrayList<Pion> pions){
         
         window = new JFrame();
         window.setDefaultCloseOperation(javax.swing.JFrame.DISPOSE_ON_CLOSE);
@@ -67,20 +63,35 @@ public class VueJeu{
         
         JPanel mainPanel = new JPanel(new BorderLayout());
         window.add(mainPanel) ;
+        //On crée les panels joueurs
+        for(int i = 0; i < 4; i++){
+            if(i < noms.size()){
+                panelsJoueurs[i] = new PanelJoueur(i, noms.get(i), pions.get(i));
+            }
+            else{
+                panelsJoueurs[i] = new PanelJoueur(i);
+            }
+        }
+        ArrayList<CarteTirage> cartes = new ArrayList<>();
+        cartes.add(CarteTirage.TRESOR_CALICE);
+        cartes.add(CarteTirage.TRESOR_CALICE);
+        cartes.add(CarteTirage.TRESOR_CALICE);
+        cartes.add(CarteTirage.TRESOR_CRISTAL);
+        cartes.add(CarteTirage.SABLE);
+        panelsJoueurs[0].updateCartes(cartes);
         
         // =================================================================================
         // NORD
-        panelNord = new JPanel(new GridLayout(1,3));
+        panelNord = new JPanel(new BorderLayout());
         mainPanel.add(panelNord, BorderLayout.NORTH);
         
-        panelJoueur1 = new JPanel();
+
         panelActionPasser = new JPanel(new GridLayout(2,1));
-        panelJoueur2 = new JPanel();
-        panelNord.add(panelJoueur1);
-        panelNord.add(panelActionPasser);
-        panelNord.add(panelJoueur2);
+        panelNord.add(panelsJoueurs[0], BorderLayout.WEST);
+        panelNord.add(panelActionPasser, BorderLayout.CENTER);
+        panelNord.add(panelsJoueurs[1], BorderLayout.EAST);
         
-        panelActionRestantes = new JPanel(new GridLayout(1,2));
+        panelActionRestantes = new JPanel(new GridLayout(2,1));
         panelBoutonAction = new JPanel();
         boutonPasserTour = new JButton("Passer tour");
         panelActionPasser.add(panelActionRestantes);
@@ -88,11 +99,12 @@ public class VueJeu{
         
         panelBoutonAction.add(boutonPasserTour);
         
-        labelActionText = new JLabel("Action(s) Restante(s)", JLabel.CENTER);
-        panelNbAction = new JPanel();
+        labelActionText = new JLabel("Actions Restantes", JLabel.CENTER);
+        labelNbAction = new JLabel("", JLabel.CENTER);
         panelActionRestantes.add(labelActionText);
-        panelActionRestantes.add(panelNbAction);
+        panelActionRestantes.add(labelNbAction);
         
+        setNbAction("2");
         // =================================================================================
         // OUEST 
         panelOuest = new JPanel(new BorderLayout());
@@ -111,14 +123,8 @@ public class VueJeu{
         
         // =================================================================================
         // EST
-        panelEst = new JPanel(new BorderLayout());
-        mainPanel.add(panelEst, BorderLayout.EAST);
-        panelNiveau = new PanelNiveau(0);
-        panelEst.add(panelVideEst, BorderLayout.EAST);
-        panelEst.add(panelVideOuest, BorderLayout.WEST);
-        panelEst.add(panelVideNord, BorderLayout.NORTH);
-        panelEst.add(panelVideSud, BorderLayout.SOUTH);
-        panelEst.add(panelNiveau, BorderLayout.CENTER);
+        panelNiveau = new PanelNiveau(3, 1);
+        mainPanel.add(panelNiveau, BorderLayout.EAST);
         
 
         // =================================================================================
@@ -142,18 +148,14 @@ public class VueJeu{
         panelCentre.setEtat(17, Etat.INONDEE);
         panelCentre.setEtat(26, Etat.INONDEE);
         
-        
         // =================================================================================
         // SUD
         panelSud = new JPanel(new GridLayout(1,3));
         mainPanel.add(panelSud, BorderLayout.SOUTH);
-        
-        panelJoueur3 = new JPanel();
-        panelJoueur4 = new JPanel();
         panelVideCentre = new JPanel();
-        panelSud.add(panelJoueur3);
+        panelSud.add(panelsJoueurs[2]);
         panelSud.add(panelVideCentre);
-        panelSud.add(panelJoueur4);
+        panelSud.add(panelsJoueurs[3]);
         
     }
     
@@ -165,8 +167,22 @@ public class VueJeu{
         window.dispose();
     }
     
+    public void setNbAction(String s){
+        labelNbAction.setText(s);
+    }
+    
     public static void main(String [] args) {
-        VueJeu jeu = new VueJeu();
+        ArrayList<String> noms = new ArrayList<>();
+        noms.add("Dédé");
+        noms.add("Tibo");
+        noms.add("Dami1");
+        noms.add("Juan");
+        ArrayList<Pion> pions = new ArrayList<>();
+        pions.add(Pion.BLEU);
+        pions.add(Pion.JAUNE);
+        pions.add(Pion.ROUGE);
+        pions.add(Pion.VERT);
+        VueJeu jeu = new VueJeu(noms, pions);
         jeu.afficher();
    }
 }

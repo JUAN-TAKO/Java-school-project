@@ -21,6 +21,7 @@ import javax.swing.ImageIcon;
  */
 public class ImagePool{
     private static HashMap<String, BufferedImage> images;
+    
     public static ImageIcon getImageIcon(String path){
         return new ImageIcon(getImage(path));
     }

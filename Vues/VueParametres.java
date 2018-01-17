@@ -129,7 +129,7 @@ public class VueParametres extends Observable{
         panelCentre.add(panelFleche = new JPanel(new GridLayout(1,4)));
         listePanelsFleche = new ArrayList<>();
         
-        for(int i = 0 ; i<4 ; i++){
+        for(int i = 0 ; i < 4 ; i++){
             listePanelsFleche.add(new JPanel());
         }
         selectionner(0);
