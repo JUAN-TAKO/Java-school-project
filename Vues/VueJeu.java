@@ -125,13 +125,7 @@ public class VueJeu{
         panelEst.add(defausseInondation, BorderLayout.SOUTH);
         mainPanel.add(panelEst, BorderLayout.EAST);
         
-        ArrayList<Boolean> tf = new ArrayList<>();
-        tf.add(true);
-        tf.add(true);
-        tf.add(true);
-        tf.add(true);
-        
-        panelTresor = new PanelTresor(tf);
+        panelTresor = new PanelTresor();
         defausseTirage = new PanelImage("src/Images/cache/tresor_cache.png", 2);
         panelOuest = new JPanel(new BorderLayout());
         panelOuest.add(panelTresor, BorderLayout.CENTER);
