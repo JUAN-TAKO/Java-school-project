@@ -319,6 +319,7 @@ public class Controleur implements Observer{
         }
     }
     
+ 
     
     //fonction main
     public static void main(String [] args) {
