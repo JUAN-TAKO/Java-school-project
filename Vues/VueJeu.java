@@ -80,7 +80,7 @@ public class VueJeu{
         panelNord.add(panelActionPasser, BorderLayout.CENTER);
         panelNord.add(panelJoueur2, BorderLayout.EAST);
         
-        panelActionRestantes = new JPanel(new GridLayout(1,2));
+        panelActionRestantes = new JPanel(new GridLayout(2,1));
         panelBoutonAction = new JPanel();
         boutonPasserTour = new JButton("Passer tour");
         panelActionPasser.add(panelActionRestantes);
