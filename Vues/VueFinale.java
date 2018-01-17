@@ -39,8 +39,8 @@ public class VueFinale extends Observable{
     
     public VueFinale(ArrayList<Boolean> b){
         Font f = new Font("arial", 0, 30);
-        Font fBouton = new Font("arial", 0, 20);
-        Font fTresorGagne = new Font("arial", 0, 15);
+        Font fBouton = new Font("arial", 0, 15);
+        Font fTresorGagne = new Font("arial", 0, 20);
         window = new JFrame();
         window.setDefaultCloseOperation(javax.swing.JFrame.DISPOSE_ON_CLOSE);
         window.setSize(500, 400);
@@ -51,16 +51,9 @@ public class VueFinale extends Observable{
         JPanel mainPanel = new JPanel(new BorderLayout());
         window.add(mainPanel);
         
-       
-        
-        // =================================================================================
-        // NORD
-        Boolean gagne = true;
-        panelNord = new JPanel(new GridLayout(2,1)) ;
-        mainPanel.add(panelNord, BorderLayout.NORTH);
-        
         // =================================================================================
         // CENTRE
+        Boolean gagne = true;
         panelCentre = new JPanel(new GridLayout(1,4,2,2));
         mainPanel.add(panelCentre, BorderLayout.CENTER);
         
@@ -77,21 +70,27 @@ public class VueFinale extends Observable{
             panelCentre.add(panelTresor);
         }
         
+        // =================================================================================
+        // NORD
+        
+        panelNord = new JPanel(new GridLayout(2,1)) ;
+        mainPanel.add(panelNord, BorderLayout.NORTH);
+        
         if (gagne) {
-            resultat = new JLabel("VOUS AVEZ GAGNÉ!");
+            resultat = new JLabel("VOUS AVEZ GAGNÉ!", JLabel.CENTER);
             resultat.setForeground(Color.blue);
             
         }else{
-            resultat = new JLabel("VOUS AVEZ PERDU!");
+            resultat = new JLabel("VOUS AVEZ PERDU!", JLabel.CENTER);
             resultat.setForeground(Color.red);
         }
         
-        tresorGagne = new JLabel("Vous avez récupéré " + somme + " trésors");
+        tresorGagne = new JLabel("Vous avez récupéré " + somme + " trésors", JLabel.CENTER);
         resultat.setFont(f);
         tresorGagne.setFont(fTresorGagne);
-        panelNord.add(resultat, resultat.CENTER);
-        panelNord.add(tresorGagne, tresorGagne.CENTER);
-        panelNord.setBorder(BorderFactory.createLineBorder(Color.BLACK, 2));
+        
+        panelNord.add(resultat);
+        panelNord.add(tresorGagne);
         
         // =================================================================================
         // OUEST 
