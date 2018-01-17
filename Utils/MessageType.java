@@ -14,5 +14,7 @@ public enum MessageType{
         RETOUR_MENU,
         ANNULER_SELECTION,
         GAGNE_PERDU,
-        PERDU;
+        PERDU,
+        OUI,
+        NON;
 }

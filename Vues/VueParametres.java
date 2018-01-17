@@ -274,21 +274,6 @@ public class VueParametres extends Observable{
              });
      }
     
-    
-     
-     public void afficher() {
-         this.window.setVisible(true);
-     }
-     
-     public void hide() {
-         window.dispose();
-     }
-     
-     public static void main(String[] args) { 
-         VueParametres vueParam = new VueParametres();
-         vueParam.afficher();
-     }
-
     /**
      * @return the listeDeroulante
      */
@@ -309,4 +294,30 @@ public class VueParametres extends Observable{
     public ArrayList<JPanel> getListePanelsFleche() {
         return listePanelsFleche;
     }
+    
+     
+     public void afficher() {
+         this.window.setVisible(true);
+     }
+     
+     public void hide() {
+         window.dispose();
+     }
+     
+     public void desactive(){
+        boutonValider.setEnabled(false);
+        boutonQuitter.setEnabled(false);
+    }
+    
+    public void active(){
+        boutonValider.setEnabled(true);
+        boutonQuitter.setEnabled(true);
+    }
+     
+     public static void main(String[] args) { 
+         VueParametres vueParam = new VueParametres();
+         vueParam.afficher();
+     }
+
+    
 } 

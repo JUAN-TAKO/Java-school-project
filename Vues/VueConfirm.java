@@ -1,5 +1,6 @@
 package Vues;
 
+import Utils.Message;
 import Utils.MessageType;
 import java.awt.BorderLayout;
 import java.awt.Color;
@@ -22,7 +23,7 @@ import javax.swing.JTextField;
 import java.awt.*;
 import javax.swing.*;
 
-public class VueConfirm{
+public class VueConfirm extends Observable{
     private final JFrame window ;
     
     private JButton boutonOui;
@@ -69,7 +70,7 @@ public class VueConfirm{
             @Override
             public void actionPerformed(ActionEvent e) {
                 setChanged();
-                notifyObservers(MessageType.NON);
+                notifyObservers(new Message(MessageType.NON));
                 clearChanged();
             }
         });
@@ -83,7 +84,7 @@ public class VueConfirm{
             @Override
             public void actionPerformed(ActionEvent e) {
                 setChanged();
-                notifyObservers(Messages.OUI);
+                notifyObservers(new Message(MessageType.OUI));
                 clearChanged();
             }
         });
