@@ -10,5 +10,8 @@ public enum MessageType{
         CHOISIR_DIFFICULTE,
         VALIDER_PARAMETRES,        
 	QUITTER,
-        ANNULER_SELECTION;
+        RETOUR_MENU,
+        ANNULER_SELECTION,
+        GAGNE_PERDU,
+        PERDU;
 }

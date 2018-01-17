@@ -132,11 +132,20 @@ public class VueFinale extends Observable{
         boutonQuitter.addActionListener(new ActionListener(){
             @Override
             public void actionPerformed(ActionEvent e) {
-                
+                setChanged();
+                notifyObservers(new Utils.Message(Utils.MessageType.QUITTER));
+                clearChanged();
             }
-            
-            
-            
+
+        });
+        
+           boutonMenu.addActionListener(new ActionListener(){
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                setChanged();
+                notifyObservers(new Utils.Message(Utils.MessageType.RETOUR_MENU));
+                clearChanged();
+            }
         });
         
     }
