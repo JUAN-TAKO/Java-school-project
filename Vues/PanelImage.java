@@ -58,11 +58,22 @@ public class PanelImage extends JPanel{
                 wn = wp;
                 hn = (int)((float)wp / ratioImage);
             }
-            scaled = new ImageIcon(image.getImage().getScaledInstance(wn, hn, java.awt.Image.SCALE_AREA_AVERAGING));
-            imageLabel.setIcon(scaled);
+            if(wn != 0 && hn != 0){
+                scaled = new ImageIcon(image.getImage().getScaledInstance(wn, hn, java.awt.Image.SCALE_AREA_AVERAGING));
+                imageLabel.setIcon(scaled);
+            }
             revalidate();
             repaint();
         }
+    }
+    public float getRatio(){
+        int wi = image.getIconWidth();
+        int hi = image.getIconHeight();
+        return (float)hi / (float)wi;
+    }
+    
+    public int getH(){
+        return scaled != null ? scaled.getIconHeight() : 0;
     }
     public static void main(String args[]){
         JFrame window = new JFrame();

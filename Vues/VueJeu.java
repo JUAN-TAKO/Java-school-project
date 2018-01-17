@@ -7,12 +7,14 @@ import Utils.*;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.GridBagLayout;
 import java.awt.GridLayout;
 import java.awt.Toolkit;
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
 import java.util.ArrayList;
 import javax.swing.BorderFactory;
+import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -25,9 +27,17 @@ public class VueJeu{
     private JPanel mainPanel;
     private JPanel panelNord;
     private JPanel panelSud;
+    private JPanel panelEst;
+    private JPanel panelOuest;
+    
+    PanelImage defausseInondation;
+    PanelImage defausseTirage;
+    
     private JLabel labelActionsRestantes;
     private JPanel panelCentreSud;
     private PanelGrille grille;
+    private PanelNiveau niveau;
+    
     
     private PanelJoueur[] panelsJoueurs = new PanelJoueur[4];
     public VueJeu(ArrayList<String> noms, ArrayList<Pion> pions){
@@ -55,9 +65,11 @@ public class VueJeu{
         cartes.add(CarteTirage.TRESOR_CALICE);
         cartes.add(CarteTirage.TRESOR_CRISTAL);
         cartes.add(CarteTirage.SABLE);
+        
         panelsJoueurs[0].updateCartes(cartes);
         panelsJoueurs[1].updateCartes(cartes);
-        
+        panelsJoueurs[2].updateCartes(cartes);
+        panelsJoueurs[3].updateCartes(cartes);
         // =================================================================================
         // NORD
         panelNord = new JPanel(new BorderLayout());
@@ -87,8 +99,9 @@ public class VueJeu{
             }
         }
         
+        JPanel panelCentre = new JPanel(new GridBagLayout());
         grille = new PanelGrille(types);
-        //mainPanel.add(panelCentre, BorderLayout.CENTER);
+        mainPanel.add(grille, BorderLayout.CENTER);
         grille.setBorder(BorderFactory.createLineBorder(Color.BLACK, 2));
         
         grille.setEtat(2, Etat.INONDEE);
@@ -102,7 +115,6 @@ public class VueJeu{
         mainPanel.add(panelSud, BorderLayout.SOUTH);
         panelSud.add(panelsJoueurs[2], BorderLayout.WEST);
         panelCentreSud = new JPanel();
-        panelCentreSud.setBackground(Color.red);
         panelSud.add(panelCentreSud);
         
         panelSud.add(panelsJoueurs[3], BorderLayout.EAST);
@@ -112,18 +124,40 @@ public class VueJeu{
                 resize();
             }
         });
+        
+        niveau = new PanelNiveau(3, 1);
+        defausseInondation = new PanelImage("src/Images/cache/inondation_cache.png", 2);
+        panelEst = new JPanel();
+        BoxLayout b = new BoxLayout(panelEst, BoxLayout.Y_AXIS);
+        panelEst.setLayout(b);
+        panelEst.add(niveau);
+        panelEst.add(defausseInondation);
+        mainPanel.add(new JPanel(), BorderLayout.WEST);
+        mainPanel.add(panelEst, BorderLayout.EAST);
     }
     public void resize(){
         int w = mainPanel.getWidth();
         if(w != 0){
-            int w2 = (int)((float)w * 0.40f);
+            int w2 = (int)((float)w * 0.30f);
 
             for(int i = 0; i < 4; i++){
                 panelsJoueurs[i].setWidth(w2);
             }
-
-            panelNord.setPreferredSize(new Dimension(w, 150));
-            panelSud.setPreferredSize(new Dimension(w, 150));
+            
+            int h = panelsJoueurs[0].getH() + 6;
+            panelNord.setPreferredSize(new Dimension(w, h));
+            panelSud.setPreferredSize(new Dimension(w, h));
+        }
+        int ht = panelEst.getHeight();
+        float rn = niveau.getRatio();
+        float rd = defausseInondation.getRatio();
+        
+        int largeur = (int)((float)ht / (rn + rd));
+        int hauteur = (int)((float)largeur / rd);
+        System.out.println(largeur + ", " + hauteur);
+        if(hauteur != 0){
+            defausseInondation.setMaximumSize(new Dimension(largeur, hauteur));
+            panelEst.setMaximumSize(new Dimension(largeur, ht));
         }
         mainPanel.revalidate();
         mainPanel.repaint();

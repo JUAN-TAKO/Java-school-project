@@ -8,7 +8,6 @@ import Utils.Pion;
 import Utils.*;
 import Vues.PanelImage;
 import java.awt.BorderLayout;
-import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.GridLayout;
@@ -36,17 +35,18 @@ public class PanelJoueur extends JPanel{
     
     public PanelJoueur(int c, String nomJoueur, Pion pionJoueur){
         super(new BorderLayout());
+        setBackground(Color.white);
         coin = c;
         panelJoueur = new JPanel(new BorderLayout());
         //condition ternaire. la syntaxe est : "variable = condition ? retourQuandVrai : retourQuandFaux;"
-        String pos = BorderLayout.NORTH;//coin >= 2 ? BorderLayout.NORTH : BorderLayout.SOUTH; // si coin >= 2 (en bas), pos = NORTH; sinon pos = SOUTH
-        
-        panelJoueur.add(new JLabel(nomJoueur, SwingConstants.CENTER), pos);
+        String pos = coin >= 2 ? BorderLayout.NORTH : BorderLayout.SOUTH; // si coin >= 2 (en bas), pos = NORTH; sinon pos = SOUTH
+        JLabel labJ = new JLabel(nomJoueur, SwingConstants.CENTER);
+        panelJoueur.add(labJ, pos);
         PanelImage pi = new PanelImage(pionJoueur.getJoueur(), 2);
         panelJoueur.add(pi, BorderLayout.CENTER);
         addComponentListener(new ComponentAdapter() {
             public void componentResized(ComponentEvent e) {
-                //mainPanel.setSize(new Dimension);
+                setSize(new Dimension(getWidth(), mainPanel.getHeight()));
             }
         });    
         updateCartes(null);
@@ -58,6 +58,9 @@ public class PanelJoueur extends JPanel{
         float ratio = (float)ha / (float)wa;
         int h = (int)(ratio * (float)w);
         this.setPreferredSize(new Dimension(w, h));
+    }
+    public int getH(){
+        return ((PanelImage)mainPanel.getComponent(1)).getH();
     }
     public PanelJoueur(int c){
         super(new BorderLayout());
@@ -76,7 +79,7 @@ public class PanelJoueur extends JPanel{
         int nbCartes;
         if(mainPanel != null)
             remove(mainPanel);
-        mainPanel = new JPanel(new GridLayout(1, 8));
+        mainPanel = new JPanel(new GridLayout(1, 8, 5, 0));
         if(cartes == null){
             nbCartes = 0;
         }
@@ -94,11 +97,11 @@ public class PanelJoueur extends JPanel{
             }
         }
         else{
-            for(int i = 7; i > 0; i--){
+            for(int i = 6; i > -1; i--){
                 if(i >= nbCartes)
                     mainPanel.add(new PanelImage());
                 else
-                    mainPanel.add(new PanelImage(cartes.get(i-1).getImage(), 2));
+                    mainPanel.add(new PanelImage(cartes.get(i).getImage(), 2));
             }
             mainPanel.add(panelJoueur);
         }
