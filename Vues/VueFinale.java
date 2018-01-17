@@ -79,13 +79,15 @@ public class VueFinale extends Observable{
         if (gagne) {
             resultat = new JLabel("VOUS AVEZ GAGNÉ!", JLabel.CENTER);
             resultat.setForeground(Color.blue);
+             tresorGagne = new JLabel("Vous avez récupéré " + somme + " trésors", JLabel.CENTER);
             
         }else{
             resultat = new JLabel("VOUS AVEZ PERDU!", JLabel.CENTER);
             resultat.setForeground(Color.red);
+            tresorGagne = new JLabel("Vous avez récupéré seulement " + somme + " trésors", JLabel.CENTER);
         }
         
-        tresorGagne = new JLabel("Vous avez récupéré " + somme + " trésors", JLabel.CENTER);
+       
         resultat.setFont(f);
         tresorGagne.setFont(fTresorGagne);
         
