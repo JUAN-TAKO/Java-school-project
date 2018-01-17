@@ -11,5 +11,8 @@ public enum MessageType{
         VALIDER_PARAMETRES, 
         JOUER,
 	QUITTER,
-        ANNULER_SELECTION;
+        RETOUR_MENU,
+        ANNULER_SELECTION,
+        GAGNE_PERDU,
+        PERDU;
 }

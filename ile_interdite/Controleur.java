@@ -105,7 +105,7 @@ public class Controleur implements Observer{
         }
         else{ 
             
-            aventuriers.get(tour).ajouterCarte(t); //sinon on l'ajoute à la collection de cartes de l'aventurier courant
+            aventuriers.get(tour).addCarte(t); //sinon on l'ajoute à la collection de cartes de l'aventurier courant
         }
         
         if(!iteratorTirage.hasNext()){ //si on arrive à la fin de la pile alors on mélange la défausse et on la remet dans la pile
@@ -190,8 +190,9 @@ public class Controleur implements Observer{
         ArrayList<Tuile> listeTuiles; //tableau temporaire pour stocker les tuiles accessibles 
         ArrayList<TypeTuile> typeTuiles; //tableau temporaire pour stocker les types des tuiles accéssibles (TypeTuile est un enum avec toutes les différentes tuiles)
         ArrayList<String> coordsTuiles; //on passeras les coordonées de la tuile sous forme de string a la vue Sélection
-        
+        ArrayList<Boolean> boolTresors = new ArrayList<>();
         boolean b;
+        VueFinale vueFinale;
                 
         switch(m.getType()){
             case DEPLACER:  //clic sur le bouton déplacer
@@ -254,6 +255,23 @@ public class Controleur implements Observer{
             case QUITTER: 
                 vueParametres.hide();
                 break;
+                
+      
+            case GAGNE_PERDU:
+                
+                boolTresors = vueJeu.getBoolTresors();  //recuperation de l'état des trésors (à créer)
+                vueFinale = new VueFinale(boolTresors);
+                break;
+                
+            case RETOUR_MENU:
+                vueFinale.hide();
+                vueParametres.afficher();
+                break;
+                
+
+                
+           
+                
                 
             case VALIDER_PARAMETRES: //réception des noms des joueurs
                 System.out.println("test");
@@ -320,6 +338,7 @@ public class Controleur implements Observer{
         }
     }
     
+ 
     
     //fonction main
     public static void main(String [] args) {
