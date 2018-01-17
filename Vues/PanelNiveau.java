@@ -53,7 +53,6 @@ public class PanelNiveau extends JPanel{
         redraw();
     }
     private void resizeIcon(){
-        System.out.println(getHeight());
         if(getWidth() != 0){
             int wi = combined.getWidth();
             int hi = combined.getHeight();
