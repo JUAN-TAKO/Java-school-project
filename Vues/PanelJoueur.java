@@ -28,7 +28,6 @@ import javax.swing.SwingConstants;
 
 public class PanelJoueur extends JPanel{
 
-    private ArrayList<PanelImage> listePanelsCartes;
     private JPanel panelJoueur;
     private JPanel mainPanel;
     private int coin;
@@ -41,13 +40,22 @@ public class PanelJoueur extends JPanel{
         String pos = coin >= 2 ? BorderLayout.NORTH : BorderLayout.SOUTH; // si coin >= 2 (en bas), pos = NORTH; sinon pos = SOUTH
         
         panelJoueur.add(new JLabel(nomJoueur, SwingConstants.CENTER), pos);
-        PanelImage pi = new PanelImage(pionJoueur.getJoueur());
+        PanelImage pi = new PanelImage(pionJoueur.getJoueur(), 2);
         panelJoueur.add(pi, BorderLayout.CENTER);
-        listePanelsCartes = new ArrayList<>();
         updateCartes(null);
                      
     }
-    
+    public PanelJoueur(int c){
+        super(new BorderLayout());
+        coin = c;
+        panelJoueur = new JPanel(new BorderLayout());
+        //condition ternaire. la syntaxe est : "variable = condition ? retourQuandVrai : retourQuandFaux;"
+        String pos = coin >= 2 ? BorderLayout.NORTH : BorderLayout.SOUTH; // si coin >= 2 (en bas), pos = NORTH; sinon pos = SOUTH
+        
+        panelJoueur.add(new JLabel(), pos);
+        PanelImage pi = new PanelImage();
+        panelJoueur.add(pi, BorderLayout.CENTER);
+    }
     public void updateCartes(ArrayList<CarteTirage> cartes){
         Boolean gauche = (coin % 2 == 0);
         int nbCartes;
@@ -64,7 +72,7 @@ public class PanelJoueur extends JPanel{
             mainPanel.add(panelJoueur);
             for(int i = 0; i < 7; i++){
                 if(i < nbCartes)
-                    mainPanel.add(new PanelImage(cartes.get(i).getImage()));
+                    mainPanel.add(new PanelImage(cartes.get(i).getImage(), 2));
                 else{          
                     mainPanel.add(new PanelImage());       
                 }
@@ -75,7 +83,7 @@ public class PanelJoueur extends JPanel{
                 if(i >= nbCartes)
                     mainPanel.add(new PanelImage());
                 else
-                    mainPanel.add(new PanelImage(cartes.get(i-1).getImage()));
+                    mainPanel.add(new PanelImage(cartes.get(i-1).getImage(), 2));
             }
             mainPanel.add(panelJoueur);
         }
