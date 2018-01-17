@@ -23,7 +23,7 @@ public enum Pion {
     ROUGE(Color.RED, "src/Images/pions/pionRouge.png", "src/Images/personnages/IngenieurDetour.png"),
     BLEU(Color.BLUE, "src/Images/pions/pionBleu.png", "src/Images/personnages/PiloteDetour.png"),
     VERT(Color.GREEN, "src/Images/pions/pionVert.png", "src/Images/personnages/ExplorateurDetour.png"),
-    JAUNE(Color.YELLOW, "src/Images/pions/pionJaune.png", "src/Images/personnages/NaviguateurDetour.png"),
+    JAUNE(Color.YELLOW, "src/Images/pions/pionJaune.png", "src/Images/personnages/NavigateurDetour.png"),
     NOIR(Color.BLACK, "src/Images/pions/pionNoir.png", "src/Images/personnages/PlongeurDetour.png"),
     GRIS(Color.GRAY, "src/Images/pions/pionGris.png", "src/Images/personnages/MessagerDetour.png");
     

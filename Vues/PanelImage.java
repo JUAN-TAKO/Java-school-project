@@ -22,10 +22,11 @@ public class PanelImage extends JPanel{
     private ImageIcon image;
     private ImageIcon scaled;
     private JLabel imageLabel;
-    
-    public PanelImage(String path){
+    private int fit;
+    public PanelImage(String path, int f){
         super(new BorderLayout());
-        imageLabel = new JLabel();
+        fit = f;
+        imageLabel = new JLabel("", JLabel.CENTER);
         image = ImagePool.getImageIcon(path);
         addComponentListener(new ComponentAdapter() {
             public void componentResized(ComponentEvent e) {
@@ -49,7 +50,7 @@ public class PanelImage extends JPanel{
             int hp = getHeight();
             float ratioPanel = (float)wp / (float)hp;
             int wn, hn;
-            if(ratioPanel > ratioImage){
+            if((fit == 1 || ratioPanel > ratioImage) && fit != 2){
                 hn = hp;
                 wn = (int)((float)hp * ratioImage);
             }
@@ -68,9 +69,9 @@ public class PanelImage extends JPanel{
         JPanel mainPanel = new JPanel(new GridLayout(1, 3));
         window.add(mainPanel);
         window.setSize(1150, 700);
-        mainPanel.add(new PanelImage("src/Images/cartes/Calice.png"));
-        mainPanel.add(new PanelImage("src/Images/cartes/Cristal.png"));
-        mainPanel.add(new PanelImage("src/Images/cartes/Pierre.png"));
+        mainPanel.add(new PanelImage("src/Images/cartes/Calice.png", 0));
+        mainPanel.add(new PanelImage("src/Images/cartes/Cristal.png", 0));
+        mainPanel.add(new PanelImage("src/Images/cartes/Pierre.png", 0));
         
         window.setVisible(true);
     }
