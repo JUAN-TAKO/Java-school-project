@@ -7,6 +7,8 @@ import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.GridLayout;
 import java.awt.Toolkit;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.Observable;
 import javax.swing.BorderFactory;
@@ -62,10 +64,10 @@ public class VueFinale extends Observable{
             gagne &= bool;
             PanelImage panelTresor;
             if (bool) {
-                panelTresor = new PanelImage(Tresor.values()[i].getTresor());
+                panelTresor = new PanelImage(Tresor.values()[i].getTresor(),0);
                 somme++;
             }else{
-                panelTresor = new PanelImage(Tresor.values()[i].getTresorGris());
+                panelTresor = new PanelImage(Tresor.values()[i].getTresorGris(),0);
             }
             panelCentre.add(panelTresor);
         }
@@ -79,13 +81,22 @@ public class VueFinale extends Observable{
         if (gagne) {
             resultat = new JLabel("VOUS AVEZ GAGNÉ!", JLabel.CENTER);
             resultat.setForeground(Color.blue);
+             tresorGagne = new JLabel("Vous avez récupéré " + somme + " trésors", JLabel.CENTER);
             
-        }else{
+        }
+        else{
             resultat = new JLabel("VOUS AVEZ PERDU!", JLabel.CENTER);
             resultat.setForeground(Color.red);
+            if(somme == 1){
+                tresorGagne = new JLabel("Vous avez récupéré seulement " + somme + " trésor", JLabel.CENTER);
+            }
+            else{
+                tresorGagne = new JLabel("Vous avez récupéré " + somme + " trésors", JLabel.CENTER);
+            }
         }
+            
         
-        tresorGagne = new JLabel("Vous avez récupéré " + somme + " trésors", JLabel.CENTER);
+       
         resultat.setFont(f);
         tresorGagne.setFont(fTresorGagne);
         
@@ -118,6 +129,16 @@ public class VueFinale extends Observable{
         boutonMenu.setFont(fBouton);
         panelSud.add(boutonMenu);
         
+        boutonQuitter.addActionListener(new ActionListener(){
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                
+            }
+            
+            
+            
+        });
+        
     }
     
     public void afficher() {
@@ -132,7 +153,7 @@ public class VueFinale extends Observable{
         ArrayList<Boolean> b = new ArrayList<>();
         b.add(false);
         b.add(true);
-        b.add(true);
+        b.add(false);
         b.add(false);
         VueFinale vueVic = new VueFinale(b);
         vueVic.afficher();

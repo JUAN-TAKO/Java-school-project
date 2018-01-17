@@ -49,7 +49,7 @@ public class VueDefausse {
         mainPanel.add(panelCentre, BorderLayout.CENTER);
         int i = 0;
         while(i < defausse.size()){
-            panelCentre.add(new PanelImage(defausse.get(i)));
+            panelCentre.add(new PanelImage(defausse.get(i),0));
             i++;
         }
         if (i < 24) {
