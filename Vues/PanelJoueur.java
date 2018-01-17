@@ -22,6 +22,8 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 import java.awt.*;
+import java.awt.event.ComponentAdapter;
+import java.awt.event.ComponentEvent;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import javax.swing.SwingConstants;
@@ -42,8 +44,20 @@ public class PanelJoueur extends JPanel{
         panelJoueur.add(new JLabel(nomJoueur, SwingConstants.CENTER), pos);
         PanelImage pi = new PanelImage(pionJoueur.getJoueur(), 2);
         panelJoueur.add(pi, BorderLayout.CENTER);
+        addComponentListener(new ComponentAdapter() {
+            public void componentResized(ComponentEvent e) {
+                //mainPanel.setSize(new Dimension);
+            }
+        });    
         updateCartes(null);
                      
+    }
+    public void setWidth(int w){
+        int wa = getWidth();
+        int ha = getHeight();
+        float ratio = (float)ha / (float)wa;
+        int h = (int)(ratio * (float)w);
+        this.setPreferredSize(new Dimension(w, h));
     }
     public PanelJoueur(int c){
         super(new BorderLayout());

@@ -23,41 +23,15 @@ public class VueJeu{
     
     Grille g = new Grille(new GrilleAleatoire());
     private JPanel mainPanel;
-    //Déclaration pour le panel Nord
     private JPanel panelNord;
-    private PanelJoueur[] panelsJoueurs = new PanelJoueur[4];
-    private JPanel panelActionPasser;
-    
-    private JPanel panelActionRestantes;
-    private JPanel panelBoutonAction;
-    private JButton boutonPasserTour;
-    
-    private JLabel labelActionText;
-    private JLabel labelNbAction;
-    
-    //déclaration pour le panel Ouest
-    private JPanel panelOuest;
-    private JPanel panelVideNord;
-    private JPanel panelVideSud;
-    private JPanel panelVideEst;
-    private JPanel panelVideOuest;
-    
-    private JPanel panelTresorRecup;
-    
-    //déclaration pour le panel Est
-    private JPanel panelEst;
-    private PanelNiveau panelNiveau;
-    
-    //déclaration pour le panel Sud
     private JPanel panelSud;
-    private JPanel panelVideCentre;
+    private JLabel labelActionsRestantes;
+    private JPanel panelCentreSud;
+    private PanelGrille grille;
     
-    
-    //déclaration pour le panel Centre
-    private PanelGrille panelCentre;
-    
+    private PanelJoueur[] panelsJoueurs = new PanelJoueur[4];
     public VueJeu(ArrayList<String> noms, ArrayList<Pion> pions){
-        
+   
         window = new JFrame();
         window.setDefaultCloseOperation(javax.swing.JFrame.DISPOSE_ON_CLOSE);
         window.setSize(Toolkit.getDefaultToolkit().getScreenSize());
@@ -65,6 +39,7 @@ public class VueJeu{
         
         mainPanel = new JPanel(new BorderLayout());
         window.add(mainPanel) ;
+        
         //On crée les panels joueurs
         for(int i = 0; i < 4; i++){
             if(i < noms.size()){
@@ -81,59 +56,25 @@ public class VueJeu{
         cartes.add(CarteTirage.TRESOR_CRISTAL);
         cartes.add(CarteTirage.SABLE);
         panelsJoueurs[0].updateCartes(cartes);
+        panelsJoueurs[1].updateCartes(cartes);
         
         // =================================================================================
         // NORD
         panelNord = new JPanel(new BorderLayout());
         mainPanel.add(panelNord, BorderLayout.NORTH);
         
-
-        panelActionPasser = new JPanel(new GridLayout(2,1));
         panelNord.add(panelsJoueurs[0], BorderLayout.WEST);
-        panelNord.add(panelActionPasser, BorderLayout.CENTER);
         panelNord.add(panelsJoueurs[1], BorderLayout.EAST);
         
-        panelActionRestantes = new JPanel(new GridLayout(1,2));
-        panelBoutonAction = new JPanel();
-        boutonPasserTour = new JButton("Passer tour");
-        panelActionPasser.add(panelActionRestantes);
-        panelActionPasser.add(panelBoutonAction);
+        JPanel panelCentreNord = new JPanel(new GridLayout(3,1));
+        panelNord.add(panelCentreNord, BorderLayout.CENTER);
         
-        panelBoutonAction.add(boutonPasserTour);
-        
-        labelActionText = new JLabel("Actions Restantes", JLabel.CENTER);
-        labelNbAction = new JLabel("", JLabel.CENTER);
-        panelActionRestantes.add(labelActionText);
-        panelActionRestantes.add(labelNbAction);
+        labelActionsRestantes = new JLabel("", JLabel.CENTER);
+        panelCentreNord.add(new JLabel("Actions Restantes", JLabel.CENTER));
+        panelCentreNord.add(labelActionsRestantes);
+        panelCentreNord.add(new JButton("Passer tour"));
         
         setNbAction("2");
-        // =================================================================================
-        // OUEST 
-        panelOuest = new JPanel(new BorderLayout());
-        mainPanel.add(panelOuest, BorderLayout.WEST);
-        panelVideEst = new JPanel();
-        panelVideNord = new JPanel() ;
-        panelVideSud = new JPanel();
-        panelVideOuest = new JPanel();
-        panelTresorRecup = new JPanel();
-        panelOuest.add(panelVideEst, BorderLayout.EAST);
-        panelOuest.add(panelVideOuest, BorderLayout.WEST);
-        panelOuest.add(panelVideNord, BorderLayout.NORTH);
-        panelOuest.add(panelVideSud, BorderLayout.SOUTH);
-        panelOuest.add(panelTresorRecup, BorderLayout.CENTER);
-        
-        
-        mainPanel.addComponentListener(new ComponentAdapter() {
-            public void componentResized(ComponentEvent e) {
-                //resize();
-            }
-        });
-        // =================================================================================
-        // EST
-        panelNiveau = new PanelNiveau(3, 1);
-        mainPanel.add(panelNiveau, BorderLayout.EAST);
-        
-
         // =================================================================================
         // CENTRE
         ArrayList<TypeTuile> types = new ArrayList<>();
@@ -146,35 +87,47 @@ public class VueJeu{
             }
         }
         
-        panelCentre = new PanelGrille(types);
-        mainPanel.add(panelCentre, BorderLayout.CENTER);
-        panelCentre.setBorder(BorderFactory.createLineBorder(Color.BLACK, 2));
+        grille = new PanelGrille(types);
+        //mainPanel.add(panelCentre, BorderLayout.CENTER);
+        grille.setBorder(BorderFactory.createLineBorder(Color.BLACK, 2));
         
-        panelCentre.setEtat(2, Etat.INONDEE);
-        panelCentre.setEtat(7, Etat.INONDEE);
-        panelCentre.setEtat(17, Etat.INONDEE);
-        panelCentre.setEtat(26, Etat.INONDEE);
+        grille.setEtat(2, Etat.INONDEE);
+        grille.setEtat(7, Etat.INONDEE);
+        grille.setEtat(17, Etat.INONDEE);
+        grille.setEtat(26, Etat.INONDEE);
         
         // =================================================================================
         // SUD
-        panelSud = new JPanel(new GridLayout(1,3));
+        panelSud = new JPanel(new BorderLayout());
         mainPanel.add(panelSud, BorderLayout.SOUTH);
-        panelVideCentre = new JPanel();
-        panelSud.add(panelsJoueurs[2]);
-        panelSud.add(panelVideCentre);
-        panelSud.add(panelsJoueurs[3]);
+        panelSud.add(panelsJoueurs[2], BorderLayout.WEST);
+        panelCentreSud = new JPanel();
+        panelCentreSud.setBackground(Color.red);
+        panelSud.add(panelCentreSud);
         
+        panelSud.add(panelsJoueurs[3], BorderLayout.EAST);
+        //resize();
+        mainPanel.addComponentListener(new ComponentAdapter() {
+            public void componentResized(ComponentEvent e) {
+                resize();
+            }
+        });
     }
-//    public void resize(){
-//        int w = mainPanel.getWidth();
-//        int w2 = (int)((float)w * 0.45f);
-//        
-//        for(int i = 0; i < 4; i++){
-//            panelsJoueurs[i].setPreferredSize(new Dimension(w2, 10));
-//        }
-//        mainPanel.revalidate();
-//        mainPanel.repaint();
-//    }
+    public void resize(){
+        int w = mainPanel.getWidth();
+        if(w != 0){
+            int w2 = (int)((float)w * 0.40f);
+
+            for(int i = 0; i < 4; i++){
+                panelsJoueurs[i].setWidth(w2);
+            }
+
+            panelNord.setPreferredSize(new Dimension(w, 150));
+            panelSud.setPreferredSize(new Dimension(w, 150));
+        }
+        mainPanel.revalidate();
+        mainPanel.repaint();
+    }
     public void afficher() {
         this.window.setVisible(true);
     }
@@ -184,7 +137,7 @@ public class VueJeu{
     }
     
     public void setNbAction(String s){
-        labelNbAction.setText(s);
+        labelActionsRestantes.setText(s);
     }
     
     public static void main(String [] args) {
