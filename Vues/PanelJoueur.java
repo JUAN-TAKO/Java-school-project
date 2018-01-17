@@ -91,7 +91,7 @@ public class PanelJoueur extends JPanel{
         window.setTitle("Joueur");    
         
         Explorateur joueur = new Explorateur("tibo");
-        PanelJoueur vueJoueur = new PanelJoueur(3, joueur.getNom(), joueur.getPion());
+        PanelJoueur vueJoueur = new PanelJoueur(0, joueur.getNom(), joueur.getPion());
         ArrayList<CarteTirage> cartes = new ArrayList<>();
         cartes.add(CarteTirage.TRESOR_CALICE);
         cartes.add(CarteTirage.TRESOR_CALICE);
