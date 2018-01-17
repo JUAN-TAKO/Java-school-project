@@ -89,7 +89,7 @@ public class VueFinale extends Observable{
                 tresorGagne = new JLabel("Vous avez récupéré seulement " + somme + " trésor", JLabel.CENTER);
             }
             else{
-                tresorGagne = new JLabel("Vous avez récupéré seulement " + somme + " trésors", JLabel.CENTER);
+                tresorGagne = new JLabel("Vous avez récupéré " + somme + " trésors", JLabel.CENTER);
             }
         }
             
@@ -140,9 +140,9 @@ public class VueFinale extends Observable{
     public static void main(String[] args) { 
         ArrayList<Boolean> b = new ArrayList<>();
         b.add(false);
+        b.add(true);
         b.add(false);
-        b.add(true);
-        b.add(true);
+        b.add(false);
         VueFinale vueVic = new VueFinale(b);
         vueVic.afficher();
     }
