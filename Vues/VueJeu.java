@@ -33,7 +33,7 @@ public class VueJeu{
     private JButton boutonPasserTour;
     
     private JLabel labelActionText;
-    private JPanel panelNbAction;
+    private JLabel labelNbAction;
     
     //déclaration pour le panel Ouest
     private JPanel panelOuest;
@@ -89,9 +89,9 @@ public class VueJeu{
         panelBoutonAction.add(boutonPasserTour);
         
         labelActionText = new JLabel("Action(s) Restante(s)", JLabel.CENTER);
-        panelNbAction = new JPanel();
+        labelNbAction = new JLabel();
         panelActionRestantes.add(labelActionText);
-        panelActionRestantes.add(panelNbAction);
+        panelActionRestantes.add(labelNbAction);
         
         // =================================================================================
         // OUEST 
@@ -156,6 +156,10 @@ public class VueJeu{
     
     public void hide() {
         window.dispose();
+    }
+    
+    public void setNbAction(String s){
+        labelNbAction.setText(s);
     }
     
     public static void main(String [] args) {
