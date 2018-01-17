@@ -81,11 +81,18 @@ public class VueFinale extends Observable{
             resultat.setForeground(Color.blue);
              tresorGagne = new JLabel("Vous avez récupéré " + somme + " trésors", JLabel.CENTER);
             
-        }else{
+        }
+        else{
             resultat = new JLabel("VOUS AVEZ PERDU!", JLabel.CENTER);
             resultat.setForeground(Color.red);
-            tresorGagne = new JLabel("Vous avez récupéré seulement " + somme + " trésors", JLabel.CENTER);
+            if(somme == 1){
+                tresorGagne = new JLabel("Vous avez récupéré seulement " + somme + " trésor", JLabel.CENTER);
+            }
+            else{
+                tresorGagne = new JLabel("Vous avez récupéré seulement " + somme + " trésors", JLabel.CENTER);
+            }
         }
+            
         
        
         resultat.setFont(f);
@@ -133,9 +140,9 @@ public class VueFinale extends Observable{
     public static void main(String[] args) { 
         ArrayList<Boolean> b = new ArrayList<>();
         b.add(false);
-        b.add(true);
-        b.add(true);
         b.add(false);
+        b.add(true);
+        b.add(true);
         VueFinale vueVic = new VueFinale(b);
         vueVic.afficher();
     }
