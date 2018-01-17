@@ -9,6 +9,8 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.GridLayout;
 import java.awt.Toolkit;
+import java.awt.event.ComponentAdapter;
+import java.awt.event.ComponentEvent;
 import java.util.ArrayList;
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
@@ -20,7 +22,7 @@ public class VueJeu{
     private final JFrame window ;
     
     Grille g = new Grille(new GrilleAleatoire());
-    
+    private JPanel mainPanel;
     //Déclaration pour le panel Nord
     private JPanel panelNord;
     private PanelJoueur[] panelsJoueurs = new PanelJoueur[4];
@@ -61,7 +63,7 @@ public class VueJeu{
         window.setSize(Toolkit.getDefaultToolkit().getScreenSize());
         window.setTitle("Plateau de Jeu");
         
-        JPanel mainPanel = new JPanel(new BorderLayout());
+        mainPanel = new JPanel(new BorderLayout());
         window.add(mainPanel) ;
         //On crée les panels joueurs
         for(int i = 0; i < 4; i++){
@@ -121,6 +123,11 @@ public class VueJeu{
         panelOuest.add(panelTresorRecup, BorderLayout.CENTER);
         
         
+        mainPanel.addComponentListener(new ComponentAdapter() {
+            public void componentResized(ComponentEvent e) {
+                //resize();
+            }
+        });
         // =================================================================================
         // EST
         panelNiveau = new PanelNiveau(3, 1);
@@ -158,7 +165,16 @@ public class VueJeu{
         panelSud.add(panelsJoueurs[3]);
         
     }
-    
+//    public void resize(){
+//        int w = mainPanel.getWidth();
+//        int w2 = (int)((float)w * 0.45f);
+//        
+//        for(int i = 0; i < 4; i++){
+//            panelsJoueurs[i].setPreferredSize(new Dimension(w2, 10));
+//        }
+//        mainPanel.revalidate();
+//        mainPanel.repaint();
+//    }
     public void afficher() {
         this.window.setVisible(true);
     }

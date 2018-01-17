@@ -37,7 +37,7 @@ public class PanelJoueur extends JPanel{
         coin = c;
         panelJoueur = new JPanel(new BorderLayout());
         //condition ternaire. la syntaxe est : "variable = condition ? retourQuandVrai : retourQuandFaux;"
-        String pos = coin >= 2 ? BorderLayout.NORTH : BorderLayout.SOUTH; // si coin >= 2 (en bas), pos = NORTH; sinon pos = SOUTH
+        String pos = BorderLayout.NORTH;//coin >= 2 ? BorderLayout.NORTH : BorderLayout.SOUTH; // si coin >= 2 (en bas), pos = NORTH; sinon pos = SOUTH
         
         panelJoueur.add(new JLabel(nomJoueur, SwingConstants.CENTER), pos);
         PanelImage pi = new PanelImage(pionJoueur.getJoueur(), 2);
@@ -56,6 +56,7 @@ public class PanelJoueur extends JPanel{
         PanelImage pi = new PanelImage();
         panelJoueur.add(pi, BorderLayout.CENTER);
     }
+    
     public void updateCartes(ArrayList<CarteTirage> cartes){
         Boolean gauche = (coin % 2 == 0);
         int nbCartes;
@@ -88,6 +89,7 @@ public class PanelJoueur extends JPanel{
             mainPanel.add(panelJoueur);
         }
         add(mainPanel, BorderLayout.CENTER);
+        
     }
     
     public static void main(String [] args) {
