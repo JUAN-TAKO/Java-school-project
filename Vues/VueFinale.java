@@ -7,6 +7,8 @@ import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.GridLayout;
 import java.awt.Toolkit;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.Observable;
 import javax.swing.BorderFactory;
@@ -126,6 +128,16 @@ public class VueFinale extends Observable{
         boutonMenu = new JButton("Retour Menu");
         boutonMenu.setFont(fBouton);
         panelSud.add(boutonMenu);
+        
+        boutonQuitter.addActionListener(new ActionListener(){
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                
+            }
+            
+            
+            
+        });
         
     }
     
