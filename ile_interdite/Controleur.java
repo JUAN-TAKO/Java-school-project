@@ -54,6 +54,8 @@ public class Controleur implements Observer{
     private int[] defausseTirage;
     private int[] piocheTirage;
     
+    private ArrayList<Boolean> tresorsRecoltes; 
+    
     private ArrayList<Tuile> tuilesAssechables;
     private ArrayList<Tuile> tuilesAccessibles;
     private ArrayList<Tuile> tuilesSpeciales;
@@ -63,7 +65,11 @@ public class Controleur implements Observer{
         aventuriersByPion = new HashMap<>();
         pileInondation = new LinkedList<>(Arrays.asList(TypeTuile.values())); //On initialise la pile de cartes avec toutes les cartes possibles
         iteratorInondation = pileInondation.listIterator(); //on met l'iterateur au début de la pile (pas de défausse)
-       
+        tresorsRecoltes = new ArrayList<>();
+        for(int i = 0; i < 4; i++){
+            tresorsRecoltes.add(false);
+        }
+        
         //de même pour la pile de cartes Tirage
         pileTirage = new LinkedList<>();
         iteratorTirage = pileTirage.listIterator();
@@ -160,10 +166,10 @@ public class Controleur implements Observer{
         }
         tuilesAccessibles = getAventurierCourant().getTuilesAccessiblesDeplacement(grille);
         tuilesAssechables = getAventurierCourant().getTuilesAccessiblesAssechement(grille);
-        tuilesSpeciales = getAventurierCourant().getTuilesAccessiblesSpeciales(grille);
+        tuilesSpeciales = getAventurierCourant().getTuilesSpeciales(grille);
         
         
-        selectAventurier();
+        //selectAventurier();
     }
     
     //désactive les aventuriers dont ce n'est pas le tour, et active l'aventurier courant (dans la vue)
@@ -404,8 +410,8 @@ public class Controleur implements Observer{
       
             case GAGNE_PERDU:
                 
-                boolTresors = vueJeu.getBoolTresors();  //recuperation de l'état des trésors (à créer)
-                vueFinale = new VueFinale(boolTresors);
+                
+                vueFinale = new VueFinale(tresorsRecoltes);
                 vueFinale.addObserver(this);
                 vueFinale.afficher();
                 finale = true;
@@ -447,6 +453,7 @@ public class Controleur implements Observer{
                             Explorateur ex = new Explorateur(nom);
                             aventuriers.add(ex);
                             aventuriersByPion.put(ex.getPion(), ex);
+                            pions.add(Pion.VERT);
                             break;
                         case 1:
                             
@@ -500,11 +507,10 @@ public class Controleur implements Observer{
                 for(int j = 0; j < aventuriers.size(); j++){
                     Aventurier a = aventuriers.get(j);
                     System.out.println(a);
-                    System.out.println(vueJeu);
                     //vueAventuriers.setPosition(j, a.getPosition().getNom() + " (" + a.getPosition().getX() + " ; " + a.getPosition().getY() + ")");
                     
                 }
-                selectAventurier();
+                //selectAventurier();
                 break;
         }
     }
