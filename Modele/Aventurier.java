@@ -12,8 +12,8 @@ public abstract class Aventurier extends Observable{
     private Tuile position;
     private String nom;
     private String nomRole;
-    private int[] cartes;
-    private final int nbActionMax;
+    private int[] cartes; // tableau des cartes possédés par l'aventurier.
+    private final int nbActionMax; //nb d'action max que peut réaliser l'aventurier dans un tour.
 
     public Aventurier(String nom, String nomRole){
         this.nom = nom;
@@ -30,6 +30,7 @@ public abstract class Aventurier extends Observable{
             tuilesAccessibles.add(t);
         }
     }
+    
     //vérifie qu'une tuile est asséchable
     protected void checkAssechement(Grille g, ArrayList<Tuile> tuilesAccessibles, int x, int y) {
         Tuile t;
@@ -39,6 +40,7 @@ public abstract class Aventurier extends Observable{
         }
     }
     
+    //récupère les tuiles accessibles
     public ArrayList<Tuile> getTuilesAccessiblesDeplacement(Grille g){
         ArrayList<Tuile> tuilesAccessibles = new ArrayList<>();
         checkDeplacement(g, tuilesAccessibles, 0, 1);
@@ -49,6 +51,7 @@ public abstract class Aventurier extends Observable{
         return tuilesAccessibles;
     }
 
+    //récupère les tuiles asséchables
     public ArrayList<Tuile> getTuilesAccessiblesAssechement(Grille g){
         ArrayList<Tuile> tuilesAccessibles = new ArrayList<>();
         
@@ -60,9 +63,12 @@ public abstract class Aventurier extends Observable{
 
         return tuilesAccessibles;
     }
+    
+    //récupère les tuiles spéciales
   public ArrayList<Tuile> getTuilesSpeciales(Grille g){
       return new ArrayList<>();
   }
+  
 //    public abstract void actionSpeciale(Grille g);
 	
     public String getNom(){
@@ -86,23 +92,33 @@ public abstract class Aventurier extends Observable{
         this.position = position;
     }
     
+    //récupère la tuile de départ de l'aventurier 
     public abstract TypeTuile getTuileDepart();  
     
+    //méthode pour ajouter une carte à l'aventurier
     public void addCarte(CarteTirage c){
         cartes[c.ordinal()]++;
     }
+    
+    //méthode pour retirer une carte à l'aventurier
     public void removeCarte(CarteTirage c){
         removeCarte(c, 1);
     }
+    
+    //méthode pour retirer plusieurs cartes à l'aventurier
     public void removeCarte(CarteTirage c, int nbCartes){
         cartes[c.ordinal()] -= nbCartes;
         if(cartes[c.ordinal()] < 0){
             cartes[c.ordinal()] = 0;
         }
     }
+    
+    
     public int getCartes(CarteTirage c){
         return cartes[c.ordinal()];
     }
+    
+    
     public int getNbCartes(){
         int nb = 0;
         for(int i = 0; i < 6; i++){

@@ -10,7 +10,8 @@ public class Explorateur extends Aventurier{
     public Explorateur(String nomJoueur){
         super(nomJoueur, "Explorateur");
     }
-
+//méthodes de récupération des tuiles accessible au déplacement et a l'assèchement. Methode spécifique car
+// Explorateur peut bouger/assecher en diagonale
     @Override
     public ArrayList<Tuile> getTuilesAccessiblesDeplacement(Grille g){
 		ArrayList<Tuile> tuilesAccessibles = new ArrayList<>();
@@ -24,6 +25,7 @@ public class Explorateur extends Aventurier{
         checkDeplacement(g, tuilesAccessibles, -1, 1);
         return tuilesAccessibles;
 	}
+    
 	public ArrayList<Tuile> getTuilesAccessiblesAssechement(Grille g){
 		ArrayList<Tuile> tuilesAccessibles = new ArrayList<>();
 		checkAssechement(g, tuilesAccessibles, 0, 0);
@@ -39,6 +41,7 @@ public class Explorateur extends Aventurier{
         return tuilesAccessibles;
 	}
 
+        // Définition de la tuile de départ et de la couleur du pion.
     @Override
     public TypeTuile getTuileDepart() {
         return TypeTuile.PORTE_FER;
