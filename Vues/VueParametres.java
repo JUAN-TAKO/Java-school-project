@@ -171,7 +171,7 @@ public class VueParametres extends Observable{
                 }
                 
                 setChanged();
-                notifyObservers(new MessageParametre(MessageType.VALIDER_PARAMETRES, listeNoms, getIndexSelect()+1));
+                notifyObservers(new MessageParametre(MessageType.VALIDER_PARAMETRES, listeNoms, getIndexSelect()));
                 clearChanged();
             }
         });

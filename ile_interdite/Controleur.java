@@ -395,7 +395,6 @@ public class Controleur implements Observer{
                     vueParametres.desactive();
                 }else if(jeu){
                     vueJeu.visible(jeu);
-                    jeu = false;
                 }
                 
                 break;      
@@ -403,15 +402,18 @@ public class Controleur implements Observer{
                 
                 
             case OUI :
+                
                 vueConfirm.hide();
+                
                 if(debut){
                     vueDebut.hide();
                     debut = false;
                 }else if(parametre){
                     vueParametres.hide();
                     parametre = false;
-                }else if(!jeu){
+                }else if(jeu){
                     vueJeu.hide();
+                    jeu = false;
                 }
                 
                 break;
@@ -422,7 +424,7 @@ public class Controleur implements Observer{
                     vueDebut.active();
                 }else if(parametre){
                     vueParametres.active();
-                }else if(!jeu){
+                }else if(jeu){
                     vueJeu.visible(jeu);
                     jeu = true;
                 }
@@ -519,12 +521,6 @@ public class Controleur implements Observer{
                 vueJeu.addObserver(this);                
                 vueJeu.afficher();
                 jeu = true;
-                
-                
-                
-                
-                
-                
                 
                 
                 //on met a jour la position des aventuriers dans la vue aventuriers

@@ -74,7 +74,7 @@ public class VueRegles extends Observable{
         
         // =================================================================================
         // CENTRE
-        panelCentre = new PanelImage("src/Images/règles/regle1.png",2);
+        panelCentre = new PanelImage("src/Images/regles/regle1.png",2);
         mainPanel.add(panelCentre, BorderLayout.CENTER);
         
         
@@ -126,7 +126,7 @@ public class VueRegles extends Observable{
             }
         });
         
-        boutonRetour = new JButton("Retour");
+        boutonRetour = new JButton("Fermer");
         boutonRetour.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
