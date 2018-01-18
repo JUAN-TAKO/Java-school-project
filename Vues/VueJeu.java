@@ -18,6 +18,9 @@ import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JMenu;
+import javax.swing.JMenuBar;
+import javax.swing.JMenuItem;
 import javax.swing.JPanel;
 
 public class VueJeu{
@@ -43,6 +46,10 @@ public class VueJeu{
     private PanelJoueur[] panelsJoueurs = new PanelJoueur[4];
     private CompositionObservable observable;
     
+    private JMenuBar mb = new JMenuBar();
+    private JMenu menu = new JMenu();
+    private JMenuItem quitter = new JMenuItem();
+    private JMenuItem regles = new JMenuItem();
     private class Tailles{
         public int windowH;
         public int windowW;
@@ -66,6 +73,20 @@ public class VueJeu{
         mainPanel = new JPanel(new BorderLayout());
         window.add(mainPanel) ;
         observable = new CompositionObservable();
+        
+        //Creation d'une barre de menu  et ajout d'un menu déroulant dans la barre de menu
+        window.setJMenuBar(mb);
+        menu.setText("Menu");
+        
+        //déclaration des différents choix du menu
+        quitter.setText("Quitter");
+        regles.setText("Règles du jeu");
+        
+        //ajout des choix au menu
+        menu.add(regles);
+        menu.add(quitter);
+        mb.add(menu);
+        
         //On crée les panels joueurs
         for(int i = 0; i < 4; i++){
             if(i < noms.size()){
