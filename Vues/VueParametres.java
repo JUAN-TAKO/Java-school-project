@@ -71,8 +71,6 @@ public class VueParametres extends Observable{
         JPanel mainPanel = new JPanel(new BorderLayout());
         window.add(mainPanel);
         
-//        mainPanel.setBackground(Color.decode("#F3C556"));
-
         
         
         // =================================================================================
@@ -80,23 +78,18 @@ public class VueParametres extends Observable{
         panelHaut = new JPanel() ;
         mainPanel.add(panelHaut, BorderLayout.NORTH);
         panelHaut.add(new JLabel("BIENVENUE AVENTURIERS")) ;
-        panelHaut.setBackground(Color.decode("#F3C556"));
-        
         // =================================================================================
         // OUEST 
         panelOuest = new JPanel();
         mainPanel.add(panelOuest, BorderLayout.WEST);
-        
         // =================================================================================
         // EST
         panelEst = new JPanel();
         mainPanel.add(panelEst, BorderLayout.EAST);
-        
         // =================================================================================
         // CENTRE
         panelCentre = new JPanel(new GridLayout(7,1));
         mainPanel.add(panelCentre, BorderLayout.CENTER);
-        
         // selection du nombre de joueur
         panelCentre.add(panelNbJoueur = new JPanel(new GridLayout(1,2)));
         JLabel labelJoueur;
