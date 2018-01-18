@@ -156,14 +156,14 @@ public class VueJeu{
         
         panelSud.add(panelsJoueurs[3], BorderLayout.EAST);
         niveau = new PanelNiveau(3, 1);
-        defausseInondation = new PanelImage("src/Images/cache/inondation_cache.png", 2);
+        defausseInondation = new PanelImage("src/Images/cache/inondation_cache.png", 2, observable, MessageType.VOIR_INONDATION);
         panelEst = new JPanel(new BorderLayout());
         panelEst.add(niveau, BorderLayout.CENTER);
         panelEst.add(defausseInondation, BorderLayout.SOUTH);
         mainPanel.add(panelEst, BorderLayout.EAST);
         
         panelTresor = new PanelTresor();
-        defausseTirage = new PanelImage("src/Images/cache/tresor_cache.png", 2);
+        defausseTirage = new PanelImage("src/Images/cache/tresor_cache.png", 2, observable, MessageType.VOIR_TIRAGE);
         panelOuest = new JPanel(new BorderLayout());
         panelOuest.add(panelTresor, BorderLayout.CENTER);
         panelOuest.add(defausseTirage, BorderLayout.SOUTH);

@@ -12,6 +12,7 @@ import Aventuriers.*;
 import java.awt.Color;
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.ListIterator;
 
@@ -27,6 +28,7 @@ public class Controleur implements Observer{
     
     private Grille grille;  //plateau de jeu
     private ArrayList<Aventurier> aventuriers; //liste des aventuriers
+    private HashMap<Pion, Aventurier> aventuriersByPion;
     private VueAventuriers vueAventuriers; //pour afficher les aventuriers
     private VueSelection selection;  //fenêtre de sélection de la tuile
     
@@ -48,9 +50,12 @@ public class Controleur implements Observer{
     private LinkedList<CarteTirage> pileTirage; //pile des cartes tirage à piocher
     private ListIterator iteratorTirage;
     
+    private int[] defausseTirage;
+    private int[] piocheTirage;
     
     public Controleur(){
         aventuriers = new ArrayList<>();
+        aventuriersByPion = new HashMap<>();
         pileInondation = new LinkedList<>(Arrays.asList(TypeTuile.values())); //On initialise la pile de cartes avec toutes les cartes possibles
         iteratorInondation = pileInondation.listIterator(); //on met l'iterateur au début de la pile (pas de défausse)
        
@@ -191,7 +196,34 @@ public class Controleur implements Observer{
     public void setBoutonsActivesIngenieur(boolean a){
         vueAventuriers.setBoutonsActivesIngenieur(a);
     }
-    
+    public void addCarte(CarteTirage c, int[] tab){
+        tab[c.ordinal()]++;
+    }
+    public void removeCarte(CarteTirage c, int[] tab){
+        removeCarte(c, tab, 1);
+    }
+    public void moveCarte(CarteTirage c, int[] tab1, int[] tab2){
+        if(getCartes(c, tab1) > 0){
+            removeCarte(c, tab1);
+            addCarte(c, tab2);
+        }
+    }
+    public void removeCarte(CarteTirage c, int[] tab, int nbCartes){
+        tab[c.ordinal()] -= nbCartes;
+        if(tab[c.ordinal()] < 0){
+            tab[c.ordinal()] = 0;
+        }
+    }
+    public int getCartes(CarteTirage c, int[] tab){
+        return tab[c.ordinal()];
+    }
+    public int getNbCartes(){
+        int nb = 0;
+        for(int i = 0; i < 6; i++){
+            nb += cartes[i];
+        }
+        return nb;
+    }
     //gère la réception des messages des vues
     @Override
     public void update(Observable o, Object arg){
@@ -205,6 +237,17 @@ public class Controleur implements Observer{
         VueFinale vueFinale;
                 
         switch(m.getType()){
+            case CLIC_TUILE:
+                
+                break;
+                
+            case DEFAUSSER:
+                MessageDefausser mdf = (MessageDefausser)m;
+                CarteTirage ct = mdf.getCarte();
+                Aventurier ave  = aventuriersByPion.get(mdf.getPion());
+                ave.removeCarte(ct);
+                
+                
             case DEPLACER:  //clic sur le bouton déplacer
                 listeTuiles = getAventurierCourant().getTuilesAccessiblesDeplacement(grille);
                 afficherSelection(listeTuiles, MessageType.CHOISIR_DEPLACEMENT);
@@ -356,9 +399,12 @@ public class Controleur implements Observer{
                 for(String nom : noms){
                     switch(indexes.get(i)){
                         case 0:
-                            aventuriers.add(new Explorateur(nom));
+                            Explorateur ex = new Explorateur(nom);
+                            aventuriers.add(ex);
+                            aventuriersByPion.put(ex.getPion(), ex);
                             break;
                         case 1:
+                            
                             aventuriers.add(new Ingenieur(nom));
                             break;
                         case 2:
