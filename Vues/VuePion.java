@@ -32,7 +32,7 @@ public class VuePion extends Observable{
     private JButton boutonNon;
     
     
-    public VuePion(ArrayList<Pion> listes){
+    public VuePion(ArrayList<Pion> listesPion, ArrayList<String> listesNom){
         window = new JFrame();
         window.setDefaultCloseOperation(javax.swing.JFrame.DISPOSE_ON_CLOSE);
         window.setSize(400, 100);
@@ -61,12 +61,19 @@ public class VuePion extends Observable{
         
         // =================================================================================
         // CENTRE
-        JPanel panelCentre = new JPanel(new GridLayout(1,listes.size(),0,10));
+        JPanel panelCentre = new JPanel(new GridLayout(2,listesPion.size(),0,10));
         mainPanel.add(panelCentre, BorderLayout.CENTER);
         
-        for(Pion p : listes){
+        for(Pion p : listesPion){
             panelCentre.add(new PanelImage(p.getJoueur() , 0));
         }
+        for(String n : listesNom){
+            JLabel l = new JLabel(n);
+            l.setHorizontalAlignment(SwingConstants.CENTER);
+            panelCentre.add(l);
+            
+        }
+        
         
         // =================================================================================
         // SUD
@@ -87,10 +94,20 @@ public class VuePion extends Observable{
     
     public static void main(String [] args){
         ArrayList<Pion> p = new ArrayList<>();
+        ArrayList<String> n = new ArrayList<>();
         p.add(Pion.BLEU);
         p.add(Pion.VERT);
+        p.add(Pion.ROUGE);
+        p.add(Pion.NOIR);
         
-        VuePion vuePion = new VuePion(p);
+        n.add("dede");
+        n.add("tibo");
+        n.add("tata");
+        n.add("juan");
+        
+        
+        
+        VuePion vuePion = new VuePion(p,n);
         vuePion.afficher();
    }
     
