@@ -266,6 +266,8 @@ public class VueJeu{
     
     public void setNbAction(String s){
         labelActionsRestantes.setText(s);
+        labelActionsRestantes.revalidate();
+        labelActionsRestantes.repaint();
     }
     
     public void setNiveau(int n){
