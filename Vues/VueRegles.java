@@ -81,6 +81,8 @@ public class VueRegles extends Observable{
          
         // =================================================================================
         // SUD
+        //les différents boutons servent à changer de "pages" qui correspondent à différents
+        //panels qui permettent d'afficher toutes les règles.
         
         JPanel panelBas = new JPanel(new GridLayout(1,7,10,0)) ;
         mainPanel.add(panelBas, BorderLayout.SOUTH);
@@ -171,41 +173,12 @@ public class VueRegles extends Observable{
         mainPanel.repaint();
     }
     
-    private class PanelAvecImage extends JPanel {
-
-        private Image image;
-        private final Integer width ;
-        private final Integer height ;
-
-        public PanelAvecImage(Integer width, Integer height, String imageFile) {
-            this.width = width ;
-            this.height = height ;
-            try {
-                this.image = ImageIO.read(new File(imageFile));
-            } catch (IOException ex) {
-                System.err.println("Erreur de lecture background");
-            }
-        }
-
-        @Override
-        public void paintComponent(Graphics g) {
-            super.paintComponent(g);
-            if (image != null) {
-                g.drawImage(image, 0, 0, this.width, this.height, null, this);
-            }
-        }
-    }
-
-    
-    public static void main(String [] args) {
-        VueRegles vueRegles = new VueRegles();
-        vueRegles.afficher();
-   }
-    
+    //méthode pour fermer la fenetre
     public void hide() {
         window.dispose();
     }
     
+    //méthode pour afficher la fenetre
     public void afficher() {
         this.window.setVisible(true);
     }

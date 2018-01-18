@@ -15,12 +15,15 @@ public class CompositionObservable extends Observable{
     public CompositionObservable(){
         super();
     }
+    
     public void setChanged(){
         super.setChanged();
     }
+    
     public void notifyObservers(Object arg){
         super.notifyObservers(arg);
     }
+    
     public void clearChanged(){
         super.clearChanged();
     }

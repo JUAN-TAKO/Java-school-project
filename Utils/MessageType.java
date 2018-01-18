@@ -1,5 +1,6 @@
 package Utils;
 
+//les différents types de messages envoyer par les vues.
 public enum MessageType{
 	DEPLACER,
 	ASSECHER,

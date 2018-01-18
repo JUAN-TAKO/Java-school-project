@@ -25,6 +25,7 @@ public enum CarteTirage {
     CarteTirage(String imagePath){
         image = imagePath;
     }
+    
     public String getImage(){
         return image;
     }

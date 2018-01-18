@@ -30,17 +30,21 @@ public enum Pion {
     private Color couleur;
     private String image;
     private String imageJoueur;
+    
     Pion(Color c, String icon, String pathJoueur){
         couleur = c;
         image = icon;
         imageJoueur = pathJoueur;
     }
+    
     public Color getColor(){
         return couleur;
     }
+    
     public String getIcon(){
         return image;
     }
+    
     public String getJoueur(){
         return imageJoueur;
     }
