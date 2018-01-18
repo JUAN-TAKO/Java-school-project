@@ -311,14 +311,16 @@ public class Controleur implements Observer{
                 ave.removeCarte(ct);
                 addCarte(ct, defausseTirage);
                 updateCartes(ave);
-            //case 
             case DEPLACER:  //clic sur le bouton déplacer
                 listeTuiles = getAventurierCourant().getTuilesAccessiblesDeplacement(grille);
                 afficherSelection(listeTuiles, MessageType.CHOISIR_DEPLACEMENT);
                 setBoutonsActives(false);
                 
                 break;
+            case CLIC_CARTE:
                 
+                
+                break;
             case ASSECHER:  //clic sur le bouton assecher
 //                listeTuiles = getAventurierCourant().getTuilesAccessiblesAssechement(grille);
 //                afficherSelection(listeTuiles, MessageType.CHOISIR_ASSECHEMENT);

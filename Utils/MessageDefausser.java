@@ -13,7 +13,7 @@ public class MessageDefausser extends Message{
     private CarteTirage carte;
     private Pion pion;
     public MessageDefausser(CarteTirage c, Pion p){
-	super(MessageType.DEFAUSSER);
+	super(MessageType.CLIC_CARTE);
 	carte = c;
         pion = p;
     }

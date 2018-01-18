@@ -13,6 +13,7 @@ public enum MessageType{
         CHOISIR_DIFFICULTE,
         VALIDER_PARAMETRES,
         
+        CLIC_CARTE,
         DEFAUSSER,
         VOIR_INONDATION,
         VOIR_TIRAGE,
