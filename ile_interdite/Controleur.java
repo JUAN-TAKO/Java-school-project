@@ -35,7 +35,7 @@ public class Controleur implements Observer{
 
     private TypeTuile tuileContexte;
     private int indexAventurierCourant; 
-    private int action; //nombre d'actions effectuées par le joueur courant
+    private Integer action; //nombre d'actions effectuées par le joueur courant
     private int tour; //nombre de tours de jeu
     private boolean jokerIngenieur; //égal à true si l'ingénieur a déjà asseché une case pour cette action
     
@@ -155,11 +155,13 @@ public class Controleur implements Observer{
     public void actionSuivante(){ 
         System.out.println(action);
         action++;
-        System.out.println(action);
-        if(action >= 3){
+        int nbActMax = getAventurierCourant().getNbActionMax();
+        Integer nbActionRestantes;
+        if(action >= nbActMax){
             aventurierSuivant();
         }
-       
+        nbActionRestantes = nbActMax - action;
+        vueJeu.setNbAction(nbActionRestantes.toString());
     }
     //passe a l'aventurier suivant et au tour suivant si tous les aventuriers ont joués
     public void aventurierSuivant(){
@@ -281,7 +283,6 @@ public class Controleur implements Observer{
         actionsPossibles.set(3, t.getEtat() == Etat.INONDEE && getAventurierCourant().getCartes(CarteTirage.SABLE) > 0); // sac de sable
         actionsPossibles.set(4, t.getEtat() != Etat.COULEE && getAventurierCourant().getCartes(CarteTirage.HELICOPTERE) > 0);// helicoptere
         actionsPossibles.set(5, tr != null && getAventurierCourant().getCartes(CarteTirage.values()[tr.ordinal()]) >= 4); // recup tresor
-        System.out.println("test2");
         vueJeu.choisirEtatsBoutons(actionsPossibles);
     }
     //gère la réception des messages des vues
@@ -393,7 +394,6 @@ public class Controleur implements Observer{
                 break;
                 
             case QUITTER:
-                System.out.println("prout quitter");
                 vueConfirm = new VueConfirm();
                 vueConfirm.addObserver(this);
                 vueConfirm.afficher();
@@ -403,7 +403,6 @@ public class Controleur implements Observer{
                 }else if(parametre){
                     vueParametres.desactive();
                 }else if(jeu){
-                    System.out.println("prout");
                     vueJeu.visible(jeu);
                 }
                 
@@ -460,7 +459,6 @@ public class Controleur implements Observer{
                 break;              
                 
             case VALIDER_PARAMETRES: //réception des noms des joueurs
-                System.out.println("test");
                 MessageParametre mp = (MessageParametre)arg; //interprète le message reçu comme un message contenant une liste de noms 
                 
                 int niveauEau = mp.getIndex();

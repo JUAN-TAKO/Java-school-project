@@ -148,7 +148,7 @@ public class VueJeu{
         panelCentreNord.add(labelActionsRestantes);
         panelCentreNord.add(new JButton("Passer tour"));
         
-        setNbAction("2");
+        
         // =================================================================================
         // CENTRE
         
@@ -311,6 +311,8 @@ public class VueJeu{
     
     public void setNbAction(String s){
         labelActionsRestantes.setText(s);
+        labelActionsRestantes.revalidate();
+        labelActionsRestantes.repaint();
     }
     
     public void setNiveau(int n){
