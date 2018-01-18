@@ -378,11 +378,6 @@ public class Controleur implements Observer{
                 
                 break;
                 
-            case RETOUR_JEU :
-                vueRegle.hide();
-                
-                break;
-                
             case QUITTER:
                 
                 vueConfirm = new VueConfirm();

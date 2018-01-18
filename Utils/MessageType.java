@@ -19,7 +19,6 @@ public enum MessageType{
         CLIC_TUILE,
         
         REGLES,
-        RETOUR_JEU,
         JOUER,
 	QUITTER,
         RETOUR_MENU,
