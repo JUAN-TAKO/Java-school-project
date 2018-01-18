@@ -78,7 +78,7 @@ public class VueJeu extends Observable{
         window = new JFrame();
         window.setDefaultCloseOperation(javax.swing.JFrame.DISPOSE_ON_CLOSE);
         Dimension d = Toolkit.getDefaultToolkit().getScreenSize();
-        window.setSize(new Dimension(d.width, d.height - 50));
+        window.setSize(new Dimension(d.width, d.height - 30));
         window.setTitle("Plateau de Jeu");
         window.setResizable(true);
         mainPanel = new JPanel(new BorderLayout());
@@ -269,9 +269,9 @@ public class VueJeu extends Observable{
     
     public void visible(boolean b){
         if(b){
-            window.setVisible(false);
+            this.window.setVisible(false);
         }else{
-            window.setVisible(true);
+            this.window.setVisible(true);
         }
     }
     
