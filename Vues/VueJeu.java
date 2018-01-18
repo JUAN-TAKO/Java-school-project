@@ -50,7 +50,7 @@ public class VueJeu extends Observable{
     private PanelJoueur[] panelsJoueurs = new PanelJoueur[4];
     private CompositionObservable observable;
     
-    private JButton boutonAsseccher;
+    private JButton boutonAssecher;
     private JButton boutonDeplacer;
     private JButton boutonActionSpeciale;
     private JButton boutonCarteSpeciale;
@@ -167,8 +167,8 @@ public class VueJeu extends Observable{
                
         niveau = new PanelNiveau(1);
         
-        boutonAsseccher = new JButton("Assecher");
-        boutonAsseccher.addActionListener(new ActionListener() {
+        boutonAssecher = new JButton("Assecher");
+        boutonAssecher.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 setChanged();
@@ -207,7 +207,7 @@ public class VueJeu extends Observable{
             }
         });
         
-        panelCentreSud.add(boutonAsseccher);
+        panelCentreSud.add(boutonAssecher);
         panelCentreSud.add(boutonDeplacer);
         panelCentreSud.add(boutonActionSpeciale);
         panelCentreSud.add(boutonCarteSpeciale);
@@ -273,6 +273,43 @@ public class VueJeu extends Observable{
     public void setNiveau(int n){
         niveau.setNiveau(n);
     }
+    
+    public void activeDesactive(ArrayList<Boolean> listes){
+        for(int i = 0 ; i < listes.size() ; i++){
+            if(listes.get(i)){
+                switch(i){
+                    case 0 :
+                        boutonAssecher.setEnabled(true);
+                        break;
+                    case 1 :
+                        boutonDeplacer.setEnabled(true);
+                        break;
+                    case 2 :
+                        boutonActionSpeciale.setEnabled(true);
+                        break;
+                    case 3 :
+                        boutonCarteSpeciale.setEnabled(true);
+                        break;
+                }
+            }else{
+                switch(i){
+                    case 0 :
+                        boutonAssecher.setEnabled(false);
+                        break;
+                    case 1 :
+                        boutonDeplacer.setEnabled(false);
+                        break;
+                    case 2 :
+                        boutonActionSpeciale.setEnabled(false);
+                        break;
+                    case 3 :
+                        boutonCarteSpeciale.setEnabled(false);
+                        break;
+                }
+            }
+        }
+    }
+
     
     public static void main(String [] args) {
         ArrayList<String> noms = new ArrayList<>();
