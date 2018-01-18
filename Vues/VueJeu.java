@@ -17,6 +17,9 @@ import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JMenu;
+import javax.swing.JMenuBar;
+import javax.swing.JMenuItem;
 import javax.swing.JPanel;
 
 public class VueJeu{
@@ -42,6 +45,11 @@ public class VueJeu{
     private PanelJoueur[] panelsJoueurs = new PanelJoueur[4];
     private CompositionObservable observable;
     
+    private JMenuBar mb = new JMenuBar();
+    private JMenu menu = new JMenu();
+    private JMenuItem quitter = new JMenuItem();
+    private JMenuItem regles = new JMenuItem();
+    
     public VueJeu(ArrayList<String> noms, ArrayList<Pion> pions){
    
         window = new JFrame();
@@ -52,6 +60,17 @@ public class VueJeu{
         mainPanel = new JPanel(new BorderLayout());
         window.add(mainPanel) ;
         observable = new CompositionObservable();
+        
+        window.setJMenuBar(mb);
+        menu.setText("Menu");
+        
+        
+        quitter.setText("Quitter");
+        regles.setText("Règles du jeu");
+        menu.add(regles);
+        menu.add(quitter);
+        mb.add(menu);
+        
         //On crée les panels joueurs
         for(int i = 0; i < 4; i++){
             if(i < noms.size()){
