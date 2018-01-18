@@ -158,11 +158,6 @@ public class VueJeu{
         mainPanel.add(grille, BorderLayout.CENTER);
         grille.setBorder(BorderFactory.createLineBorder(Color.BLACK, 2));
         
-        grille.setEtat(2, Etat.INONDEE);
-        grille.setEtat(7, Etat.INONDEE);
-        grille.setEtat(17, Etat.INONDEE);
-        grille.setEtat(26, Etat.INONDEE);
-        
         // =================================================================================
         // SUD
         panelSud = new JPanel(new BorderLayout());
@@ -229,14 +224,8 @@ public class VueJeu{
         mainPanel.repaint();
         
     }
-    public void lock(){
-        Dimension d = Toolkit.getDefaultToolkit().getScreenSize();
-        window.setSize(new Dimension(d.width, d.height - 50));
-    }
-    public void lock2(){
-        Dimension d = Toolkit.getDefaultToolkit().getScreenSize();
-        window.setSize(new Dimension(d.width - 10, d.height));
-        window.setResizable(true);
+    public void setEtatTuile(int index, Etat etat){
+        grille.setEtat(index, etat);
     }
     public void setObserver(Observer observer){
         observable.addObserver(observer);
