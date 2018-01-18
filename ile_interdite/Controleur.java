@@ -31,8 +31,6 @@ public class Controleur implements Observer{
     private Grille grille;  //plateau de jeu
     private ArrayList<Aventurier> aventuriers; //liste des aventuriers
     private HashMap<Pion, Aventurier> aventuriersByPion;
-    private VueAventuriers vueAventuriers; //pour afficher les aventuriers
-    private VueSelection selection;  //fenêtre de sélection de la tuile
     
 
     
@@ -175,7 +173,7 @@ public class Controleur implements Observer{
     
     //désactive les aventuriers dont ce n'est pas le tour, et active l'aventurier courant (dans la vue)
     public void selectAventurier(){ 
-        vueAventuriers.setActive(indexAventurierCourant);
+        //vueAventuriers.setActive(indexAventurierCourant);
     }
 
     //incrémente le nombre de tours et reviens au début de la liste des aventuriers
@@ -192,14 +190,14 @@ public class Controleur implements Observer{
             typeTuiles.add(t.getType());
             coordsTuiles.add(" (" + t.getX() + " ; " + t.getY() + ")");
         }
-        selection = new VueSelection(typeTuiles, coordsTuiles, returnMessage);
-        selection.addObserver(this);
-        selection.afficher();
+//        selection = new VueSelection(typeTuiles, coordsTuiles, returnMessage);
+//        selection.addObserver(this);
+//        selection.afficher();
     }
     //déplace l'aventurier courant sur la tuile de type t
     public void deplacer(TypeTuile t){
         getAventurierCourant().setPosition(grille.getTuileByType(t));
-        vueAventuriers.setPosition(indexAventurierCourant, getAventurierCourant().getPosition().getNom() + " (" + getAventurierCourant().getPosition().getX() + " ; " + getAventurierCourant().getPosition().getY() + ")");
+        //vueAventuriers.setPosition(indexAventurierCourant, getAventurierCourant().getPosition().getNom() + " (" + getAventurierCourant().getPosition().getX() + " ; " + getAventurierCourant().getPosition().getY() + ")");
     }
     //assèche la tuile de type t
     public void assecher(TypeTuile t){
@@ -207,11 +205,11 @@ public class Controleur implements Observer{
     }
     //active ou désactive tous les boutons de la vue aventuriers
     public void setBoutonsActives(boolean a){
-        vueAventuriers.setBoutonsActives(a);
+        //vueAventuriers.setBoutonsActives(a);
     }
     //active ou desactive certains boutons de la vue aventuriers
     public void setBoutonsActivesIngenieur(boolean a){
-        vueAventuriers.setBoutonsActivesIngenieur(a);
+        //vueAventuriers.setBoutonsActivesIngenieur(a);
     }
     public void addCarte(CarteTirage c, int[] tab){
         tab[c.ordinal()]++;
@@ -333,7 +331,7 @@ public class Controleur implements Observer{
                 actionSuivante();
                 jokerIngenieur = false;
                 setBoutonsActives(true);
-                selection.hide(); //on cache la fenêtre de séléction
+                //selection.hide(); //on cache la fenêtre de séléction
                 break;
    
             case CHOISIR_ASSECHEMENT:
@@ -352,11 +350,11 @@ public class Controleur implements Observer{
                     setBoutonsActives(false);
                 }
                 setBoutonsActives(true);
-                selection.hide(); //on cache la fenêtre de séléction
+                //selection.hide(); //on cache la fenêtre de séléction
                 break;            
                 
             case ANNULER_SELECTION: //clic sur le bouton annuler (ou fermeture) de la fenêtre de séléction
-                selection.hide();
+                //selection.hide();
                 setBoutonsActives(true);
                 break;
                 
