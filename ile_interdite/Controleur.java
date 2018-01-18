@@ -498,7 +498,7 @@ public class Controleur implements Observer{
             case VALIDER_PARAMETRES: //réception des noms des joueurs
                 MessageParametre mp = (MessageParametre)arg; //interprète le message reçu comme un message contenant une liste de noms 
                 
-                int niveau = mp.getNiveau();
+                niveauEau = mp.getNiveau();
                 ArrayList<String> noms = mp.getNoms();
                 ArrayList<Pion> pions = new ArrayList<>();
                 
