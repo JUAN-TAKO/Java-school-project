@@ -440,13 +440,9 @@ public class Controleur implements Observer{
             case RETOUR_MENU:
                 vueFinale.hide();
                 finale = false;
-                vueParametres.afficher();
-                break;
-                
-
-                
-           
-                
+                vueDebut.afficher();
+                debut = true;
+                break;              
                 
             case VALIDER_PARAMETRES: //réception des noms des joueurs
                 System.out.println("test");
