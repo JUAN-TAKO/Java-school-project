@@ -7,7 +7,6 @@ import java.awt.Color;
 
 import java.util.ArrayList;
 import java.util.Observable;
-import java.util.TreeMap;
 
 public abstract class Aventurier extends Observable{
     private Tuile position;

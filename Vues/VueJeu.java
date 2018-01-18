@@ -164,6 +164,7 @@ public class VueJeu extends Observable{
         panelSud.add(panelCentreSud, BorderLayout.CENTER);
         
         panelSud.add(panelsJoueurs[3], BorderLayout.EAST);
+        defausseInondation = new PanelImage("src/Images/cache/inondation_cache.png", 2, observable, MessageType.VOIR_INONDATION);
                
         niveau = new PanelNiveau(1);
         
@@ -215,6 +216,7 @@ public class VueJeu extends Observable{
         // =================================================================================
         // EST
         defausseInondation = new PanelImage("src/Images/cache/inondation_cache.png", 2);
+
         panelEst = new JPanel(new BorderLayout());
         panelEst.add(niveau, BorderLayout.CENTER);
         panelEst.add(defausseInondation, BorderLayout.SOUTH);
@@ -224,7 +226,7 @@ public class VueJeu extends Observable{
         // =================================================================================
         // OUEST
         panelTresor = new PanelTresor();
-        defausseTirage = new PanelImage("src/Images/cache/tresor_cache.png", 2);
+        defausseTirage = new PanelImage("src/Images/cache/tresor_cache.png", 2, observable, MessageType.VOIR_TIRAGE);
         panelOuest = new JPanel(new BorderLayout());
         panelOuest.add(panelTresor, BorderLayout.CENTER);
         panelOuest.add(defausseTirage, BorderLayout.SOUTH);
