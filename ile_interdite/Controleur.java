@@ -142,7 +142,7 @@ public class Controleur implements Observer{
         System.out.println("nbCartesDefausse : " + getNbCartes(defausseTirage));
         for(int i = 0; i < 2; i++){
             do{
-                randomNum = (int)(Math.random() * 6);
+                randomNum = (int)(Math.random() * 7);
                 nb = piocheTirage[randomNum];
                 if(nb != 0){
                     piocheTirage[randomNum]--;
@@ -163,6 +163,7 @@ public class Controleur implements Observer{
         }
         
         if(monte){
+            vueJeu.setNiveau(niveauEau);
             reinitialiserPileInondation();
         }
         updateCartes(av);
@@ -497,7 +498,7 @@ public class Controleur implements Observer{
             case VALIDER_PARAMETRES: //réception des noms des joueurs
                 MessageParametre mp = (MessageParametre)arg; //interprète le message reçu comme un message contenant une liste de noms 
                 
-                int niveauEau = mp.getIndex();
+                niveauEau = mp.getNiveau();
                 ArrayList<String> noms = mp.getNoms();
                 ArrayList<Pion> pions = new ArrayList<>();
                 

@@ -13,12 +13,12 @@ import java.util.ArrayList;
  */
 public class MessageParametre extends Message{
     private ArrayList<String> noms;
-    private int index;
+    private int niveau;
             
     public MessageParametre(MessageType t, ArrayList<String> noms, int index){
 	super(t);
 	this.noms = noms;
-        this.index = index;
+        this.niveau = index;
     }
     
     public ArrayList<String> getNoms(){
@@ -28,14 +28,7 @@ public class MessageParametre extends Message{
     /**
      * @return the index
      */
-    public int getIndex() {
-        return index;
-    }
-
-    /**
-     * @param index the index to set
-     */
-    public void setIndex(int index) {
-        this.index = index;
+    public int getNiveau() {
+        return niveau;
     }
 }
