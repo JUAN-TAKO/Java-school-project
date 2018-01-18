@@ -75,13 +75,13 @@ public class VueJeu extends Observable{
     
     
     public VueJeu(ArrayList<String> noms, ArrayList<Pion> pions){
-   
+    
         window = new JFrame();
         window.setDefaultCloseOperation(javax.swing.JFrame.DISPOSE_ON_CLOSE);
         Dimension d = Toolkit.getDefaultToolkit().getScreenSize();
         window.setSize(new Dimension(d.width, d.height - 50));
         window.setTitle("Plateau de Jeu");
-        window.setResizable(false);
+        window.setResizable(true);
         mainPanel = new JPanel(new BorderLayout());
         window.add(mainPanel) ;
         observable = new CompositionObservable();
@@ -109,12 +109,7 @@ public class VueJeu extends Observable{
             }
         }
         ArrayList<CarteTirage> cartes = new ArrayList<>();
-        cartes.add(CarteTirage.TRESOR_CALICE);
-        cartes.add(CarteTirage.TRESOR_CALICE);
-        cartes.add(CarteTirage.TRESOR_CALICE);
-        cartes.add(CarteTirage.TRESOR_CRISTAL);
         cartes.add(CarteTirage.SABLE);
-        
         panelsJoueurs[0].updateCartes(cartes);
         panelsJoueurs[1].updateCartes(cartes);
         panelsJoueurs[2].updateCartes(cartes);
@@ -262,7 +257,18 @@ public class VueJeu extends Observable{
                 resize();
             }
         });
+        mainPanel.revalidate();
+        mainPanel.repaint();
         
+    }
+    public void lock(){
+        Dimension d = Toolkit.getDefaultToolkit().getScreenSize();
+        window.setSize(new Dimension(d.width, d.height - 50));
+    }
+    public void lock2(){
+        Dimension d = Toolkit.getDefaultToolkit().getScreenSize();
+        window.setSize(new Dimension(d.width - 10, d.height));
+        window.setResizable(true);
     }
     public void setObserver(Observer observer){
         observable.addObserver(observer);

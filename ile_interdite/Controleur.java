@@ -270,7 +270,7 @@ public class Controleur implements Observer{
         actionsPossibles.set(3, t.getEtat() == Etat.INONDEE && getAventurierCourant().getCartes(CarteTirage.SABLE) > 0); // sac de sable
         actionsPossibles.set(4, t.getEtat() != Etat.COULEE && getAventurierCourant().getCartes(CarteTirage.HELICOPTERE) > 0);// helicoptere
         actionsPossibles.set(5, tr != null && getAventurierCourant().getCartes(CarteTirage.values()[tr.ordinal()]) >= 4); // recup tresor
-
+        System.out.println("test2");
         vueJeu.choisirEtatsBoutons(actionsPossibles);
     }
     //gère la réception des messages des vues
@@ -287,7 +287,9 @@ public class Controleur implements Observer{
                 
         switch(m.getType()){
             case CLIC_TUILE:
-                
+                System.out.println("test1");
+                MessageTuile mct = (MessageTuile)m;
+                afficherActionsPossibles(grille.getTuileByType(mct.getTuile()));
                 break;
                 
             case DEFAUSSER:
@@ -432,7 +434,7 @@ public class Controleur implements Observer{
                 System.out.println("test");
                 MessageParametre mp = (MessageParametre)arg; //interprète le message reçu comme un message contenant une liste de noms 
                 
-                int difficulte = mp.getIndex();
+                int niveauEau = mp.getIndex();
                 ArrayList<String> noms = mp.getNoms();
                 ArrayList<Pion> pions = new ArrayList<>();
                 
@@ -487,11 +489,13 @@ public class Controleur implements Observer{
                 }
 //                vueAventuriers = new VueAventuriers(noms, roles, couleurs);
 //                vueAventuriers.addObserver(this);
-//                vueParametres.hide();
+                vueParametres.hide();
+                System.out.println(noms.size());
+                System.out.println(pions.size());
                 vueJeu = new VueJeu(noms, pions);
                 vueJeu.setNiveau(niveauEau);
                 
-                //vueJeu.addObserver(this);                
+                vueJeu.addObserver(this);                
                 vueJeu.afficher();
                 jeu = true;
                 
@@ -500,8 +504,7 @@ public class Controleur implements Observer{
                 
                 
                 
-                vueParametres.hide();
-                parametre = false;
+                
                 
                 //on met a jour la position des aventuriers dans la vue aventuriers
                 for(int j = 0; j < aventuriers.size(); j++){

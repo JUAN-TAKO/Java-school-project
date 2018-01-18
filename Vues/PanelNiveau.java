@@ -37,7 +37,7 @@ public class PanelNiveau extends JPanel{
         
     public PanelNiveau(int f) {
         fit = f;
-        niveau = 1;
+        niveau = 0;
         labelImage = new JLabel();
         addComponentListener(new ComponentAdapter() {
             public void componentResized(ComponentEvent e) {
@@ -49,7 +49,6 @@ public class PanelNiveau extends JPanel{
     }
     public void setNiveau(int n){
         niveau = n;
-        System.out.println("niveau : " + niveau);
         redraw();
     }
     private void resizeIcon(){
