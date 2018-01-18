@@ -384,7 +384,7 @@ public class Controleur implements Observer{
                 break;
                 
             case QUITTER:
-                
+                System.out.println("prout quitter");
                 vueConfirm = new VueConfirm();
                 vueConfirm.addObserver(this);
                 vueConfirm.afficher();
@@ -394,6 +394,7 @@ public class Controleur implements Observer{
                 }else if(parametre){
                     vueParametres.desactive();
                 }else if(jeu){
+                    System.out.println("prout");
                     vueJeu.visible(jeu);
                 }
                 
@@ -520,6 +521,7 @@ public class Controleur implements Observer{
                 
                 vueJeu.addObserver(this);                
                 vueJeu.afficher();
+                parametre = false;
                 jeu = true;
                 
                 
