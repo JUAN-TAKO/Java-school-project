@@ -5,6 +5,7 @@
  */
 package Vues;
 
+import Utils.Message;
 import Utils.MessageType;
 import java.awt.BorderLayout;
 import java.awt.Dimension;
@@ -130,7 +131,7 @@ public class VueRegles extends Observable{
             @Override
             public void actionPerformed(ActionEvent e) {
                 setChanged();
-                notifyObservers(MessageType.RETOUR_JEU);
+                notifyObservers(new Message(MessageType.RETOUR_JEU));
                 clearChanged();
             }
         });
