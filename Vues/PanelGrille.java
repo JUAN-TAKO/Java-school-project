@@ -19,15 +19,16 @@ import javax.swing.JPanel;
  * @author juan
  */
 public class PanelGrille extends JPanel{
-    
-    public PanelGrille(ArrayList<TypeTuile> cases){
+    private CompositionObservable observable;
+    public PanelGrille(ArrayList<TypeTuile> cases, CompositionObservable obs){
         super(new GridLayout(6, 6));
+        observable = obs;
         for(int i = 0; i < cases.size(); i++){
             TypeTuile t = cases.get(i);
             if(t == null){
                 add(new PanelTuile());
             }else{
-                add(new PanelTuile(t));
+                add(new PanelTuile(t, observable));
             }
         }
     }
@@ -47,6 +48,7 @@ public class PanelGrille extends JPanel{
     public static void main(String args[]){
         Grille g = new Grille(new GrilleAleatoire());
         JFrame window = new JFrame();
+        CompositionObservable obs = new CompositionObservable();
         ArrayList<TypeTuile> types = new ArrayList<>();
         for(int i = 0; i < g.length(); i++){
             Tuile t = g.get(i);
@@ -56,7 +58,7 @@ public class PanelGrille extends JPanel{
                 types.add(t.getType());
             }
         }
-        PanelGrille panelGrille = new PanelGrille(types);
+        PanelGrille panelGrille = new PanelGrille(types, obs);
         panelGrille.setEtat(2, Etat.INONDEE);
         panelGrille.setEtat(7, Etat.INONDEE);
         panelGrille.setEtat(17, Etat.INONDEE);

@@ -93,7 +93,11 @@ public class PanelNiveau extends JPanel{
             resizeIcon();
         }
     }
-    
+    public float getRatio(){
+        int wi = combined.getWidth();
+        int hi = combined.getHeight();
+        return (float)hi / (float)wi;
+    }
     public static void main(String[] args){   
         PanelNiveau vueNiveau = new PanelNiveau(0, 0);
         JFrame window = new JFrame();

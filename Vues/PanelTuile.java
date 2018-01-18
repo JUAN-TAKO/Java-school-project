@@ -12,6 +12,8 @@ import java.awt.GridLayout;
 import java.awt.Image;
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
@@ -28,19 +30,19 @@ import javax.swing.JPanel;
  *
  * @author juan
  */
-public class PanelTuile extends JPanel{
+public class PanelTuile extends JPanel implements MouseListener{
     private BufferedImage combined;
     ArrayList<BufferedImage> imagesPions;
     private JLabel labelTuile;
     private ImageIcon scaled;
     private TypeTuile tuile;
-    Etat etat;
+    private Etat etat;
+    private CompositionObservable obs;
     
-    private Image image;
-    
-    public PanelTuile(TypeTuile t){
+    public PanelTuile(TypeTuile t, CompositionObservable o){
         super(new BorderLayout());
         tuile = t;
+        obs = o;
         labelTuile = new JLabel();
         imagesPions = new ArrayList<>();
         addComponentListener(new ComponentAdapter() {
@@ -108,17 +110,28 @@ public class PanelTuile extends JPanel{
         
         
     }
-    
     @Override
-    public void paintComponent(Graphics g) {
-        super.paintComponent(g);
-        if (image != null) {
-            g.drawImage(image, 0, 0, null, this);
-        }
+    public void mouseClicked(MouseEvent e) {
+        obs.setChanged();
+        obs.notifyObservers(new MessageTuile(MessageType.CLIC_TUILE, tuile));
+        obs.clearChanged();
     }
+
+    @Override
+    public void mousePressed(MouseEvent e) {    }
+
+    @Override
+    public void mouseReleased(MouseEvent e) {    }
+
+    @Override
+    public void mouseEntered(MouseEvent e) {    }
+
+    @Override
+    public void mouseExited(MouseEvent e) {    }
     
     public static void main(String args[]){
         JFrame window = new JFrame();
+        CompositionObservable obs = new CompositionObservable();
         JPanel mainPanel = new JPanel(new GridLayout(1, 3));
         window.add(mainPanel);
         ArrayList<Pion> pions = new ArrayList<>();
@@ -128,9 +141,9 @@ public class PanelTuile extends JPanel{
         pions.add(Pion.VERT);
         ArrayList<Pion> pions2 = new ArrayList<>();
         pions2.add(Pion.JAUNE);
-        mainPanel.add(new PanelTuile(TypeTuile.CAVERNE_BRASIER));
-        mainPanel.add(new PanelTuile(TypeTuile.PORTE_CUIVRE));
-        mainPanel.add(new PanelTuile(TypeTuile.OBSERVATOIRE));
+        mainPanel.add(new PanelTuile(TypeTuile.CAVERNE_BRASIER, obs));
+        mainPanel.add(new PanelTuile(TypeTuile.PORTE_CUIVRE, obs));
+        mainPanel.add(new PanelTuile(TypeTuile.OBSERVATOIRE, obs));
         
         
         window.setSize(1150, 700);

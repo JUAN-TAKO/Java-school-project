@@ -7,6 +7,7 @@ import Utils.*;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.GridBagLayout;
 import java.awt.GridLayout;
 import java.awt.Toolkit;
 import java.awt.event.ComponentAdapter;
@@ -25,11 +26,22 @@ public class VueJeu{
     private JPanel mainPanel;
     private JPanel panelNord;
     private JPanel panelSud;
+    private JPanel panelEst;
+    private JPanel panelOuest;
+    
+    private PanelImage defausseInondation;
+    private PanelImage defausseTirage;
+    
     private JLabel labelActionsRestantes;
     private JPanel panelCentreSud;
+    
     private PanelGrille grille;
+    private PanelNiveau niveau;
+    private PanelTresor panelTresor;
     
     private PanelJoueur[] panelsJoueurs = new PanelJoueur[4];
+    private CompositionObservable observable;
+    
     public VueJeu(ArrayList<String> noms, ArrayList<Pion> pions){
    
         window = new JFrame();
@@ -39,11 +51,11 @@ public class VueJeu{
         
         mainPanel = new JPanel(new BorderLayout());
         window.add(mainPanel) ;
-        
+        observable = new CompositionObservable();
         //On crée les panels joueurs
         for(int i = 0; i < 4; i++){
             if(i < noms.size()){
-                panelsJoueurs[i] = new PanelJoueur(i, noms.get(i), pions.get(i));
+                panelsJoueurs[i] = new PanelJoueur(i, noms.get(i), pions.get(i), observable);
             }
             else{
                 panelsJoueurs[i] = new PanelJoueur(i);
@@ -55,9 +67,11 @@ public class VueJeu{
         cartes.add(CarteTirage.TRESOR_CALICE);
         cartes.add(CarteTirage.TRESOR_CRISTAL);
         cartes.add(CarteTirage.SABLE);
+        
         panelsJoueurs[0].updateCartes(cartes);
         panelsJoueurs[1].updateCartes(cartes);
-        
+        panelsJoueurs[2].updateCartes(cartes);
+        panelsJoueurs[3].updateCartes(cartes);
         // =================================================================================
         // NORD
         panelNord = new JPanel(new BorderLayout());
@@ -87,8 +101,9 @@ public class VueJeu{
             }
         }
         
-        grille = new PanelGrille(types);
-        //mainPanel.add(panelCentre, BorderLayout.CENTER);
+        //JPanel panelCentre = new JPanel(new GridBagLayout());
+        grille = new PanelGrille(types, observable);
+        mainPanel.add(grille, BorderLayout.CENTER);
         grille.setBorder(BorderFactory.createLineBorder(Color.BLACK, 2));
         
         grille.setEtat(2, Etat.INONDEE);
@@ -102,29 +117,45 @@ public class VueJeu{
         mainPanel.add(panelSud, BorderLayout.SOUTH);
         panelSud.add(panelsJoueurs[2], BorderLayout.WEST);
         panelCentreSud = new JPanel();
-        panelCentreSud.setBackground(Color.red);
         panelSud.add(panelCentreSud);
         
         panelSud.add(panelsJoueurs[3], BorderLayout.EAST);
-        //resize();
+        niveau = new PanelNiveau(3, 1);
+        defausseInondation = new PanelImage("src/Images/cache/inondation_cache.png", 2);
+        panelEst = new JPanel(new BorderLayout());
+        panelEst.add(niveau, BorderLayout.CENTER);
+        panelEst.add(defausseInondation, BorderLayout.SOUTH);
+        mainPanel.add(panelEst, BorderLayout.EAST);
+        
+        panelTresor = new PanelTresor();
+        defausseTirage = new PanelImage("src/Images/cache/tresor_cache.png", 2);
+        panelOuest = new JPanel(new BorderLayout());
+        panelOuest.add(panelTresor, BorderLayout.CENTER);
+        panelOuest.add(defausseTirage, BorderLayout.SOUTH);
+        mainPanel.add(panelOuest, BorderLayout.WEST);
+        
         mainPanel.addComponentListener(new ComponentAdapter() {
             public void componentResized(ComponentEvent e) {
                 resize();
             }
         });
+        
     }
     public void resize(){
         int w = mainPanel.getWidth();
         if(w != 0){
-            int w2 = (int)((float)w * 0.40f);
+            int w2 = (int)((float)w * 0.35f);
 
             for(int i = 0; i < 4; i++){
                 panelsJoueurs[i].setWidth(w2);
             }
-
-            panelNord.setPreferredSize(new Dimension(w, 150));
-            panelSud.setPreferredSize(new Dimension(w, 150));
+            
+            int h = panelsJoueurs[0].getH() + 6;
+            panelNord.setPreferredSize(new Dimension(w, h));
+            panelSud.setPreferredSize(new Dimension(w, h));
         }
+        int wi = defausseInondation.getWidth();
+        panelOuest.setPreferredSize(new Dimension(wi, 10));
         mainPanel.revalidate();
         mainPanel.repaint();
     }
