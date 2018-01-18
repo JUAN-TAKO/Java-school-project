@@ -93,6 +93,25 @@ public class VueJeu extends Observable{
         //déclaration des différents choix du menu
         quitter.setText("Quitter");
         regles.setText("Règles du jeu");
+        quitter.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                setChanged();
+                System.out.println("coucou");
+                notifyObservers(new Message(MessageType.QUITTER));
+                clearChanged();
+            }
+        });
+        
+        regles.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                setChanged();
+                System.out.println("damien");
+                notifyObservers(new Message(MessageType.REGLES));
+                clearChanged();
+            }
+        });
         
         //ajout des choix au menu
         menu.add(regles);
@@ -297,6 +316,14 @@ public class VueJeu extends Observable{
     
     public void hide() {
         window.dispose();
+    }
+    
+    public void visible(boolean b){
+        if(b){
+            window.setVisible(false);
+        }else{
+            window.setVisible(true);
+        }
     }
     
     public void setNbAction(String s){

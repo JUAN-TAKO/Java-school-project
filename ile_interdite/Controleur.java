@@ -22,8 +22,9 @@ public class Controleur implements Observer{
     private VueConfirm vueConfirm;
     private VueFinale vueFinale;
     private VueJeu vueJeu;
+    private VueRegles vueRegle;
     
-    boolean parametre, finale, jeu = false;
+    boolean parametre, finale, jeu, regle = false;
     boolean debut = true;
     
     
@@ -370,6 +371,18 @@ public class Controleur implements Observer{
                                
                 break;
                 
+            case REGLES :
+                vueRegle = new VueRegles();
+                vueRegle.addObserver(this);
+                vueRegle.afficher();             
+                
+                break;
+                
+            case RETOUR_JEU :
+                vueRegle.hide();
+                
+                break;
+                
             case QUITTER:
                 
                 vueConfirm = new VueConfirm();
@@ -380,6 +393,9 @@ public class Controleur implements Observer{
                     vueDebut.desactive();
                 }else if(parametre){
                     vueParametres.desactive();
+                }else if(jeu){
+                    vueJeu.visible(jeu);
+                    jeu = false;
                 }
                 
                 break;      
@@ -394,6 +410,8 @@ public class Controleur implements Observer{
                 }else if(parametre){
                     vueParametres.hide();
                     parametre = false;
+                }else if(!jeu){
+                    vueJeu.hide();
                 }
                 
                 break;
@@ -404,6 +422,9 @@ public class Controleur implements Observer{
                     vueDebut.active();
                 }else if(parametre){
                     vueParametres.active();
+                }else if(!jeu){
+                    vueJeu.visible(jeu);
+                    jeu = true;
                 }
                 
                 
