@@ -19,9 +19,9 @@ public class Controleur implements Observer{
     private VueDebut vueDebut;
     private VueParametres vueParametres; //paramètres de début de partie (nb de joueurs, noms etc)    
     private VueConfirm vueConfirm;
+    private VueFinale vueFinale;
     
-    
-    boolean parametre = false;
+    boolean parametre, finale = false;
     boolean debut = true;
     
     
@@ -30,7 +30,7 @@ public class Controleur implements Observer{
     private VueAventuriers vueAventuriers; //pour afficher les aventuriers
     private VueSelection selection;  //fenêtre de sélection de la tuile
     
-    private VueFinale vueFinale;
+
     
     private int indexAventurierCourant; 
     private int action; //nombre d'actions effectuées par le joueur courant
@@ -202,7 +202,7 @@ public class Controleur implements Observer{
         ArrayList<String> coordsTuiles; //on passeras les coordonées de la tuile sous forme de string a la vue Sélection
         ArrayList<Boolean> boolTresors = new ArrayList<>();
         boolean b;
-        VueFinale vueFinale;
+        VueFinale vueFinale = null;
                 
         switch(m.getType()){
             case DEPLACER:  //clic sur le bouton déplacer
@@ -321,10 +321,12 @@ public class Controleur implements Observer{
                 vueFinale = new VueFinale(boolTresors);
                 vueFinale.addObserver(this);
                 vueFinale.afficher();
+                finale = true;
                 break;
                 
             case RETOUR_MENU:
                 vueFinale.hide();
+                finale = false;
                 vueParametres.afficher();
                 break;
                 
