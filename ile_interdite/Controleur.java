@@ -172,7 +172,6 @@ public class Controleur implements Observer{
         setBoutonsActives(true);
         jokerIngenieur = false;
         indexAventurierCourant++;
-        System.out.println(getAventurierCourant().getNomRole());
         if(indexAventurierCourant >= aventuriers.size()){
             tourSuivant();
         }
@@ -315,10 +314,15 @@ public class Controleur implements Observer{
 //                listeTuiles = getAventurierCourant().getTuilesAccessiblesDeplacement(grille);
 //                afficherSelection(listeTuiles, MessageType.CHOISIR_DEPLACEMENT);
 //                setBoutonsActives(false);
+                if(jokerIngenieur){ //si l'ingénieur avait asséché une tuile, on compte cette action
+                    actionSuivante();
+                }
                 clearPionsVue();
                 deplacer(tuileContexte);
                 updatePionsVue();
                 recalculerTuile();
+                actionSuivante();
+                jokerIngenieur = false;
                 
                 break;
             case CLIC_CARTE:
@@ -329,8 +333,15 @@ public class Controleur implements Observer{
 //                listeTuiles = getAventurierCourant().getTuilesAccessiblesAssechement(grille);
 //                afficherSelection(listeTuiles, MessageType.CHOISIR_ASSECHEMENT);
 //                setBoutonsActives(false);
+                b = (getAventurierCourant() instanceof Ingenieur); // b = true si l'aventurier courant est un ingénieur    
+                if(!b){
+                    jokerIngenieur = false;
+                }
                 assecher(tuileContexte);
-                
+                if(!b || jokerIngenieur){ //si l'aventurier n'est pas un ingénieur ou si l'ingénieur a déjà asséché une tuile, on compte une action. le premier assèchement de l'ingénieur ne seras donc pas compté comme une action
+                    actionSuivante();
+                }
+                jokerIngenieur = (b && !jokerIngenieur); 
                 
                 break;
                 
