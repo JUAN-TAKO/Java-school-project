@@ -54,6 +54,10 @@ public class Controleur implements Observer{
     private int[] defausseTirage;
     private int[] piocheTirage;
     
+    private ArrayList<Tuile> tuilesAssechables;
+    private ArrayList<Tuile> tuilesAccessibles;
+    private ArrayList<Tuile> tuilesSpeciales;
+    
     public Controleur(){
         aventuriers = new ArrayList<>();
         aventuriersByPion = new HashMap<>();
@@ -154,6 +158,11 @@ public class Controleur implements Observer{
         if(indexAventurierCourant >= aventuriers.size()){
             tourSuivant();
         }
+        tuilesAccessibles = getAventurierCourant().getTuilesAccessiblesDeplacement(grille);
+        tuilesAssechables = getAventurierCourant().getTuilesAccessiblesAssechement(grille);
+        tuilesSpeciales = getAventurierCourant().getTuilesAccessiblesSpeciales(grille);
+        
+        
         selectAventurier();
     }
     
@@ -209,6 +218,12 @@ public class Controleur implements Observer{
             addCarte(c, tab2);
         }
     }
+    public void moveAll(int[] tab1, int[] tab2){
+        for(int i = 0; i < tab1.length; i++){
+            tab2[i] += tab1[i];
+            tab1[i] = 0;
+        }
+    }
     public void removeCarte(CarteTirage c, int[] tab, int nbCartes){
         tab[c.ordinal()] -= nbCartes;
         if(tab[c.ordinal()] < 0){
@@ -218,12 +233,39 @@ public class Controleur implements Observer{
     public int getCartes(CarteTirage c, int[] tab){
         return tab[c.ordinal()];
     }
-    public int getNbCartes(){
+    public int getNbCartes(int[] tab){
         int nb = 0;
-        for(int i = 0; i < 6; i++){
-            nb += cartes[i];
+        for(int i = 0; i < tab.length; i++){
+            nb += tab[i];
         }
         return nb;
+    }
+    //met a jour les cartes d'un aventurier dans la vue
+    public void updateCartes(Aventurier av){
+        
+        ArrayList<CarteTirage> listeCartes = new ArrayList<>();
+        for(int i = 0; i < 6; i++){
+            for(int j = 0; j < av.getCartes(CarteTirage.values()[i]); j++){
+                listeCartes.add(CarteTirage.values()[i]);
+            }
+        }
+        vueJeu.updateCartes(aventuriers.indexOf(av), listeCartes);
+    }
+    
+    public void afficherActionsPossibles(Tuile t){
+        ArrayList<Boolean> actionsPossibles = new ArrayList<>();
+        for(int i = 0; i < 6; i++){
+            actionsPossibles.add(false);
+        }
+        Tresor tr = t.getTresor();
+        actionsPossibles.set(0, tuilesAssechables.contains(t)); //assecher
+        actionsPossibles.set(1, tuilesAccessibles.contains(t)); //se deplacer
+        actionsPossibles.set(2, tuilesSpeciales.contains(t)); // speciale
+        actionsPossibles.set(3, t.getEtat() == Etat.INONDEE && getAventurierCourant().getCartes(CarteTirage.SABLE) > 0); // sac de sable
+        actionsPossibles.set(4, t.getEtat() != Etat.COULEE && getAventurierCourant().getCartes(CarteTirage.HELICOPTERE) > 0);// helicoptere
+        actionsPossibles.set(5, tr != null && getAventurierCourant().getCartes(CarteTirage.values()[tr.ordinal()]) >= 4); // recup tresor
+
+        vueJeu.choisirEtatsBoutons(actionsPossibles);
     }
     //gère la réception des messages des vues
     @Override
@@ -247,7 +289,8 @@ public class Controleur implements Observer{
                 CarteTirage ct = mdf.getCarte();
                 Aventurier ave  = aventuriersByPion.get(mdf.getPion());
                 ave.removeCarte(ct);
-                
+                addCarte(ct, defausseTirage);
+                updateCartes(ave);
                 
             case DEPLACER:  //clic sur le bouton déplacer
                 listeTuiles = getAventurierCourant().getTuilesAccessiblesDeplacement(grille);

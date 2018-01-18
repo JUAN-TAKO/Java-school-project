@@ -13,10 +13,10 @@ import java.awt.image.BufferedImage;
 
 public enum CarteTirage {
     
-    TRESOR_CALICE("src/Images/cartes/Calice.png"),
-    TRESOR_PIERRE("src/Images/cartes/Pierre.png"),
-    TRESOR_STATUE("src/Images/cartes/Zephyr.png"),
     TRESOR_CRISTAL("src/Images/cartes/Cristal.png"),
+    TRESOR_PIERRE("src/Images/cartes/Pierre.png"),
+    TRESOR_CALICE("src/Images/cartes/Calice.png"),
+    TRESOR_STATUE("src/Images/cartes/Zephyr.png"),
     HELICOPTERE("src/Images/cartes/Helicoptere.png"),
     SABLE("src/Images/cartes/SacsDeSable.png"),
     MONTEE_DES_EAUX("src/Images/cartes/MonteeDesEaux.png");
