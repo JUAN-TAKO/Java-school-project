@@ -129,7 +129,7 @@ public class PanelTuile extends JPanel{
                 g.drawImage(imagesPions.get(i), margins[i % 2], margins[2+(i / 2)], null);
             }
         }
-        
+        resizeIcon();
         
     }
     
