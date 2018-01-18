@@ -37,6 +37,7 @@ public class VueJeu{
     
     private PanelGrille grille;
     private PanelNiveau niveau;
+    private int niveauInitial;
     private PanelTresor panelTresor;
     
     private PanelJoueur[] panelsJoueurs = new PanelJoueur[4];
@@ -120,7 +121,10 @@ public class VueJeu{
         panelSud.add(panelCentreSud);
         
         panelSud.add(panelsJoueurs[3], BorderLayout.EAST);
-        niveau = new PanelNiveau(3, 1);
+               
+        niveau = new PanelNiveau(niveauInitial, 1);
+        
+        
         defausseInondation = new PanelImage("src/Images/cache/inondation_cache.png", 2);
         panelEst = new JPanel(new BorderLayout());
         panelEst.add(niveau, BorderLayout.CENTER);
@@ -169,6 +173,10 @@ public class VueJeu{
     
     public void setNbAction(String s){
         labelActionsRestantes.setText(s);
+    }
+    
+    public void setNiveau(int niveau){
+        niveauInitial = niveau;
     }
     
     public static void main(String [] args) {
