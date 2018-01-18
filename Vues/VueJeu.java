@@ -126,12 +126,6 @@ public class VueJeu{
                 panelsJoueurs[i] = new PanelJoueur(i);
             }
         }
-        ArrayList<CarteTirage> cartes = new ArrayList<>();
-        cartes.add(CarteTirage.SABLE);
-        panelsJoueurs[0].updateCartes(cartes);
-        panelsJoueurs[1].updateCartes(cartes);
-        panelsJoueurs[2].updateCartes(cartes);
-        panelsJoueurs[3].updateCartes(cartes);
         // =================================================================================
         // NORD
         panelNord = new JPanel(new BorderLayout());
