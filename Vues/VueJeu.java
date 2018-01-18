@@ -309,6 +309,16 @@ public class VueJeu extends Observable{
             }
         }
     }
+    
+    public void updateCarte(int index, ArrayList<CarteTirage> cartes){
+        for (String nom : noms) {
+            
+        }
+    }
+    
+    public ArrayList<String> getNoms(){
+        return noms;
+    }
 
     
     public static void main(String [] args) {
