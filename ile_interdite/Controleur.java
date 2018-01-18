@@ -308,7 +308,7 @@ public class Controleur implements Observer{
                 ave.removeCarte(ct);
                 addCarte(ct, defausseTirage);
                 updateCartes(ave);
-                
+            case 
             case DEPLACER:  //clic sur le bouton déplacer
                 listeTuiles = getAventurierCourant().getTuilesAccessiblesDeplacement(grille);
                 afficherSelection(listeTuiles, MessageType.CHOISIR_DEPLACEMENT);
