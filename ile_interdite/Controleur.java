@@ -313,9 +313,12 @@ public class Controleur implements Observer{
                 updateCartes(ave);
                 
             case DEPLACER:  //clic sur le bouton déplacer
-                listeTuiles = getAventurierCourant().getTuilesAccessiblesDeplacement(grille);
-                afficherSelection(listeTuiles, MessageType.CHOISIR_DEPLACEMENT);
-                setBoutonsActives(false);
+//                listeTuiles = getAventurierCourant().getTuilesAccessiblesDeplacement(grille);
+//                afficherSelection(listeTuiles, MessageType.CHOISIR_DEPLACEMENT);
+//                setBoutonsActives(false);
+                deplacer(tuileContexte);
+                updatePionsVue();
+                
                 
                 break;
                 
@@ -543,8 +546,8 @@ public class Controleur implements Observer{
                 break;
         }
     }
-    public void initialiser(){
-        //on met a jour la position des aventuriers dans la vue aventuriers
+    
+    public void updatePionsVue(){
         HashMap<Integer, ArrayList<Pion>> positionsAv = new HashMap<>();
 
         for(int j = 0; j < aventuriers.size(); j++){
@@ -556,14 +559,21 @@ public class Controleur implements Observer{
                 positionsAv.put(index, aa);
             }
             aa.add(a.getPion());
+            System.out.println(a.getPosition().getType());
             //vueAventuriers.setPosition(j, a.getPosition().getNom() + " (" + a.getPosition().getX() + " ; " + a.getPosition().getY() + ")");
-
+            
         }
+        
         for(Integer index : positionsAv.keySet()){
             vueJeu.setAventurier(index, positionsAv.get(index));
         }
-        
-       
+    }
+    
+    public void initialiser(){
+        //on met a jour la position des aventuriers dans la vue aventuriers
+        updatePionsVue();
+        //vueAventuriers.setPosition(j, a.getPosition().getNom() + " (" + a.getPosition().getX() + " ; " + a.getPosition().getY() + ")");
+ 
         piocherInondation(6);
         
         //selectAventurier();
