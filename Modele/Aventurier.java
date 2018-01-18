@@ -18,7 +18,7 @@ public abstract class Aventurier extends Observable{
     public Aventurier(String nom, String nomRole){
         this.nom = nom;
         this.nomRole = nomRole;
-        cartes = new int[6];
+        cartes = new int[7];
         nbActionMax = 3;
     }
     

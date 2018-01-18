@@ -52,11 +52,11 @@ public class Controleur implements Observer{
     private ListIterator iteratorInondation; //iterateur sur la carte a piocher dans la pile, toutes les cartes avant cet iterateur seront considérés comme la défausse
     //Iterateur : équivalent des index mais pour les LinkedList
     
-    private LinkedList<CarteTirage> pileTirage; //pile des cartes tirage à piocher
-    private ListIterator iteratorTirage;
+    //private LinkedList<CarteTirage> pileTirage; //pile des cartes tirage à piocher
+    //private ListIterator iteratorTirage;
     
-    private int[] defausseTirage = new int[6];
-    private int[] piocheTirage = new int[6];
+    private int[] defausseTirage = new int[7];
+    private int[] piocheTirage = new int[7];
     
     private ArrayList<Boolean> tresorsRecoltes; 
     
@@ -73,10 +73,14 @@ public class Controleur implements Observer{
         for(int i = 0; i < 4; i++){
             tresorsRecoltes.add(false);
         }
-        
+        defausseTirage[0] = 5;
+        defausseTirage[1] = 5;
+        defausseTirage[2] = 5;
+        defausseTirage[3] = 5;
+        defausseTirage[4] = 3;
+        defausseTirage[5] = 2;
+        defausseTirage[6] = 3;
         //de même pour la pile de cartes Tirage
-        pileTirage = new LinkedList<>();
-        iteratorTirage = pileTirage.listIterator();
         
         vueDebut = new VueDebut();
         vueDebut.addObserver(this);
@@ -124,28 +128,45 @@ public class Controleur implements Observer{
     
     public void reinitialiserPileTirage(){
         
-        ArrayList<CarteTirage> defausse = new ArrayList<>(pileTirage.subList(0, iteratorTirage.nextIndex()-1));
-        Collections.shuffle(defausse);
-        iteratorTirage = pileTirage.listIterator();
     }
     
     //pioche d'une carte tirage de la meme maniere
     public void piocherTirage(){
         
-        CarteTirage t = (CarteTirage)iteratorTirage.next();
-        
-        if(t == CarteTirage.MONTEE_DES_EAUX){ //si la carte piochée est une carte montee des eaux 
-            niveauEau++; //alors on incremente d'un le niveau d'eau
-        }
-        else{ 
+        Aventurier av = getAventurierCourant();
+        int randomNum = 0;
+        int nb;
+        boolean monte = false;
+        CarteTirage[] pioche = new CarteTirage[2];
+        for(int i = 0; i < 2; i++){
+            do{
+                randomNum = (int)(Math.random() * 6);
+                nb = defausseTirage[randomNum];
+                if(nb != 0){
+                    defausseTirage[randomNum]--;
+                    pioche[i] = CarteTirage.values()[randomNum];
+                }
+            }while(nb == 0);
             
-            aventuriers.get(tour).addCarte(t); //sinon on l'ajoute à la collection de cartes de l'aventurier courant
+            if(pioche[0] == CarteTirage.MONTEE_DES_EAUX){
+                niveauEau++;
+                monte = true;
+            }
+            else{
+                av.addCarte(pioche[0]);
+            }
+            if(getNbCartes(piocheTirage) == 0){
+                reinitialiserTirage();
+            }
         }
         
-        if(!iteratorTirage.hasNext()){ //si on arrive à la fin de la pile alors on mélange la défausse et on la remet dans la pile
-            reinitialiserPileTirage();
+        if(monte){
+            reinitialiserPileInondation();
         }
-        
+        updateCartes(av);
+    }
+    public void reinitialiserTirage(){
+        moveAll(defausseTirage, piocheTirage);
     }
     public void start(){
         vueDebut.afficher(); //ouvre la fenêtre des paramètres (inscription des joueurs)
@@ -171,7 +192,7 @@ public class Controleur implements Observer{
     //passe a l'aventurier suivant et au tour suivant si tous les aventuriers ont joués
     public void aventurierSuivant(){
         
-        
+        piocherTirage();
         action = 0;
         jokerIngenieur = false;
         indexAventurierCourant++;
@@ -185,6 +206,7 @@ public class Controleur implements Observer{
         
         piocherInondation(cartesPourNiveau[niveauEau]);
         
+        
         //selectAventurier();
     }
     
@@ -196,6 +218,7 @@ public class Controleur implements Observer{
     //incrémente le nombre de tours et reviens au début de la liste des aventuriers
     public void tourSuivant(){
         tour++;
+        
         indexAventurierCourant = 0;
     }
     
@@ -262,7 +285,7 @@ public class Controleur implements Observer{
     public void updateCartes(Aventurier av){
         
         ArrayList<CarteTirage> listeCartes = new ArrayList<>();
-        for(int i = 0; i < 6; i++){
+        for(int i = 0; i < 7; i++){
             for(int j = 0; j < av.getCartes(CarteTirage.values()[i]); j++){
                 listeCartes.add(CarteTirage.values()[i]);
             }
@@ -272,7 +295,7 @@ public class Controleur implements Observer{
     
     public void afficherActionsPossibles(Tuile t){
         ArrayList<Boolean> actionsPossibles = new ArrayList<>();
-        for(int i = 0; i < 6; i++){
+        for(int i = 0; i < 7; i++){
             actionsPossibles.add(false);
         }
         Tresor tr = t.getTresor();

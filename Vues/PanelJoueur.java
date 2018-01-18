@@ -126,16 +126,19 @@ public class PanelJoueur extends JPanel{
                     mainPanel.add(p);
                 }
                 else{          
-                    mainPanel.add(new PanelImage());       
+                    mainPanel.add(new PanelImage("src/Images/cartes/Empty.png", 2));       
                 }
             }
         }
         else{
             for(int i = 6; i > -1; i--){
                 if(i >= nbCartes)
-                    mainPanel.add(new PanelImage());
-                else
-                    mainPanel.add(new PanelImage(cartes.get(i).getImage(), 2));
+                    mainPanel.add(new PanelImage("src/Images/cartes/Empty.png", 2));
+                else{
+                    PanelImage p2 = new PanelImage(cartes.get(i).getImage(), 2);
+                    addListener(p2, cartes.get(i), obs);
+                    mainPanel.add(p2);
+                }
             }
             mainPanel.add(panelJoueur);
         }
