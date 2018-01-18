@@ -21,6 +21,9 @@ public class Grille {
     public Tuile getTuileByType(TypeTuile type){
         return tuilesMap.get(type);
     }
+    public int getIndexTuile(Tuile t){
+        return t.getX() + t.getY() * size;
+    }
     public void setSize(int s){
         size = s;
     }

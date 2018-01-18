@@ -83,9 +83,10 @@ public class Controleur implements Observer{
         grille = new Grille(g);
         
         tour = 0;
-        indexAventurierCourant = 0;
-        action = 0;
-        jokerIngenieur = false;
+        indexAventurierCourant = -1;
+        tuilesAssechables = new ArrayList<Tuile>();
+        tuilesAccessibles = new ArrayList<Tuile>();
+        tuilesSpeciales = new ArrayList<Tuile>();
     }
     
     //reformer la pile de cartes inondation à partir de la défausse
@@ -102,9 +103,11 @@ public class Controleur implements Observer{
 
             if(t.getEtat() == Etat.SECHE){ //si elle est sèche, on l'inonde
                 t.setEtat(Etat.INONDEE);
+                vueJeu.setEtatTuile(grille.getIndexTuile(t), Etat.INONDEE);
             }
             else{                         //sinon c'est qu'elle est déjà inondee (elle ne peut pas être coulée parce qu'on enlève les cartes des tuiles coulées)
                 t.setEtat(Etat.COULEE);  //on la coule
+                vueJeu.setEtatTuile(grille.getIndexTuile(t), Etat.COULEE);
                 iteratorInondation.remove();   //on retire la carte qui vient d'être tirée de la pile
             }
             if(!iteratorInondation.hasNext()){ //on reinitialise la pile si on arrive a la fin
@@ -156,17 +159,22 @@ public class Controleur implements Observer{
     }
     //passe a l'aventurier suivant et au tour suivant si tous les aventuriers ont joués
     public void aventurierSuivant(){
+        
+        
         action = 0;
         setBoutonsActives(true);
         jokerIngenieur = false;
         indexAventurierCourant++;
+        System.out.println(getAventurierCourant().getNomRole());
         if(indexAventurierCourant >= aventuriers.size()){
             tourSuivant();
         }
         tuilesAccessibles = getAventurierCourant().getTuilesAccessiblesDeplacement(grille);
         tuilesAssechables = getAventurierCourant().getTuilesAccessiblesAssechement(grille);
         tuilesSpeciales = getAventurierCourant().getTuilesSpeciales(grille);
-        
+        for(Tuile ta : tuilesAssechables){
+            System.out.println("tuile : " + ta.getNom());
+        }
         
         //selectAventurier();
     }
@@ -377,7 +385,7 @@ public class Controleur implements Observer{
                 break;
                 
             case QUITTER:
-                
+                System.out.println("prout quitter");
                 vueConfirm = new VueConfirm();
                 vueConfirm.addObserver(this);
                 vueConfirm.afficher();
@@ -387,6 +395,7 @@ public class Controleur implements Observer{
                 }else if(parametre){
                     vueParametres.desactive();
                 }else if(jeu){
+                    System.out.println("prout");
                     vueJeu.visible(jeu);
                 }
                 
@@ -501,29 +510,59 @@ public class Controleur implements Observer{
                 }
 //                vueAventuriers = new VueAventuriers(noms, roles, couleurs);
 //                vueAventuriers.addObserver(this);
+                
+                ArrayList<TypeTuile> types = new ArrayList<>();
+                for(int j = 0; j < grille.length(); j++){
+                    Tuile t = grille.get(j);
+                    if(t == null){
+                        types.add(null);
+                    }else{
+                        types.add(t.getType());
+                    }
+                }
+                
                 vueParametres.hide();
                 System.out.println(noms.size());
                 System.out.println(pions.size());
-                vueJeu = new VueJeu(noms, pions);
+                vueJeu = new VueJeu(noms, pions, types);
                 vueJeu.setNiveau(niveauEau);
                 
-                vueJeu.addObserver(this);                
+                //vueJeu.addObserver(this);
+                vueJeu.setObserver(this);                
                 vueJeu.afficher();
+                parametre = false;
                 jeu = true;
                 
-                
-                //on met a jour la position des aventuriers dans la vue aventuriers
-                for(int j = 0; j < aventuriers.size(); j++){
-                    Aventurier a = aventuriers.get(j);
-                    System.out.println(a);
-                    //vueAventuriers.setPosition(j, a.getPosition().getNom() + " (" + a.getPosition().getX() + " ; " + a.getPosition().getY() + ")");
-                    
-                }
-                //selectAventurier();
+                initialiser();
                 break;
         }
     }
-    
+    public void initialiser(){
+        //on met a jour la position des aventuriers dans la vue aventuriers
+        HashMap<Integer, ArrayList<Pion>> positionsAv = new HashMap<>();
+
+        for(int j = 0; j < aventuriers.size(); j++){
+            Aventurier a = aventuriers.get(j);
+            Integer index = grille.getIndexTuile(a.getPosition());
+            ArrayList<Pion> aa = positionsAv.get(index);
+            if(aa == null){
+                aa = new ArrayList<>();
+                positionsAv.put(index, aa);
+            }
+            aa.add(a.getPion());
+            //vueAventuriers.setPosition(j, a.getPosition().getNom() + " (" + a.getPosition().getX() + " ; " + a.getPosition().getY() + ")");
+
+        }
+        for(Integer index : positionsAv.keySet()){
+            vueJeu.setAventurier(index, positionsAv.get(index));
+        }
+        
+       
+        piocherInondation(6);
+        
+        //selectAventurier();
+        aventurierSuivant();
+    }
  
     
     //fonction main
