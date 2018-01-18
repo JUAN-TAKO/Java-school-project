@@ -5,10 +5,13 @@
  */
 package Vues;
 
+import Utils.*;
 import java.awt.BorderLayout;
 import java.awt.GridLayout;
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -18,11 +21,13 @@ import javax.swing.JPanel;
  *
  * @author juan
  */
-public class PanelImage extends JPanel{
+public class PanelImage extends JPanel implements MouseListener{
     private ImageIcon image;
     private ImageIcon scaled;
     private JLabel imageLabel;
     private int fit;
+    private CompositionObservable obs;
+    private MessageType message;
     public PanelImage(String path, int f){
         super(new BorderLayout());
         fit = f;
@@ -36,6 +41,22 @@ public class PanelImage extends JPanel{
         add(imageLabel, BorderLayout.CENTER);
         
     }
+    public PanelImage(String path, int f, CompositionObservable o, MessageType m){
+        super(new BorderLayout());
+        fit = f;
+        obs = o;
+        message = m;
+        imageLabel = new JLabel("", JLabel.CENTER);
+        image = ImagePool.getImageIcon(path);
+        addComponentListener(new ComponentAdapter() {
+            public void componentResized(ComponentEvent e) {
+                resizeIcon();
+            }
+        });
+        add(imageLabel, BorderLayout.CENTER);
+        
+    }
+            
     public PanelImage(){
         super(new BorderLayout());
         imageLabel = new JLabel();
@@ -86,4 +107,25 @@ public class PanelImage extends JPanel{
         
         window.setVisible(true);
     }
+
+    @Override
+    public void mouseClicked(MouseEvent e) {
+        if(obs != null){
+            obs.setChanged();
+            obs.notifyObservers(new Message(message));
+            obs.clearChanged();
+        }
+    }
+
+    @Override
+    public void mousePressed(MouseEvent e) {}
+
+    @Override
+    public void mouseReleased(MouseEvent e) {}
+
+    @Override
+    public void mouseEntered(MouseEvent e) {}
+
+    @Override
+    public void mouseExited(MouseEvent e) {}
 }

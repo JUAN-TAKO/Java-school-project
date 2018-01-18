@@ -29,8 +29,8 @@ public class VueJeu{
     private JPanel panelEst;
     private JPanel panelOuest;
     
-    PanelImage defausseInondation;
-    PanelImage defausseTirage;
+    private PanelImage defausseInondation;
+    private PanelImage defausseTirage;
     
     private JLabel labelActionsRestantes;
     private JPanel panelCentreSud;
@@ -40,6 +40,8 @@ public class VueJeu{
     private PanelTresor panelTresor;
     
     private PanelJoueur[] panelsJoueurs = new PanelJoueur[4];
+    private CompositionObservable observable;
+    
     public VueJeu(ArrayList<String> noms, ArrayList<Pion> pions){
    
         window = new JFrame();
@@ -49,11 +51,11 @@ public class VueJeu{
         
         mainPanel = new JPanel(new BorderLayout());
         window.add(mainPanel) ;
-        
+        observable = new CompositionObservable();
         //On crée les panels joueurs
         for(int i = 0; i < 4; i++){
             if(i < noms.size()){
-                panelsJoueurs[i] = new PanelJoueur(i, noms.get(i), pions.get(i));
+                panelsJoueurs[i] = new PanelJoueur(i, noms.get(i), pions.get(i), observable);
             }
             else{
                 panelsJoueurs[i] = new PanelJoueur(i);
@@ -99,8 +101,8 @@ public class VueJeu{
             }
         }
         
-        JPanel panelCentre = new JPanel(new GridBagLayout());
-        grille = new PanelGrille(types);
+        //JPanel panelCentre = new JPanel(new GridBagLayout());
+        grille = new PanelGrille(types, observable);
         mainPanel.add(grille, BorderLayout.CENTER);
         grille.setBorder(BorderFactory.createLineBorder(Color.BLACK, 2));
         
@@ -142,7 +144,7 @@ public class VueJeu{
     public void resize(){
         int w = mainPanel.getWidth();
         if(w != 0){
-            int w2 = (int)((float)w * 0.30f);
+            int w2 = (int)((float)w * 0.35f);
 
             for(int i = 0; i < 4; i++){
                 panelsJoueurs[i].setWidth(w2);
@@ -152,6 +154,8 @@ public class VueJeu{
             panelNord.setPreferredSize(new Dimension(w, h));
             panelSud.setPreferredSize(new Dimension(w, h));
         }
+        int wi = defausseInondation.getWidth();
+        panelOuest.setPreferredSize(new Dimension(wi, 10));
         mainPanel.revalidate();
         mainPanel.repaint();
     }
