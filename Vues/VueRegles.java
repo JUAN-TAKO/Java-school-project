@@ -5,6 +5,7 @@
  */
 package Vues;
 
+import Utils.MessageType;
 import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.Graphics;
@@ -29,6 +30,7 @@ import javax.swing.JPanel;
 public class VueRegles extends Observable{
     private final JFrame window ;
     
+    private JPanel mainPanel;
     private JPanel panelCentre;
     
     private JButton bouton1;
@@ -37,16 +39,18 @@ public class VueRegles extends Observable{
     private JButton bouton4;
     private JButton bouton5;
     
+    private JButton boutonRetour;
+    
     
     public VueRegles(){
         window = new JFrame();
         window.setDefaultCloseOperation(javax.swing.JFrame.DISPOSE_ON_CLOSE);
-        window.setSize(400, 400);
+        window.setSize(650, 850);
         Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
         window.setLocation(dim.width/2-window.getSize().width/2, dim.height/2-window.getSize().height/2);
         window.setTitle("Regles");
         
-        JPanel mainPanel = new JPanel(new BorderLayout());
+        mainPanel = new JPanel(new BorderLayout());
         window.add(mainPanel) ;
         
         // =================================================================================
@@ -69,17 +73,15 @@ public class VueRegles extends Observable{
         
         // =================================================================================
         // CENTRE
-        panelCentre = new JPanel(new GridLayout(2,1));
+        panelCentre = new PanelImage("src/Images/règles/regle1.png",2);
         mainPanel.add(panelCentre, BorderLayout.CENTER);
         
-        panelCentre.add(new PanelAvecImage(700,500,"src/Images/regle1.png"));
-       
         
          
         // =================================================================================
         // SUD
         
-        JPanel panelBas = new JPanel(new GridLayout(1,6,10,0)) ;
+        JPanel panelBas = new JPanel(new GridLayout(1,7,10,0)) ;
         mainPanel.add(panelBas, BorderLayout.SOUTH);
         
         panelBas.add(new JLabel("Page : "));
@@ -123,12 +125,23 @@ public class VueRegles extends Observable{
             }
         });
         
+        boutonRetour = new JButton("Retour");
+        boutonRetour.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                setChanged();
+                notifyObservers(MessageType.RETOUR_JEU);
+                clearChanged();
+            }
+        });
+        
         
         panelBas.add(bouton1);
         panelBas.add(bouton2);
         panelBas.add(bouton3);
         panelBas.add(bouton4);
         panelBas.add(bouton5);
+        panelBas.add(boutonRetour);
         
         
 
@@ -136,24 +149,27 @@ public class VueRegles extends Observable{
     }
     
     private void updateImage(int index){
-        panelCentre.removeAll();
+        mainPanel.remove(panelCentre);
         switch(index){
             case 0 :
-                panelCentre.add(new PanelAvecImage(700,500,"src/Images/règles/regle1.png"));
+                panelCentre = new PanelImage("src/Images/règles/regle1.png", 2);
                 break;
             case 1 :
-                panelCentre.add(new PanelAvecImage(700,500,"src/Images/règles/regle2.png"));
+                panelCentre = new PanelImage("src/Images/règles/regle2.png", 2);
                 break;
             case 2 :
-                panelCentre.add(new PanelAvecImage(700,500,"src/Images/règles/regle3.png"));
+                panelCentre = new PanelImage("src/Images/règles/regle3.png", 2);
                 break;
             case 3 :
-                panelCentre.add(new PanelAvecImage(700,500,"src/Images/règles/regle4.png"));
+                panelCentre = new PanelImage("src/Images/règles/regle4.png", 2);
                 break;
             case 4 :
-                panelCentre.add(new PanelAvecImage(700,500,"src/Images/règles/regle5.png"));
+                panelCentre = new PanelImage("src/Images/règles/regle5.png", 2);
                 break;
         }
+        mainPanel.add(panelCentre);
+        mainPanel.revalidate();
+        mainPanel.repaint();
     }
     
     private class PanelAvecImage extends JPanel {
