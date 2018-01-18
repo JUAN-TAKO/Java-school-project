@@ -46,7 +46,7 @@ public class VueRegles extends Observable{
     public VueRegles(){
         window = new JFrame();
         window.setDefaultCloseOperation(javax.swing.JFrame.DISPOSE_ON_CLOSE);
-        window.setSize(670, 870);
+        window.setSize(540, 870);
         Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
         window.setLocation(dim.width/2-window.getSize().width/2, dim.height/2-window.getSize().height/2);
         window.setTitle("Regles");
