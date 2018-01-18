@@ -12,6 +12,7 @@ public class Plongeur extends Aventurier{
     public Plongeur(String nomJoueur){
         super(nomJoueur, "Plongeur");
     }
+    //Le plongeur peut traverser des cases coulés pour accéder à n'importe quelle tuiles sèches ou inondés.
     protected void checkTuile(Grille g, HashSet<Tuile> tuilesAccessibles, HashSet<Tuile> tuilesCoulees, Tuile t) {
         ArrayList<Tuile> adjacentes = new ArrayList<>();
         adjacentes.add(g.at(t.getX()+1, t.getY()));
@@ -44,6 +45,7 @@ public class Plongeur extends Aventurier{
         
     }
 
+    // Définition de la tuile de départ et de la couleur du pion.
     @Override
     public TypeTuile getTuileDepart() {
         return TypeTuile.PORTE_CUIVRE;

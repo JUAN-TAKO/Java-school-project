@@ -10,6 +10,7 @@ public class Messager extends Aventurier{
         super(nomJoueur, "Messager");
     }
 
+     // Définition de la tuile de départ et de la couleur du pion.
     @Override
     public TypeTuile getTuileDepart() {
         return TypeTuile.PORTE_ARGENT;
