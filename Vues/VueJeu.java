@@ -13,6 +13,7 @@ import java.awt.Toolkit;
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
 import java.util.ArrayList;
+import java.util.Observer;
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -42,13 +43,26 @@ public class VueJeu{
     private PanelJoueur[] panelsJoueurs = new PanelJoueur[4];
     private CompositionObservable observable;
     
+    private class Tailles{
+        public int windowH;
+        public int windowW;
+        public int panelsJoueursH;
+        public int panelsDefaussesW;
+        public int grilleS;
+        public void recalculer(){
+            
+        }
+    }
+    
+    
     public VueJeu(ArrayList<String> noms, ArrayList<Pion> pions){
    
         window = new JFrame();
         window.setDefaultCloseOperation(javax.swing.JFrame.DISPOSE_ON_CLOSE);
-        window.setSize(Toolkit.getDefaultToolkit().getScreenSize());
+        Dimension d = Toolkit.getDefaultToolkit().getScreenSize();
+        window.setSize(new Dimension(d.width, d.height - 50));
         window.setTitle("Plateau de Jeu");
-        
+        window.setResizable(false);
         mainPanel = new JPanel(new BorderLayout());
         window.add(mainPanel) ;
         observable = new CompositionObservable();
@@ -140,6 +154,9 @@ public class VueJeu{
             }
         });
         
+    }
+    public void setObserver(Observer observer){
+        observable.addObserver(observer);
     }
     public void resize(){
         int w = mainPanel.getWidth();
