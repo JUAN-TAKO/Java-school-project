@@ -536,7 +536,7 @@ public class Controleur implements Observer{
                 vueJeu = new VueJeu(noms, pions, types);
                 vueJeu.setNiveau(niveauEau);
                 
-                vueJeu.addObserver(this);
+                //vueJeu.addObserver(this);
                 vueJeu.setObserver(this);                
                 vueJeu.afficher();
                 parametre = false;

@@ -26,7 +26,7 @@ import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JPanel;
 
-public class VueJeu extends Observable{
+public class VueJeu{
     private final JFrame window ;
     
     private JPanel mainPanel;
@@ -95,20 +95,20 @@ public class VueJeu extends Observable{
         quitter.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                setChanged();
+                observable.setChanged();
                 System.out.println("coucou");
-                notifyObservers(new Message(MessageType.QUITTER));
-                clearChanged();
+                observable.notifyObservers(new Message(MessageType.QUITTER));
+                observable.clearChanged();
             }
         });
         
         regles.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                setChanged();
+                observable.setChanged();
                 System.out.println("damien");
-                notifyObservers(new Message(MessageType.REGLES));
-                clearChanged();
+                observable.notifyObservers(new Message(MessageType.REGLES));
+                observable.clearChanged();
             }
         });
         
