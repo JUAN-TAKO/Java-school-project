@@ -249,9 +249,6 @@ public class VueParametres extends Observable{
                 @Override
                 public void mouseClicked(MouseEvent e) {
                     selectionner(index);
-                    setChanged();
-                    notifyObservers(index);
-                    clearChanged();
                 }
 
                  @Override

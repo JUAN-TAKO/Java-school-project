@@ -35,9 +35,9 @@ public class PanelNiveau extends JPanel{
     private ImageIcon scaled;
     private int fit;
         
-    public PanelNiveau(int niveauInitial, int f) {
+    public PanelNiveau(int f) {
         fit = f;
-        niveau = niveauInitial;
+        niveau = 1;
         labelImage = new JLabel();
         addComponentListener(new ComponentAdapter() {
             public void componentResized(ComponentEvent e) {
@@ -98,20 +98,20 @@ public class PanelNiveau extends JPanel{
         int hi = combined.getHeight();
         return (float)hi / (float)wi;
     }
-    public static void main(String[] args){   
-        PanelNiveau vueNiveau = new PanelNiveau(0, 0);
-        JFrame window = new JFrame();
-        window.add(vueNiveau);
-        window.setSize(400, 900);
-        window.setVisible(true);
-        for(int i = 1; i < 10; i++){
-            System.out.println("Appuyez sur une touche");
-            try {
-                System.in.read();
-            } catch (IOException ex) {
-                System.out.println(ex.getMessage());
-            }
-            vueNiveau.setNiveau(i);
-        }
-    }    
+//    public static void main(String[] args){   
+//        //PanelNiveau vueNiveau = new PanelNiveau(0, 0);
+//        JFrame window = new JFrame();
+//        window.add(vueNiveau);
+//        window.setSize(400, 900);
+//        window.setVisible(true);
+//        for(int i = 1; i < 10; i++){
+//            System.out.println("Appuyez sur une touche");
+//            try {
+//                System.in.read();
+//            } catch (IOException ex) {
+//                System.out.println(ex.getMessage());
+//            }
+//            vueNiveau.setNiveau(i);
+//        }
+    //}    
 }

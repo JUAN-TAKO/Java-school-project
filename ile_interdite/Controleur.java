@@ -20,9 +20,10 @@ public class Controleur implements Observer{
     private VueDebut vueDebut;
     private VueParametres vueParametres; //paramètres de début de partie (nb de joueurs, noms etc)    
     private VueConfirm vueConfirm;
+    private VueFinale vueFinale;
+    private VueJeu vueJeu;
     
-    
-    boolean parametre = false;
+    boolean parametre, finale, jeu = false;
     boolean debut = true;
     
     
@@ -32,7 +33,7 @@ public class Controleur implements Observer{
     private VueAventuriers vueAventuriers; //pour afficher les aventuriers
     private VueSelection selection;  //fenêtre de sélection de la tuile
     
-    private VueFinale vueFinale;
+
     
     private int indexAventurierCourant; 
     private int action; //nombre d'actions effectuées par le joueur courant
@@ -234,7 +235,7 @@ public class Controleur implements Observer{
         ArrayList<String> coordsTuiles; //on passeras les coordonées de la tuile sous forme de string a la vue Sélection
         ArrayList<Boolean> boolTresors = new ArrayList<>();
         boolean b;
-        VueFinale vueFinale;
+        VueFinale vueFinale = null;
                 
         switch(m.getType()){
             case CLIC_TUILE:
@@ -262,7 +263,7 @@ public class Controleur implements Observer{
                 
                 break;
                 
-            case SPECIAL:   //clic sur le bouton spécial, pas implémenté pour l'instant
+            case ACTION_SPECIAL:   //clic sur le bouton spécial, pas implémenté pour l'instant
                 
                 
                 break;
@@ -364,10 +365,12 @@ public class Controleur implements Observer{
                 vueFinale = new VueFinale(boolTresors);
                 vueFinale.addObserver(this);
                 vueFinale.afficher();
+                finale = true;
                 break;
                 
             case RETOUR_MENU:
                 vueFinale.hide();
+                finale = false;
                 vueParametres.afficher();
                 break;
                 
@@ -382,8 +385,7 @@ public class Controleur implements Observer{
                 
                 int difficulte = mp.getIndex();
                 ArrayList<String> noms = mp.getNoms();
-                ArrayList<String> roles = new ArrayList<>();
-                ArrayList<Color> couleurs = new ArrayList<>();
+                ArrayList<Pion> pions = new ArrayList<>();
                 
                 
                 ArrayList<Integer> indexes = new ArrayList<>();
@@ -406,38 +408,58 @@ public class Controleur implements Observer{
                         case 1:
                             
                             aventuriers.add(new Ingenieur(nom));
+                            pions.add(Pion.ROUGE);
                             break;
                         case 2:
                             aventuriers.add(new Messager(nom));
+                            pions.add(Pion.GRIS);
                             break;
                         case 3:
                             aventuriers.add(new Navigateur(nom));
+                            pions.add(Pion.JAUNE);
                             break;    
                         case 4:
                             aventuriers.add(new Pilote(nom));
+                            pions.add(Pion.BLEU);
                             break;
                         case 5:
                             aventuriers.add(new Plongeur(nom));
+                            pions.add(Pion.NOIR);
                             break;
                     }
                     Aventurier a = aventuriers.get(aventuriers.size()-1);
                     a.setPosition(grille.getTuileByType(a.getTuileDepart())); //on positionne les aventuriers sur leur tuile de départ
-                    roles.add(a.getNomRole());
-                    couleurs.add(a.getPion().getColor());
+                    
+//                    roles.add(a.getNomRole());
+//                    couleurs.add(a.getPion().getColor());
                    
                     i++;
                 }
-                vueAventuriers = new VueAventuriers(noms, roles, couleurs);
-                vueAventuriers.addObserver(this);
+//                vueAventuriers = new VueAventuriers(noms, roles, couleurs);
+//                vueAventuriers.addObserver(this);
+//                vueParametres.hide();
+                vueJeu = new VueJeu(noms, pions);
+                vueJeu.setNiveau(niveauEau);
+                
+                //vueJeu.addObserver(this);                
+                vueJeu.afficher();
+                jeu = true;
+                
+                
+                
+                
+                
+                
                 vueParametres.hide();
-                vueAventuriers.afficher();
+                parametre = false;
                 
                 //on met a jour la position des aventuriers dans la vue aventuriers
                 for(int j = 0; j < aventuriers.size(); j++){
                     Aventurier a = aventuriers.get(j);
                     System.out.println(a);
-                    System.out.println(vueAventuriers);
-                    vueAventuriers.setPosition(j, a.getPosition().getNom() + " (" + a.getPosition().getX() + " ; " + a.getPosition().getY() + ")");
+                    System.out.println(vueJeu);
+                    //vueAventuriers.setPosition(j, a.getPosition().getNom() + " (" + a.getPosition().getX() + " ; " + a.getPosition().getY() + ")");
+                    
                 }
                 selectAventurier();
                 break;
