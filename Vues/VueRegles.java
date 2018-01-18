@@ -46,7 +46,7 @@ public class VueRegles extends Observable{
     public VueRegles(){
         window = new JFrame();
         window.setDefaultCloseOperation(javax.swing.JFrame.DISPOSE_ON_CLOSE);
-        window.setSize(650, 850);
+        window.setSize(670, 870);
         Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
         window.setLocation(dim.width/2-window.getSize().width/2, dim.height/2-window.getSize().height/2);
         window.setTitle("Regles");
@@ -130,9 +130,7 @@ public class VueRegles extends Observable{
         boutonRetour.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                setChanged();
-                notifyObservers(new Message(MessageType.RETOUR_JEU));
-                clearChanged();
+                hide();
             }
         });
         

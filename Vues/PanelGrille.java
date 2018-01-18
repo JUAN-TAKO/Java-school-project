@@ -35,7 +35,8 @@ public class PanelGrille extends JPanel{
     public void setEtat(int index, Etat e){
         PanelTuile pt = ((PanelTuile)getComponent(index));
         pt.setEtat(e);
-        pt.redraw();
+        revalidate();
+        repaint();
     }
     public void setPions(int index, ArrayList<Pion> pions){
         PanelTuile pt = ((PanelTuile)getComponent(index));

@@ -3,7 +3,7 @@ package Utils;
 public enum MessageType{
 	DEPLACER,
 	ASSECHER,
-	ACTION_SPECIAL,
+	ACTION_SPECIALE,
         SAC_SABLE,
         HELICO,
         RECUP_TRESOR,
@@ -19,7 +19,6 @@ public enum MessageType{
         CLIC_TUILE,
         
         REGLES,
-        RETOUR_JEU,
         JOUER,
 	QUITTER,
         RETOUR_MENU,

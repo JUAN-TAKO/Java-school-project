@@ -91,6 +91,7 @@ public class PanelTuile extends JPanel{
     }
     public void setEtat(Etat e){
         etat = e;
+        redraw();
     }
     public void setPions(ArrayList<Pion> pions){
         imagesPions = new ArrayList<>();
