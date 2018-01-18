@@ -61,12 +61,15 @@ public class VueJeu{
         window.add(mainPanel) ;
         observable = new CompositionObservable();
         
+        //Creation d'une barre de menu  et ajout d'un menu déroulant dans la barre de menu
         window.setJMenuBar(mb);
         menu.setText("Menu");
         
-        
+        //déclaration des différents choix du menu
         quitter.setText("Quitter");
         regles.setText("Règles du jeu");
+        
+        //ajout des choix au menu
         menu.add(regles);
         menu.add(quitter);
         mb.add(menu);
