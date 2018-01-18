@@ -172,22 +172,66 @@ public class VueJeu{
         niveau = new PanelNiveau(1);
         
         boutonAssecher = new JButton("Assecher");
-     
+        boutonAssecher.addActionListener(new ActionListener(){
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                observable.setChanged();
+                observable.notifyObservers(new Message(MessageType.ASSECHER));
+                observable.clearChanged();
+            }
+        });
+        
+            
         
         boutonDeplacer = new JButton("Deplacer");
-
+        boutonDeplacer.addActionListener(new ActionListener(){
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                observable.setChanged();
+                observable.notifyObservers(new Message(MessageType.DEPLACER));
+                observable.clearChanged();
+            }
+        });
         
         boutonActionSpeciale = new JButton("Action Speciale");
-
+        boutonActionSpeciale.addActionListener(new ActionListener(){
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                observable.setChanged();
+                observable.notifyObservers(new Message(MessageType.ACTION_SPECIALE));
+                observable.clearChanged();
+            }
+        });
         
         boutonSacSable = new JButton("Sac de Sable");
-
+        boutonSacSable.addActionListener(new ActionListener(){
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                observable.setChanged();
+                observable.notifyObservers(new Message(MessageType.HELICO));
+                observable.clearChanged();
+            }
+        });
         
         boutonHelico = new JButton("Hélicoptère");
-
+        boutonHelico.addActionListener(new ActionListener(){
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                observable.setChanged();
+                observable.notifyObservers(new Message(MessageType.REGLES));
+                observable.clearChanged();
+            }
+        });
         
         boutonRecuptresor = new JButton("Récupérer Trésor");
-
+        boutonRecuptresor.addActionListener(new ActionListener(){
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                observable.setChanged();
+                observable.notifyObservers(new Message(MessageType.REGLES));
+                observable.clearChanged();
+            }
+        });
         
         panelCentreSud.add(boutonAssecher);
         panelCentreSud.add(boutonDeplacer);
@@ -226,6 +270,7 @@ public class VueJeu{
     }
     public void setEtatTuile(int index, Etat etat){
         grille.setEtat(index, etat);
+        resize();
     }
     public void setObserver(Observer observer){
         observable.addObserver(observer);

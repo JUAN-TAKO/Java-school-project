@@ -33,7 +33,7 @@ public class Controleur implements Observer{
     private HashMap<Pion, Aventurier> aventuriersByPion;
     
 
-    
+    private TypeTuile tuileContexte;
     private int indexAventurierCourant; 
     private int action; //nombre d'actions effectuées par le joueur courant
     private int tour; //nombre de tours de jeu
@@ -87,6 +87,7 @@ public class Controleur implements Observer{
         tuilesAssechables = new ArrayList<Tuile>();
         tuilesAccessibles = new ArrayList<Tuile>();
         tuilesSpeciales = new ArrayList<Tuile>();
+        action = -1;
     }
     
     //reformer la pile de cartes inondation à partir de la défausse
@@ -152,10 +153,13 @@ public class Controleur implements Observer{
     
     //incrémentation du nombre d'actions de l'aventurier courant et le passage au joueur suivant si le joueur a effectué ses trois actions
     public void actionSuivante(){ 
+        System.out.println(action);
         action++;
+        System.out.println(action);
         if(action >= 3){
             aventurierSuivant();
         }
+       
     }
     //passe a l'aventurier suivant et au tour suivant si tous les aventuriers ont joués
     public void aventurierSuivant(){
@@ -169,12 +173,8 @@ public class Controleur implements Observer{
         if(indexAventurierCourant >= aventuriers.size()){
             tourSuivant();
         }
-        tuilesAccessibles = getAventurierCourant().getTuilesAccessiblesDeplacement(grille);
-        tuilesAssechables = getAventurierCourant().getTuilesAccessiblesAssechement(grille);
-        tuilesSpeciales = getAventurierCourant().getTuilesSpeciales(grille);
-        for(Tuile ta : tuilesAssechables){
-            System.out.println("tuile : " + ta.getNom());
-        }
+       
+     
         
         //selectAventurier();
     }
@@ -210,6 +210,10 @@ public class Controleur implements Observer{
     //assèche la tuile de type t
     public void assecher(TypeTuile t){
         grille.getTuileByType(t).setEtat(Etat.SECHE);
+        vueJeu.setEtatTuile(grille.getIndexTuile(grille.getTuileByType(tuileContexte)), Etat.SECHE);
+        System.out.println(grille.getTuileByType(t).getEtat());
+        
+        recalculerTuile();
     }
     //active ou désactive tous les boutons de la vue aventuriers
     public void setBoutonsActives(boolean a){
@@ -294,9 +298,9 @@ public class Controleur implements Observer{
                 
         switch(m.getType()){
             case CLIC_TUILE:
-                System.out.println("test1");
                 MessageTuile mct = (MessageTuile)m;
                 afficherActionsPossibles(grille.getTuileByType(mct.getTuile()));
+                tuileContexte = mct.getTuile();
                 break;
                 
             case DEFAUSSER:
@@ -315,13 +319,17 @@ public class Controleur implements Observer{
                 break;
                 
             case ASSECHER:  //clic sur le bouton assecher
-                listeTuiles = getAventurierCourant().getTuilesAccessiblesAssechement(grille);
-                afficherSelection(listeTuiles, MessageType.CHOISIR_ASSECHEMENT);
-                setBoutonsActives(false);
+//                listeTuiles = getAventurierCourant().getTuilesAccessiblesAssechement(grille);
+//                afficherSelection(listeTuiles, MessageType.CHOISIR_ASSECHEMENT);
+//                setBoutonsActives(false);
+                System.out.println("ASSECHER");
+                System.out.println(tuileContexte.getImagePath());
+                assecher(tuileContexte);
+                
                 
                 break;
                 
-            case ACTION_SPECIAL:   //clic sur le bouton spécial, pas implémenté pour l'instant
+            case ACTION_SPECIALE:   //clic sur le bouton spécial, pas implémenté pour l'instant
                 
                 
                 break;
@@ -562,8 +570,15 @@ public class Controleur implements Observer{
         
         //selectAventurier();
         aventurierSuivant();
+        actionSuivante();
+        recalculerTuile();
     }
  
+    public void recalculerTuile(){
+        tuilesAccessibles = getAventurierCourant().getTuilesAccessiblesDeplacement(grille);
+        tuilesAssechables = getAventurierCourant().getTuilesAccessiblesAssechement(grille);
+        tuilesSpeciales = getAventurierCourant().getTuilesSpeciales(grille);
+    }
     
     //fonction main
     public static void main(String [] args) {
