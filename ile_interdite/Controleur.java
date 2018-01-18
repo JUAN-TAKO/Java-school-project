@@ -73,13 +73,13 @@ public class Controleur implements Observer{
         for(int i = 0; i < 4; i++){
             tresorsRecoltes.add(false);
         }
-        defausseTirage[0] = 5;
-        defausseTirage[1] = 5;
-        defausseTirage[2] = 5;
-        defausseTirage[3] = 5;
-        defausseTirage[4] = 3;
-        defausseTirage[5] = 2;
-        defausseTirage[6] = 3;
+        piocheTirage[0] = 5;
+        piocheTirage[1] = 5;
+        piocheTirage[2] = 5;
+        piocheTirage[3] = 5;
+        piocheTirage[4] = 3;
+        piocheTirage[5] = 2;
+        piocheTirage[6] = 3;
         //de même pour la pile de cartes Tirage
         
         vueDebut = new VueDebut();
@@ -134,26 +134,28 @@ public class Controleur implements Observer{
     public void piocherTirage(){
         
         Aventurier av = getAventurierCourant();
-        int randomNum = 0;
+        int randomNum;
         int nb;
         boolean monte = false;
         CarteTirage[] pioche = new CarteTirage[2];
+        System.out.println("nbCartesPioche : " + getNbCartes(piocheTirage));
+        System.out.println("nbCartesDefausse : " + getNbCartes(defausseTirage));
         for(int i = 0; i < 2; i++){
             do{
                 randomNum = (int)(Math.random() * 6);
-                nb = defausseTirage[randomNum];
+                nb = piocheTirage[randomNum];
                 if(nb != 0){
-                    defausseTirage[randomNum]--;
+                    piocheTirage[randomNum]--;
                     pioche[i] = CarteTirage.values()[randomNum];
                 }
             }while(nb == 0);
             
-            if(pioche[0] == CarteTirage.MONTEE_DES_EAUX){
+            if(pioche[i] == CarteTirage.MONTEE_DES_EAUX){
                 niveauEau++;
                 monte = true;
             }
             else{
-                av.addCarte(pioche[0]);
+                av.addCarte(pioche[i]);
             }
             if(getNbCartes(piocheTirage) == 0){
                 reinitialiserTirage();
