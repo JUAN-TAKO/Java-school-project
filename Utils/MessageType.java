@@ -3,7 +3,8 @@ package Utils;
 public enum MessageType{
 	DEPLACER,
 	ASSECHER,
-	SPECIAL,
+	ACTION_SPECIAL,
+        CARTE_SPECIAL,
 	PASSER,
         CHOISIR_DEPLACEMENT,
 	CHOISIR_ASSECHEMENT,

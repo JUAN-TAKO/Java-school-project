@@ -220,7 +220,7 @@ public class Controleur implements Observer{
                 
                 break;
                 
-            case SPECIAL:   //clic sur le bouton spécial, pas implémenté pour l'instant
+            case ACTION_SPECIAL:   //clic sur le bouton spécial, pas implémenté pour l'instant
                 
                 
                 break;
@@ -394,7 +394,7 @@ public class Controleur implements Observer{
 //                vueAventuriers.addObserver(this);
 //                vueParametres.hide();
                 vueJeu = new VueJeu(noms, pions);
-                vueJeu.setNiveau(difficulte);
+                vueJeu.setNiveau(niveauEau);
                 
                 //vueJeu.addObserver(this);                
                 vueJeu.afficher();

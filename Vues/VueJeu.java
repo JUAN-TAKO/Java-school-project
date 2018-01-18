@@ -10,9 +10,12 @@ import java.awt.Dimension;
 import java.awt.GridBagLayout;
 import java.awt.GridLayout;
 import java.awt.Toolkit;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
 import java.util.ArrayList;
+import java.util.Observable;
 import java.util.Observer;
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
@@ -23,7 +26,7 @@ import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JPanel;
 
-public class VueJeu{
+public class VueJeu extends Observable{
     private final JFrame window ;
     
     Grille g = new Grille(new GrilleAleatoire());
@@ -46,6 +49,11 @@ public class VueJeu{
     
     private PanelJoueur[] panelsJoueurs = new PanelJoueur[4];
     private CompositionObservable observable;
+    
+    private JButton boutonAsseccher;
+    private JButton boutonDeplacer;
+    private JButton boutonActionSpeciale;
+    private JButton boutonCarteSpeciale;
     
     private JMenuBar mb = new JMenuBar();
     private JMenu menu = new JMenu();
@@ -152,20 +160,69 @@ public class VueJeu{
         panelSud = new JPanel(new BorderLayout());
         mainPanel.add(panelSud, BorderLayout.SOUTH);
         panelSud.add(panelsJoueurs[2], BorderLayout.WEST);
-        panelCentreSud = new JPanel();
-        panelSud.add(panelCentreSud);
+        panelCentreSud = new JPanel(new GridLayout(2,2));
+        panelSud.add(panelCentreSud, BorderLayout.CENTER);
         
         panelSud.add(panelsJoueurs[3], BorderLayout.EAST);
                
-        niveau = new PanelNiveau(niveauInitial, 1);
+        niveau = new PanelNiveau(1);
         
+        boutonAsseccher = new JButton("Assecher");
+        boutonAsseccher.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                setChanged();
+                notifyObservers(MessageType.ASSECHER);
+                clearChanged();
+            }
+        });
         
+        boutonDeplacer = new JButton("Deplacer");
+        boutonDeplacer.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                setChanged();
+                notifyObservers(MessageType.DEPLACER);
+                clearChanged();
+            }
+        });
+        
+        boutonActionSpeciale = new JButton("Action Speciale");
+        boutonActionSpeciale.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                setChanged();
+                notifyObservers(MessageType.ACTION_SPECIAL);
+                clearChanged();
+            }
+        });
+        
+        boutonCarteSpeciale = new JButton("Carte Speciale");
+        boutonCarteSpeciale.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                setChanged();
+                notifyObservers(MessageType.CARTE_SPECIAL);
+                clearChanged();
+            }
+        });
+        
+        panelCentreSud.add(boutonAsseccher);
+        panelCentreSud.add(boutonDeplacer);
+        panelCentreSud.add(boutonActionSpeciale);
+        panelCentreSud.add(boutonCarteSpeciale);
+        
+        // =================================================================================
+        // EST
         defausseInondation = new PanelImage("src/Images/cache/inondation_cache.png", 2);
         panelEst = new JPanel(new BorderLayout());
         panelEst.add(niveau, BorderLayout.CENTER);
         panelEst.add(defausseInondation, BorderLayout.SOUTH);
         mainPanel.add(panelEst, BorderLayout.EAST);
         
+        
+        // =================================================================================
+        // OUEST
         panelTresor = new PanelTresor();
         defausseTirage = new PanelImage("src/Images/cache/tresor_cache.png", 2);
         panelOuest = new JPanel(new BorderLayout());
@@ -213,8 +270,8 @@ public class VueJeu{
         labelActionsRestantes.setText(s);
     }
     
-    public void setNiveau(int niveau){
-        niveauInitial = niveau;
+    public void setNiveau(int n){
+        niveau.setNiveau(n);
     }
     
     public static void main(String [] args) {
