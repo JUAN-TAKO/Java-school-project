@@ -207,8 +207,9 @@ public class VueRegles extends Observable{
     public void hide() {
         window.dispose();
     }
-    //damien le pd
+    
     public void afficher() {
         this.window.setVisible(true);
     }
 }
+

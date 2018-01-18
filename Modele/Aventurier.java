@@ -58,7 +58,9 @@ public abstract class Aventurier extends Observable{
 
         return tuilesAccessibles;
     }
-	
+  public ArrayList<Tuile> getTuilesSpeciales(Grille g){
+      return new ArrayList<>();
+  }
 //    public abstract void actionSpeciale(Grille g);
 	
     public String getNom(){

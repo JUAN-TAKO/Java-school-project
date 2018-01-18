@@ -75,7 +75,7 @@ public class VueJeu extends Observable{
     
     
     public VueJeu(ArrayList<String> noms, ArrayList<Pion> pions){
-   
+    
         window = new JFrame();
         window.setDefaultCloseOperation(javax.swing.JFrame.DISPOSE_ON_CLOSE);
         Dimension d = Toolkit.getDefaultToolkit().getScreenSize();
@@ -128,12 +128,7 @@ public class VueJeu extends Observable{
             }
         }
         ArrayList<CarteTirage> cartes = new ArrayList<>();
-        cartes.add(CarteTirage.TRESOR_CALICE);
-        cartes.add(CarteTirage.TRESOR_CALICE);
-        cartes.add(CarteTirage.TRESOR_CALICE);
-        cartes.add(CarteTirage.TRESOR_CRISTAL);
         cartes.add(CarteTirage.SABLE);
-        
         panelsJoueurs[0].updateCartes(cartes);
         panelsJoueurs[1].updateCartes(cartes);
         panelsJoueurs[2].updateCartes(cartes);
@@ -281,7 +276,18 @@ public class VueJeu extends Observable{
                 resize();
             }
         });
+        mainPanel.revalidate();
+        mainPanel.repaint();
         
+    }
+    public void lock(){
+        Dimension d = Toolkit.getDefaultToolkit().getScreenSize();
+        window.setSize(new Dimension(d.width, d.height - 50));
+    }
+    public void lock2(){
+        Dimension d = Toolkit.getDefaultToolkit().getScreenSize();
+        window.setSize(new Dimension(d.width - 10, d.height));
+        window.setResizable(true);
     }
     public void setObserver(Observer observer){
         observable.addObserver(observer);
@@ -328,7 +334,7 @@ public class VueJeu extends Observable{
         niveau.setNiveau(n);
     }
     
-    public void activeDesactive(ArrayList<Boolean> listes){
+    public void choisirEtatsBoutons(ArrayList<Boolean> listes){
         for(int i = 0 ; i < listes.size() ; i++){
             if(listes.get(i)){
                 switch(i){
@@ -376,8 +382,8 @@ public class VueJeu extends Observable{
         }
     }
     
-    public void updateCarte(int index, ArrayList<CarteTirage> cartes){
-        this.panelsJoueurs[index].updateCartes(cartes);
+    public void updateCartes(int index, ArrayList<CarteTirage> cartes){
+        panelsJoueurs[index].updateCartes(cartes);
     }
     
     public static void main(String [] args) {

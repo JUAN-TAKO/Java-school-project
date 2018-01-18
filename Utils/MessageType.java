@@ -18,11 +18,11 @@ public enum MessageType{
         VOIR_TIRAGE,
         CLIC_TUILE,
         
+        REGLES,
+        RETOUR_JEU,
         JOUER,
 	QUITTER,
         RETOUR_MENU,
-        REGLES,
-        RETOUR_JEU,
         ANNULER_SELECTION,
         GAGNE_PERDU,
         PERDU,

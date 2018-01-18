@@ -22,9 +22,6 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 import java.awt.*;
-import java.io.File;
-import java.io.IOException;
-import javax.imageio.ImageIO;
 import javax.swing.*;
 //import Utils.*;
 
@@ -47,7 +44,7 @@ public class VueDebut extends Observable{
         JPanel mainPanel = new JPanel(new BorderLayout());
         window.add(mainPanel);
         
-        mainPanel.add(new PanelAvecImage(400,250,"src/Images/imageDebut2.jpg"));
+        mainPanel.add(new PanelImage("src/Images/imageDebut2.jpg", 0));
         
         
         // =================================================================================
@@ -84,33 +81,6 @@ public class VueDebut extends Observable{
         
                
     }
-    
-    private class PanelAvecImage extends JPanel {
-
-        private Image image;
-        private final Integer width ;
-        private final Integer height ;
-
-        public PanelAvecImage(Integer width, Integer height, String imageFile) {
-            this.width = width ;
-            this.height = height ;
-            try {
-                this.image = ImageIO.read(new File(imageFile));
-            } catch (IOException ex) {
-                System.err.println("Erreur de lecture background");
-            }
-        }
-
-        @Override
-        public void paintComponent(Graphics g) {
-            super.paintComponent(g);
-            if (image != null) {
-                g.drawImage(image, 0, 0, this.width, this.height, null, this);
-            }
-        }
-    }
-    
-    
     public void afficher() {
         this.window.setVisible(true);
     }
