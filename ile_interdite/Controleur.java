@@ -84,7 +84,7 @@ public class Controleur implements Observer{
         grille = new Grille(g);
         
         tour = 0;
-        indexAventurierCourant = -1;
+        indexAventurierCourant = 0;
         tuilesAssechables = new ArrayList<Tuile>();
         tuilesAccessibles = new ArrayList<Tuile>();
         tuilesSpeciales = new ArrayList<Tuile>();
@@ -155,21 +155,20 @@ public class Controleur implements Observer{
     //incrémentation du nombre d'actions de l'aventurier courant et le passage au joueur suivant si le joueur a effectué ses trois actions
     public void actionSuivante(){ 
         System.out.println(action);
+        
         action++;
         int nbActMax = getAventurierCourant().getNbActionMax();
-        Integer nbActionRestantes;
         if(action >= nbActMax){
             aventurierSuivant();
         }
-        nbActionRestantes = nbActMax - action;
-        vueJeu.setNbAction(nbActionRestantes.toString());
+        nbActMax = getAventurierCourant().getNbActionMax();
+        vueJeu.setNbAction(((Integer)(nbActMax - action)).toString());
     }
     //passe a l'aventurier suivant et au tour suivant si tous les aventuriers ont joués
     public void aventurierSuivant(){
         
         
         action = 0;
-        setBoutonsActives(true);
         jokerIngenieur = false;
         indexAventurierCourant++;
         if(indexAventurierCourant >= aventuriers.size()){
@@ -604,7 +603,7 @@ public class Controleur implements Observer{
         piocherInondation(6);
         
         //selectAventurier();
-        aventurierSuivant();
+        //aventurierSuivant();
         actionSuivante();
         recalculerTuile();
     }
