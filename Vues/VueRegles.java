@@ -153,19 +153,19 @@ public class VueRegles extends Observable{
         mainPanel.remove(panelCentre);
         switch(index){
             case 0 :
-                panelCentre = new PanelImage("src/Images/règles/regle1.png", 2);
+                panelCentre = new PanelImage("src/Images/regles/regle1.png", 2);
                 break;
             case 1 :
-                panelCentre = new PanelImage("src/Images/règles/regle2.png", 2);
+                panelCentre = new PanelImage("src/Images/regles/regle2.png", 2);
                 break;
             case 2 :
-                panelCentre = new PanelImage("src/Images/règles/regle3.png", 2);
+                panelCentre = new PanelImage("src/Images/regles/regle3.png", 2);
                 break;
             case 3 :
-                panelCentre = new PanelImage("src/Images/règles/regle4.png", 2);
+                panelCentre = new PanelImage("src/Images/regles/regle4.png", 2);
                 break;
             case 4 :
-                panelCentre = new PanelImage("src/Images/règles/regle5.png", 2);
+                panelCentre = new PanelImage("src/Images/regles/regle5.png", 2);
                 break;
         }
         mainPanel.add(panelCentre);
