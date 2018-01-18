@@ -30,7 +30,7 @@ import javax.swing.JPanel;
  *
  * @author juan
  */
-public class PanelTuile extends JPanel implements MouseListener{
+public class PanelTuile extends JPanel{
     private BufferedImage combined;
     ArrayList<BufferedImage> imagesPions;
     private JLabel labelTuile;
@@ -53,6 +53,27 @@ public class PanelTuile extends JPanel implements MouseListener{
         etat = Etat.SECHE;
         redraw();
         add(labelTuile, BorderLayout.CENTER);
+        addMouseListener(new MouseListener(){
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                obs.setChanged();
+                obs.notifyObservers(new MessageTuile(MessageType.CLIC_TUILE, tuile));
+                obs.clearChanged();
+            }
+
+            @Override
+            public void mousePressed(MouseEvent e) {    }
+
+            @Override
+            public void mouseReleased(MouseEvent e) {    }
+
+            @Override
+            public void mouseEntered(MouseEvent e) {    }
+
+            @Override
+            public void mouseExited(MouseEvent e) {    }
+            
+        });
     }
     public PanelTuile(){}
     
@@ -110,24 +131,7 @@ public class PanelTuile extends JPanel implements MouseListener{
         
         
     }
-    @Override
-    public void mouseClicked(MouseEvent e) {
-        obs.setChanged();
-        obs.notifyObservers(new MessageTuile(MessageType.CLIC_TUILE, tuile));
-        obs.clearChanged();
-    }
-
-    @Override
-    public void mousePressed(MouseEvent e) {    }
-
-    @Override
-    public void mouseReleased(MouseEvent e) {    }
-
-    @Override
-    public void mouseEntered(MouseEvent e) {    }
-
-    @Override
-    public void mouseExited(MouseEvent e) {    }
+    
     
     public static void main(String args[]){
         JFrame window = new JFrame();

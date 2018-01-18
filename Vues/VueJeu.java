@@ -29,7 +29,6 @@ import javax.swing.JPanel;
 public class VueJeu extends Observable{
     private final JFrame window ;
     
-    Grille g = new Grille(new GrilleAleatoire());
     private JPanel mainPanel;
     private JPanel panelNord;
     private JPanel panelSud;
@@ -74,7 +73,7 @@ public class VueJeu extends Observable{
     }
     
     
-    public VueJeu(ArrayList<String> noms, ArrayList<Pion> pions){
+    public VueJeu(ArrayList<String> noms, ArrayList<Pion> pions, ArrayList<TypeTuile> types){
     
         window = new JFrame();
         window.setDefaultCloseOperation(javax.swing.JFrame.DISPOSE_ON_CLOSE);
@@ -152,15 +151,7 @@ public class VueJeu extends Observable{
         setNbAction("2");
         // =================================================================================
         // CENTRE
-        ArrayList<TypeTuile> types = new ArrayList<>();
-        for(int i = 0; i < g.length(); i++){
-            Tuile t = g.get(i);
-            if(t == null){
-                types.add(null);
-            }else{
-                types.add(t.getType());
-            }
-        }
+        
         
         //JPanel panelCentre = new JPanel(new GridBagLayout());
         grille = new PanelGrille(types, observable);
@@ -186,64 +177,22 @@ public class VueJeu extends Observable{
         niveau = new PanelNiveau(1);
         
         boutonAssecher = new JButton("Assecher");
-        boutonAssecher.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                setChanged();
-                notifyObservers(MessageType.ASSECHER);
-                clearChanged();
-            }
-        });
+     
         
         boutonDeplacer = new JButton("Deplacer");
-        boutonDeplacer.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                setChanged();
-                notifyObservers(MessageType.DEPLACER);
-                clearChanged();
-            }
-        });
+
         
         boutonActionSpeciale = new JButton("Action Speciale");
-        boutonActionSpeciale.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                setChanged();
-                notifyObservers(MessageType.ACTION_SPECIAL);
-                clearChanged();
-            }
-        });
+
         
         boutonSacSable = new JButton("Sac de Sable");
-        boutonSacSable.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                setChanged();
-                notifyObservers(MessageType.SAC_SABLE);
-                clearChanged();
-            }
-        });
+
         
         boutonHelico = new JButton("Hélicoptère");
-        boutonHelico.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                setChanged();
-                notifyObservers(MessageType.HELICO);
-                clearChanged();
-            }
-        });
+
         
         boutonRecuptresor = new JButton("Récupérer Trésor");
-        boutonRecuptresor.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                setChanged();
-                notifyObservers(MessageType.RECUP_TRESOR);
-                clearChanged();
-            }
-        });
+
         
         panelCentreSud.add(boutonAssecher);
         panelCentreSud.add(boutonDeplacer);
@@ -333,6 +282,9 @@ public class VueJeu extends Observable{
     public void setNiveau(int n){
         niveau.setNiveau(n);
     }
+    public void setAventurier(int index, ArrayList<Pion> pions){
+        grille.setPions(index, pions);
+    }
     
     public void choisirEtatsBoutons(ArrayList<Boolean> listes){
         for(int i = 0 ; i < listes.size() ; i++){
@@ -397,7 +349,7 @@ public class VueJeu extends Observable{
         pions.add(Pion.JAUNE);
         pions.add(Pion.ROUGE);
         pions.add(Pion.VERT);
-        VueJeu jeu = new VueJeu(noms, pions);
-        jeu.afficher();
+        //VueJeu jeu = new VueJeu(noms, pions);
+        //jeu.afficher();
    }
 }
