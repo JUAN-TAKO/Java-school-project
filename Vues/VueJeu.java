@@ -301,7 +301,7 @@ public class VueJeu extends Observable{
         niveau.setNiveau(n);
     }
     
-    public void activeDesactive(ArrayList<Boolean> listes){
+    public void choisirEtatsBoutons(ArrayList<Boolean> listes){
         for(int i = 0 ; i < listes.size() ; i++){
             if(listes.get(i)){
                 switch(i){
@@ -349,8 +349,8 @@ public class VueJeu extends Observable{
         }
     }
     
-    public void updateCarte(int index, ArrayList<CarteTirage> cartes){
-        this.panelsJoueurs[index].updateCartes(cartes);
+    public void updateCartes(int index, ArrayList<CarteTirage> cartes){
+        panelsJoueurs[index].updateCartes(cartes);
     }
     
     public static void main(String [] args) {
