@@ -282,8 +282,6 @@ public class Controleur implements Observer{
         actionsPossibles.set(3, t.getEtat() == Etat.INONDEE && getAventurierCourant().getCartes(CarteTirage.SABLE) > 0); // sac de sable
         actionsPossibles.set(4, t.getEtat() != Etat.COULEE && getAventurierCourant().getCartes(CarteTirage.HELICOPTERE) > 0);// helicoptere
         actionsPossibles.set(5, tr != null && getAventurierCourant().getCartes(CarteTirage.values()[tr.ordinal()]) >= 4); // recup tresor
-        System.out.println(actionsPossibles.get(1));
-        System.out.println(getAventurierCourant().getNomRole());
         vueJeu.choisirEtatsBoutons(actionsPossibles);
     }
     //gère la réception des messages des vues
@@ -603,6 +601,14 @@ public class Controleur implements Observer{
         //aventurierSuivant();
         actionSuivante();
         recalculerTuiles();
+        
+        ArrayList<Boolean> actionsPossibles = new ArrayList<>();
+        for(int i = 0; i < 6; i++){
+            actionsPossibles.add(false);
+        }
+        vueJeu.choisirEtatsBoutons(actionsPossibles);
+        
+        
     }
  
     public void recalculerTuiles(){
