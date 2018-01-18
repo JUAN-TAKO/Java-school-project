@@ -32,43 +32,21 @@ public class PanelGrille extends JPanel{
             }
         }
     }
+    
     public void setEtat(int index, Etat e){
         PanelTuile pt = ((PanelTuile)getComponent(index));
         pt.setEtat(e);
         revalidate();
         repaint();
     }
+    
     public void setPions(int index, ArrayList<Pion> pions){
         PanelTuile pt = ((PanelTuile)getComponent(index));
         pt.setPions(pions);
         pt.redraw();
     }
+    
     public void redraw(int index){
         ((PanelTuile)getComponent(index)).redraw();
-    }
-    public static void main(String args[]){
-        Grille g = new Grille(new GrilleAleatoire());
-        JFrame window = new JFrame();
-        CompositionObservable obs = new CompositionObservable();
-        ArrayList<TypeTuile> types = new ArrayList<>();
-        for(int i = 0; i < g.length(); i++){
-            Tuile t = g.get(i);
-            if(t == null){
-                types.add(null);
-            }else{
-                types.add(t.getType());
-            }
-        }
-        PanelGrille panelGrille = new PanelGrille(types, obs);
-        panelGrille.setEtat(2, Etat.INONDEE);
-        panelGrille.setEtat(7, Etat.INONDEE);
-        panelGrille.setEtat(17, Etat.INONDEE);
-        panelGrille.setEtat(26, Etat.INONDEE);
-        ArrayList<Pion> pions = new ArrayList<>();
-        pions.add(Pion.BLEU);
-        panelGrille.setPions(9, pions);
-        window.add(panelGrille);
-        window.setSize(1000, 1000);
-        window.setVisible(true);
     }
 }

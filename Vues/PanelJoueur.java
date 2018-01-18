@@ -57,6 +57,7 @@ public class PanelJoueur extends JPanel{
         updateCartes(null);
                      
     }
+    
     public void setWidth(int w){
         int wa = getWidth();
         int ha = getHeight();
@@ -64,9 +65,11 @@ public class PanelJoueur extends JPanel{
         int h = (int)(ratio * (float)w);
         this.setPreferredSize(new Dimension(w, h));
     }
+    
     public int getH(){
         return ((PanelImage)mainPanel.getComponent(1)).getH();
     }
+    
     public PanelJoueur(int c){
         super(new BorderLayout());
         coin = c;
@@ -78,6 +81,7 @@ public class PanelJoueur extends JPanel{
         PanelImage pi = new PanelImage();
         panelJoueur.add(pi, BorderLayout.CENTER);
     }
+    
     private void addListener(JPanel p, CarteTirage ret, CompositionObservable o){
         p.addMouseListener(new MouseListener(){
             @Override
@@ -105,6 +109,7 @@ public class PanelJoueur extends JPanel{
                         
         });
     }
+    
     public void updateCartes(ArrayList<CarteTirage> cartes){
         Boolean gauche = (coin % 2 == 0);
         int nbCartes;
@@ -113,10 +118,10 @@ public class PanelJoueur extends JPanel{
         mainPanel = new JPanel(new GridLayout(1, 8, 5, 0));
         if(cartes == null){
             nbCartes = 0;
-        }
-        else{
+        }else{
             nbCartes = cartes.size();
         }
+        
         if(gauche){
             mainPanel.add(panelJoueur);
             for(int i = 0; i < 7; i++){
@@ -124,13 +129,11 @@ public class PanelJoueur extends JPanel{
                     PanelImage p = new PanelImage(cartes.get(i).getImage(), 2);
                     addListener(p, cartes.get(i), obs);
                     mainPanel.add(p);
-                }
-                else{          
+                }else{          
                     mainPanel.add(new PanelImage("src/Images/cartes/Empty.png", 2));       
                 }
             }
-        }
-        else{
+        }else{
             for(int i = 6; i > -1; i--){
                 if(i >= nbCartes)
                     mainPanel.add(new PanelImage("src/Images/cartes/Empty.png", 2));
@@ -144,29 +147,5 @@ public class PanelJoueur extends JPanel{
         }
         add(mainPanel, BorderLayout.CENTER);
         
-    }
-    
-    public static void main(String [] args) {
-        JFrame  window = new JFrame();
-        CompositionObservable o = new CompositionObservable();
-        window.setDefaultCloseOperation(javax.swing.JFrame.DISPOSE_ON_CLOSE);
-        window.setSize(900, 200);
-        Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
-        window.setLocation(dim.width/2-window.getSize().width/2, dim.height/2-window.getSize().height/2);
-        window.setTitle("Joueur");    
-        
-        Explorateur joueur = new Explorateur("tibo");
-        PanelJoueur vueJoueur = new PanelJoueur(0, joueur.getNom(), joueur.getPion(), o);
-        ArrayList<CarteTirage> cartes = new ArrayList<>();
-        cartes.add(CarteTirage.TRESOR_CALICE);
-        cartes.add(CarteTirage.TRESOR_CALICE);
-        cartes.add(CarteTirage.TRESOR_CALICE);
-        cartes.add(CarteTirage.TRESOR_CRISTAL);
-        cartes.add(CarteTirage.SABLE);
-        window.add(vueJoueur);
-        vueJoueur.updateCartes(cartes);
-        window.setVisible(true);
-   }
-    
-    
+    }  
 }
