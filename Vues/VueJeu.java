@@ -221,7 +221,7 @@ public class VueJeu extends Observable{
             }
         });
         
-        boutonRecuptresor = new JButton("Carte Speciale");
+        boutonRecuptresor = new JButton("Récupérer Trésor");
         boutonRecuptresor.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
