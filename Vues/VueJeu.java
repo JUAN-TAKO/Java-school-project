@@ -146,7 +146,18 @@ public class VueJeu{
         labelActionsRestantes = new JLabel("", JLabel.CENTER);
         panelCentreNord.add(new JLabel("Actions Restantes", JLabel.CENTER));
         panelCentreNord.add(labelActionsRestantes);
-        panelCentreNord.add(new JButton("Passer tour"));
+        JButton boutonPasser = new JButton("Passer tour");
+        
+        boutonPasser.addActionListener(new ActionListener(){
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                observable.setChanged();
+                observable.notifyObservers(new Message(MessageType.PASSER));
+                observable.clearChanged();
+            }
+        });
+        
+        panelCentreNord.add(boutonPasser);
         
         
         // =================================================================================
@@ -167,7 +178,7 @@ public class VueJeu{
         panelSud.add(panelCentreSud, BorderLayout.CENTER);
         
         panelSud.add(panelsJoueurs[3], BorderLayout.EAST);
-        defausseInondation = new PanelImage("src/Images/cache/inondation_cache.png", 2, observable, MessageType.VOIR_INONDATION);
+       
                
         niveau = new PanelNiveau(1);
         
@@ -264,8 +275,8 @@ public class VueJeu{
         
         // =================================================================================
         // EST
-        defausseInondation = new PanelImage("src/Images/cache/inondation_cache.png", 2);
-
+ 
+        defausseInondation = new PanelImage("src/Images/cache/inondation_cache.png", 2, observable, MessageType.VOIR_INONDATION);
         panelEst = new JPanel(new BorderLayout());
         panelEst.add(niveau, BorderLayout.CENTER);
         panelEst.add(defausseInondation, BorderLayout.SOUTH);

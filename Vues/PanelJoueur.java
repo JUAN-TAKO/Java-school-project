@@ -83,7 +83,7 @@ public class PanelJoueur extends JPanel{
             @Override
             public void mouseClicked(MouseEvent e) {
                 obs.setChanged();
-                obs.notifyObservers(new MessageDefausser(ret, pion));
+                obs.notifyObservers(new MessageCarte(ret, pion));
                 obs.clearChanged();
             }
 

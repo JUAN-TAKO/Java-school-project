@@ -9,10 +9,10 @@ package Utils;
  *
  * @author juan
  */
-public class MessageDefausser extends Message{
+public class MessageCarte extends Message{
     private CarteTirage carte;
     private Pion pion;
-    public MessageDefausser(CarteTirage c, Pion p){
+    public MessageCarte(CarteTirage c, Pion p){
 	super(MessageType.CLIC_CARTE);
 	carte = c;
         pion = p;

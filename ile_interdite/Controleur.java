@@ -35,12 +35,16 @@ public class Controleur implements Observer{
     
 
     private TypeTuile tuileContexte;
+    
+    private CarteTirage carteContexte;
+    private Pion pionCarteContexte;
+    
     private int indexAventurierCourant; 
     private Integer action; //nombre d'actions effectuées par le joueur courant
     private int tour; //nombre de tours de jeu
     private boolean jokerIngenieur; //égal à true si l'ingénieur a déjà asseché une case pour cette action
     
-    private int[] cartesPourNiveau = {2,2,3,3,3,4,4,5,5,0}; //nombre de cartes a piocher en fonction du niveau de l'eau
+    private int[] cartesPourNiveau = {2,2,3,3,3,4,4,5,5,0,0}; //nombre de cartes a piocher en fonction du niveau de l'eau
     private int niveauEau;
     
     private LinkedList<TypeTuile> pileInondation; //pile des cartes a piocher
@@ -51,8 +55,8 @@ public class Controleur implements Observer{
     private LinkedList<CarteTirage> pileTirage; //pile des cartes tirage à piocher
     private ListIterator iteratorTirage;
     
-    private int[] defausseTirage;
-    private int[] piocheTirage;
+    private int[] defausseTirage = new int[6];
+    private int[] piocheTirage = new int[6];
     
     private ArrayList<Boolean> tresorsRecoltes; 
     
@@ -174,8 +178,12 @@ public class Controleur implements Observer{
         if(indexAventurierCourant >= aventuriers.size()){
             tourSuivant();
         }
-       
-     
+        
+        
+        int nbActMax = getAventurierCourant().getNbActionMax();
+        vueJeu.setNbAction(((Integer)(nbActMax - action)).toString());
+        
+        piocherInondation(cartesPourNiveau[niveauEau]);
         
         //selectAventurier();
     }
@@ -206,6 +214,7 @@ public class Controleur implements Observer{
     //déplace l'aventurier courant sur la tuile de type t
     public void deplacer(TypeTuile t){
         getAventurierCourant().setPosition(grille.getTuileByType(t));
+        recalculerDeplacement();
         //vueAventuriers.setPosition(indexAventurierCourant, getAventurierCourant().getPosition().getNom() + " (" + getAventurierCourant().getPosition().getX() + " ; " + getAventurierCourant().getPosition().getY() + ")");
     }
     //assèche la tuile de type t
@@ -213,15 +222,7 @@ public class Controleur implements Observer{
         grille.getTuileByType(t).setEtat(Etat.SECHE);
         vueJeu.setEtatTuile(grille.getIndexTuile(grille.getTuileByType(tuileContexte)), Etat.SECHE);
         
-        recalculerTuile();
-    }
-    //active ou désactive tous les boutons de la vue aventuriers
-    public void setBoutonsActives(boolean a){
-        //vueAventuriers.setBoutonsActives(a);
-    }
-    //active ou desactive certains boutons de la vue aventuriers
-    public void setBoutonsActivesIngenieur(boolean a){
-        //vueAventuriers.setBoutonsActivesIngenieur(a);
+        recalculerAssechement();
     }
     public void addCarte(CarteTirage c, int[] tab){
         tab[c.ordinal()]++;
@@ -275,68 +276,66 @@ public class Controleur implements Observer{
             actionsPossibles.add(false);
         }
         Tresor tr = t.getTresor();
-        actionsPossibles.set(0, tuilesAssechables.contains(t)); //assecher
-        actionsPossibles.set(1, tuilesAccessibles.contains(t)); //se deplacer
-        actionsPossibles.set(2, tuilesSpeciales.contains(t)); // speciale
+        actionsPossibles.set(0, tuilesAssechables.contains(t) && tuileContexte != null); //assecher
+        actionsPossibles.set(1, tuilesAccessibles.contains(t) && tuileContexte != null); //se deplacer
+        actionsPossibles.set(2, tuilesSpeciales.contains(t) && tuileContexte != null); // speciale
         actionsPossibles.set(3, t.getEtat() == Etat.INONDEE && getAventurierCourant().getCartes(CarteTirage.SABLE) > 0); // sac de sable
         actionsPossibles.set(4, t.getEtat() != Etat.COULEE && getAventurierCourant().getCartes(CarteTirage.HELICOPTERE) > 0);// helicoptere
         actionsPossibles.set(5, tr != null && getAventurierCourant().getCartes(CarteTirage.values()[tr.ordinal()]) >= 4); // recup tresor
+        System.out.println(actionsPossibles.get(1));
+        System.out.println(getAventurierCourant().getNomRole());
         vueJeu.choisirEtatsBoutons(actionsPossibles);
     }
     //gère la réception des messages des vues
     @Override
     public void update(Observable o, Object arg){
         Message m = (Message)arg;
-        
-        ArrayList<Tuile> listeTuiles; //tableau temporaire pour stocker les tuiles accessibles 
-        ArrayList<TypeTuile> typeTuiles; //tableau temporaire pour stocker les types des tuiles accéssibles (TypeTuile est un enum avec toutes les différentes tuiles)
-        ArrayList<String> coordsTuiles; //on passeras les coordonées de la tuile sous forme de string a la vue Sélection
-        ArrayList<Boolean> boolTresors = new ArrayList<>();
         boolean b;
         VueFinale vueFinale = null;
                 
         switch(m.getType()){
             case CLIC_TUILE:
                 MessageTuile mct = (MessageTuile)m;
-                afficherActionsPossibles(grille.getTuileByType(mct.getTuile()));
                 tuileContexte = mct.getTuile();
+                recalculerTuiles();
+                afficherActionsPossibles(grille.getTuileByType(tuileContexte));
+                
                 break;
                 
             case DEFAUSSER:
-                MessageDefausser mdf = (MessageDefausser)m;
-                CarteTirage ct = mdf.getCarte();
-                Aventurier ave  = aventuriersByPion.get(mdf.getPion());
-                ave.removeCarte(ct);
-                addCarte(ct, defausseTirage);
+                Aventurier ave  = aventuriersByPion.get(pionCarteContexte);
+                ave.removeCarte(carteContexte);
+                addCarte(carteContexte, defausseTirage);
                 updateCartes(ave);
+                clearPionsVue();
+                break;
             case DEPLACER:  //clic sur le bouton déplacer
-//                listeTuiles = getAventurierCourant().getTuilesAccessiblesDeplacement(grille);
-//                afficherSelection(listeTuiles, MessageType.CHOISIR_DEPLACEMENT);
-//                setBoutonsActives(false);
+//               
                 if(jokerIngenieur){ //si l'ingénieur avait asséché une tuile, on compte cette action
                     actionSuivante();
                 }
                 clearPionsVue();
                 deplacer(tuileContexte);
                 updatePionsVue();
-                recalculerTuile();
+                afficherActionsPossibles(grille.getTuileByType(tuileContexte));
+                tuileContexte = null;
                 actionSuivante();
                 jokerIngenieur = false;
                 
                 break;
             case CLIC_CARTE:
-                
-                
+                MessageCarte msc = (MessageCarte)m;
+                carteContexte = msc.getCarte();
+                pionCarteContexte = msc.getPion();
                 break;
             case ASSECHER:  //clic sur le bouton assecher
-//                listeTuiles = getAventurierCourant().getTuilesAccessiblesAssechement(grille);
-//                afficherSelection(listeTuiles, MessageType.CHOISIR_ASSECHEMENT);
-//                setBoutonsActives(false);
                 b = (getAventurierCourant() instanceof Ingenieur); // b = true si l'aventurier courant est un ingénieur    
                 if(!b){
                     jokerIngenieur = false;
                 }
                 assecher(tuileContexte);
+                afficherActionsPossibles(grille.getTuileByType(tuileContexte));
+                tuileContexte = null;
                 if(!b || jokerIngenieur){ //si l'aventurier n'est pas un ingénieur ou si l'ingénieur a déjà asséché une tuile, on compte une action. le premier assèchement de l'ingénieur ne seras donc pas compté comme une action
                     actionSuivante();
                 }
@@ -366,7 +365,6 @@ public class Controleur implements Observer{
                 deplacer(mtd.getTuile());
                 actionSuivante();
                 jokerIngenieur = false;
-                setBoutonsActives(true);
                 //selection.hide(); //on cache la fenêtre de séléction
                 break;
    
@@ -382,16 +380,11 @@ public class Controleur implements Observer{
                 }
                 jokerIngenieur = (b && !jokerIngenieur); 
 
-                if(jokerIngenieur && action == 2){ //désactive le bouton déplacer si l'ingénieur en est a sa dernière action et a déjà asséché une tuile
-                    setBoutonsActives(false);
-                }
-                setBoutonsActives(true);
                 //selection.hide(); //on cache la fenêtre de séléction
                 break;            
                 
             case ANNULER_SELECTION: //clic sur le bouton annuler (ou fermeture) de la fenêtre de séléction
                 //selection.hide();
-                setBoutonsActives(true);
                 break;
                 
             case JOUER :
@@ -596,6 +589,10 @@ public class Controleur implements Observer{
     }
     
     public void initialiser(){
+        
+        for(Aventurier a : aventuriers){
+            aventuriersByPion.put(a.getPion(), a);
+        }
         //on met a jour la position des aventuriers dans la vue aventuriers
         updatePionsVue();
         //vueAventuriers.setPosition(j, a.getPosition().getNom() + " (" + a.getPosition().getX() + " ; " + a.getPosition().getY() + ")");
@@ -605,12 +602,21 @@ public class Controleur implements Observer{
         //selectAventurier();
         //aventurierSuivant();
         actionSuivante();
-        recalculerTuile();
+        recalculerTuiles();
     }
  
-    public void recalculerTuile(){
+    public void recalculerTuiles(){
+        recalculerDeplacement();
+        recalculerAssechement();
+        recalculerSpecial();
+    }
+    public void recalculerDeplacement(){
         tuilesAccessibles = getAventurierCourant().getTuilesAccessiblesDeplacement(grille);
+    }
+    public void recalculerAssechement(){
         tuilesAssechables = getAventurierCourant().getTuilesAccessiblesAssechement(grille);
+    }
+    public void recalculerSpecial(){
         tuilesSpeciales = getAventurierCourant().getTuilesSpeciales(grille);
     }
     
