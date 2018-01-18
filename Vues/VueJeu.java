@@ -148,7 +148,7 @@ public class VueJeu{
         panelCentreNord.add(labelActionsRestantes);
         panelCentreNord.add(new JButton("Passer tour"));
         
-        setNbAction("2");
+        
         // =================================================================================
         // CENTRE
         

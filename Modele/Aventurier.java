@@ -13,11 +13,13 @@ public abstract class Aventurier extends Observable{
     private String nom;
     private String nomRole;
     private int[] cartes;
+    private final int nbActionMax;
 
     public Aventurier(String nom, String nomRole){
         this.nom = nom;
         this.nomRole = nomRole;
         cartes = new int[6];
+        nbActionMax = 3;
     }
     
     //vérifie qu'une tuile est accessible
@@ -107,5 +109,12 @@ public abstract class Aventurier extends Observable{
             nb += cartes[i];
         }
         return nb;
+    }
+
+    /**
+     * @return the nbActionMax
+     */
+    public int getNbActionMax() {
+        return nbActionMax;
     }
 }
