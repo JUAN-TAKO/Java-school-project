@@ -13,6 +13,7 @@ import java.awt.Color;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.ListIterator;
 
@@ -213,7 +214,6 @@ public class Controleur implements Observer{
     public void assecher(TypeTuile t){
         grille.getTuileByType(t).setEtat(Etat.SECHE);
         vueJeu.setEtatTuile(grille.getIndexTuile(grille.getTuileByType(tuileContexte)), Etat.SECHE);
-        System.out.println(grille.getTuileByType(t).getEtat());
         
         recalculerTuile();
     }
@@ -312,9 +312,13 @@ public class Controleur implements Observer{
                 addCarte(ct, defausseTirage);
                 updateCartes(ave);
             case DEPLACER:  //clic sur le bouton déplacer
-                listeTuiles = getAventurierCourant().getTuilesAccessiblesDeplacement(grille);
-                afficherSelection(listeTuiles, MessageType.CHOISIR_DEPLACEMENT);
-                setBoutonsActives(false);
+//                listeTuiles = getAventurierCourant().getTuilesAccessiblesDeplacement(grille);
+//                afficherSelection(listeTuiles, MessageType.CHOISIR_DEPLACEMENT);
+//                setBoutonsActives(false);
+                clearPionsVue();
+                deplacer(tuileContexte);
+                updatePionsVue();
+                recalculerTuile();
                 
                 break;
             case CLIC_CARTE:
@@ -325,14 +329,17 @@ public class Controleur implements Observer{
 //                listeTuiles = getAventurierCourant().getTuilesAccessiblesAssechement(grille);
 //                afficherSelection(listeTuiles, MessageType.CHOISIR_ASSECHEMENT);
 //                setBoutonsActives(false);
-                System.out.println("ASSECHER");
-                System.out.println(tuileContexte.getImagePath());
                 assecher(tuileContexte);
                 
                 
                 break;
                 
-            case ACTION_SPECIALE:   //clic sur le bouton spécial, pas implémenté pour l'instant
+            case DONNER_CARTE:   //clic sur le bouton donner carte
+                
+                
+                break;
+             
+            case ACTION_SPECIALE : //clic sur le bouton action speciale
                 
                 
                 break;
@@ -406,6 +413,7 @@ public class Controleur implements Observer{
                     vueParametres.desactive();
                 }else if(jeu){
                     vueJeu.visible(jeu);
+                    jeu = false;
                 }
                 
                 break;      
@@ -435,7 +443,7 @@ public class Controleur implements Observer{
                     vueDebut.active();
                 }else if(parametre){
                     vueParametres.active();
-                }else if(jeu){
+                }else if(!jeu){
                     vueJeu.visible(jeu);
                     jeu = true;
                 }
@@ -476,7 +484,6 @@ public class Controleur implements Observer{
                 //on mélange le tableau
                 Collections.shuffle(indexes);
                 int i = 0;
-                System.out.println(mp.getNoms().size());
                 //a chaque joueur seras attribué un role en fonction de la valeur du tableau a sa position
                 for(String nom : noms){
                     switch(indexes.get(i)){
@@ -530,8 +537,6 @@ public class Controleur implements Observer{
                 }
                 
                 vueParametres.hide();
-                System.out.println(noms.size());
-                System.out.println(pions.size());
                 vueJeu = new VueJeu(noms, pions, types);
                 vueJeu.setNiveau(niveauEau);
                 
@@ -545,8 +550,20 @@ public class Controleur implements Observer{
                 break;
         }
     }
-    public void initialiser(){
-        //on met a jour la position des aventuriers dans la vue aventuriers
+    public void clearPionsVue(){
+        HashSet<Integer> positionsAv = new HashSet<>();
+
+        for(int j = 0; j < aventuriers.size(); j++){
+            Aventurier a = aventuriers.get(j);
+            Integer index = grille.getIndexTuile(a.getPosition());
+            positionsAv.add(index);
+            //vueAventuriers.setPosition(j, a.getPosition().getNom() + " (" + a.getPosition().getX() + " ; " + a.getPosition().getY() + ")");       
+        }        
+        for(Integer index : positionsAv){
+            vueJeu.setAventurier(index, null);
+        }
+    }
+    public void updatePionsVue(){
         HashMap<Integer, ArrayList<Pion>> positionsAv = new HashMap<>();
 
         for(int j = 0; j < aventuriers.size(); j++){
@@ -558,14 +575,21 @@ public class Controleur implements Observer{
                 positionsAv.put(index, aa);
             }
             aa.add(a.getPion());
+           
             //vueAventuriers.setPosition(j, a.getPosition().getNom() + " (" + a.getPosition().getX() + " ; " + a.getPosition().getY() + ")");
-
+            
         }
+        
         for(Integer index : positionsAv.keySet()){
             vueJeu.setAventurier(index, positionsAv.get(index));
         }
-        
-       
+    }
+    
+    public void initialiser(){
+        //on met a jour la position des aventuriers dans la vue aventuriers
+        updatePionsVue();
+        //vueAventuriers.setPosition(j, a.getPosition().getNom() + " (" + a.getPosition().getX() + " ; " + a.getPosition().getY() + ")");
+ 
         piocherInondation(6);
         
         //selectAventurier();

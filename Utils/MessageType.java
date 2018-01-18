@@ -3,7 +3,8 @@ package Utils;
 public enum MessageType{
 	DEPLACER,
 	ASSECHER,
-	ACTION_SPECIALE,
+	DONNER_CARTE,
+        ACTION_SPECIALE,
         SAC_SABLE,
         HELICO,
         RECUP_TRESOR,
