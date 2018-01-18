@@ -21,6 +21,7 @@ public enum MessageType{
         JOUER,
 	QUITTER,
         RETOUR_MENU,
+        REGLES,
         RETOUR_JEU,
         ANNULER_SELECTION,
         GAGNE_PERDU,
