@@ -55,6 +55,8 @@ public class VueJeu{
     private JButton boutonSacSable;
     private JButton boutonHelico;
     private JButton boutonRecuptresor;
+    private JButton boutonDonnerCarte;
+    private JButton boutonDefausser;
     
     private JMenuBar mb = new JMenuBar();
     private JMenu menu = new JMenu();
@@ -96,7 +98,6 @@ public class VueJeu{
             @Override
             public void actionPerformed(ActionEvent e) {
                 observable.setChanged();
-                System.out.println("coucou");
                 observable.notifyObservers(new Message(MessageType.QUITTER));
                 observable.clearChanged();
             }
@@ -106,7 +107,6 @@ public class VueJeu{
             @Override
             public void actionPerformed(ActionEvent e) {
                 observable.setChanged();
-                System.out.println("damien");
                 observable.notifyObservers(new Message(MessageType.REGLES));
                 observable.clearChanged();
             }
@@ -208,7 +208,7 @@ public class VueJeu{
             @Override
             public void actionPerformed(ActionEvent e) {
                 observable.setChanged();
-                observable.notifyObservers(new Message(MessageType.HELICO));
+                observable.notifyObservers(new Message(MessageType.SAC_SABLE));
                 observable.clearChanged();
             }
         });
@@ -218,7 +218,7 @@ public class VueJeu{
             @Override
             public void actionPerformed(ActionEvent e) {
                 observable.setChanged();
-                observable.notifyObservers(new Message(MessageType.REGLES));
+                observable.notifyObservers(new Message(MessageType.HELICO));
                 observable.clearChanged();
             }
         });
@@ -228,7 +228,27 @@ public class VueJeu{
             @Override
             public void actionPerformed(ActionEvent e) {
                 observable.setChanged();
-                observable.notifyObservers(new Message(MessageType.REGLES));
+                observable.notifyObservers(new Message(MessageType.RECUP_TRESOR));
+                observable.clearChanged();
+            }
+        });
+        
+        boutonDonnerCarte = new JButton("Donner Carte");
+        boutonDonnerCarte.addActionListener(new ActionListener(){
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                observable.setChanged();
+                observable.notifyObservers(new Message(MessageType.DONNER_CARTE));
+                observable.clearChanged();
+            }
+        });
+        
+        boutonDefausser = new JButton("Defausser");
+        boutonDefausser.addActionListener(new ActionListener(){
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                observable.setChanged();
+                observable.notifyObservers(new Message(MessageType.DEFAUSSER));
                 observable.clearChanged();
             }
         });
@@ -239,6 +259,8 @@ public class VueJeu{
         panelCentreSud.add(boutonSacSable);
         panelCentreSud.add(boutonHelico);
         panelCentreSud.add(boutonRecuptresor);
+        panelCentreSud.add(boutonDonnerCarte);
+        panelCentreSud.add(boutonDefausser);
         
         // =================================================================================
         // EST
