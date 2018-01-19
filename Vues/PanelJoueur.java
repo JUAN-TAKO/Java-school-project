@@ -51,19 +51,11 @@ public class PanelJoueur extends JPanel{
         panelJoueur.add(pi, BorderLayout.CENTER);
         addComponentListener(new ComponentAdapter() {
             public void componentResized(ComponentEvent e) {
-                setSize(new Dimension(getWidth(), mainPanel.getHeight()));
+                setSize(new Dimension(getWidth(), mainPanel.getComponent(1).getHeight()));
             }
         });    
         updateCartes(null);
                      
-    }
-    
-    public void setWidth(int w){
-        int wa = getWidth();
-        int ha = getHeight();
-        float ratio = (float)ha / (float)wa;
-        int h = (int)(ratio * (float)w);
-        this.setPreferredSize(new Dimension(w, h));
     }
     
     public int getH(){
@@ -126,20 +118,21 @@ public class PanelJoueur extends JPanel{
             mainPanel.add(panelJoueur);
             for(int i = 0; i < 7; i++){
                 if(i < nbCartes){
-                    PanelImage p = new PanelImage(cartes.get(i).getImage(), 2);
+                    PanelImage p = new PanelImage(cartes.get(i).getImage(), 1);
                     addListener(p, cartes.get(i), obs);
                     mainPanel.add(p);
                 }else{          
-                    mainPanel.add(new PanelImage("src/Images/cartes/Empty.png", 2));       
+                    mainPanel.add(new PanelImage("src/Images/cartes/Empty.png", 1));       
                 }
             }
         }else{
             for(int i = 6; i > -1; i--){
                 if(i >= nbCartes)
-                    mainPanel.add(new PanelImage("src/Images/cartes/Empty.png", 2));
+                    mainPanel.add(new PanelImage("src/Images/cartes/Empty.png", 1));
                 else{
-                    PanelImage p2 = new PanelImage(cartes.get(i).getImage(), 2);
+                    PanelImage p2 = new PanelImage(cartes.get(i).getImage(), 1);
                     addListener(p2, cartes.get(i), obs);
+                    System.out.println("ratio : " + p2.getRatio());
                     mainPanel.add(p2);
                 }
             }

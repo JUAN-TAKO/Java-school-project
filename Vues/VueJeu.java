@@ -64,17 +64,26 @@ public class VueJeu{
     private class Tailles{
         public int windowH;
         public int windowW;
+        public int panelsJoueursW;
         public int panelsJoueursH;
         public int panelsDefaussesW;
         public int grilleS;
+        public int mainH;
+        public float ratioDefausses;
+        public float ratioNiveau;
+        public Tailles(){}
         public void recalculer(){
-            
+            panelsJoueursW = (int)((float)windowW * 0.35f);
+            panelsJoueursH = (int)((float)panelsJoueursW / (1.4f * 8.0f));
+            mainH = windowH - 2 * panelsJoueursH;
+            panelsDefaussesW = (int)((float)mainH / (ratioDefausses + ratioNiveau));
         }
     }
     
+    private Tailles tailles;
     
     public VueJeu(ArrayList<String> noms, ArrayList<Pion> pions, ArrayList<TypeTuile> types){
-    
+        tailles = new Tailles();
         window = new JFrame();
         window.setDefaultCloseOperation(javax.swing.JFrame.DISPOSE_ON_CLOSE);
         Dimension d = Toolkit.getDefaultToolkit().getScreenSize();
@@ -263,7 +272,6 @@ public class VueJeu{
         panelOuest.add(panelTresor, BorderLayout.CENTER);
         panelOuest.add(defausseTirage, BorderLayout.SOUTH);
         mainPanel.add(panelOuest, BorderLayout.WEST);
-        
         mainPanel.addComponentListener(new ComponentAdapter() {
             public void componentResized(ComponentEvent e) {
                 resize();
@@ -293,20 +301,23 @@ public class VueJeu{
         observable.addObserver(observer);
     }
     public void resize(){
-        int w = mainPanel.getWidth();
-        if(w != 0){
-            int w2 = (int)((float)w * 0.35f);
+        tailles.windowW = mainPanel.getWidth();
+        tailles.windowH = mainPanel.getHeight();
+        //tailles.recalculer();
+        tailles.panelsJoueursW = 750;
+        tailles.panelsJoueursH = 100;
+        tailles.panelsDefaussesW = 280;
+        tailles.mainH = 800;
 
-            for(int i = 0; i < 4; i++){
-                panelsJoueurs[i].setWidth(w2);
-            }
-            
-            int h = panelsJoueurs[0].getH() + 6;
-            panelNord.setPreferredSize(new Dimension(w, h));
-            panelSud.setPreferredSize(new Dimension(w, h));
+        for(int i = 0; i < 4; i++){
+            panelsJoueurs[i].setPreferredSize(new Dimension(tailles.panelsJoueursW, tailles.panelsJoueursH));
         }
-        int wi = defausseInondation.getWidth();
-        panelOuest.setPreferredSize(new Dimension(wi, 10));
+
+        panelNord.setPreferredSize(new Dimension(tailles.windowW, tailles.panelsJoueursH));
+        panelSud.setPreferredSize(new Dimension(tailles.windowW, tailles.panelsJoueursH));
+        
+        panelOuest.setPreferredSize(new Dimension(tailles.panelsDefaussesW, tailles.mainH));
+        panelEst.setPreferredSize(new Dimension(tailles.panelsDefaussesW, tailles.mainH));
         mainPanel.revalidate();
         mainPanel.repaint();
     }
