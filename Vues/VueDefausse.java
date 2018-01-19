@@ -28,7 +28,7 @@ public class VueDefausse {
     public VueDefausse(ArrayList<String> defausse){
         window = new JFrame();
         window.setDefaultCloseOperation(javax.swing.JFrame.DISPOSE_ON_CLOSE);
-        window.setSize(500, 400);
+        window.setSize(1200, 900);
         Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
         window.setLocation(dim.width/2-window.getSize().width/2, dim.height/2-window.getSize().height/2);
         window.setTitle("");

@@ -67,6 +67,9 @@ public class Controleur implements Observer{
     private ArrayList<Tuile> tuilesSpeciales;
     
     public Controleur(){
+        initialiserJeu();
+    }
+    public void initialiserJeu(){
         aventuriers = new ArrayList<>();
         aventuriersByPion = new HashMap<>();
         pileInondation = new LinkedList<>(Arrays.asList(TypeTuile.values())); //On initialise la pile de cartes avec toutes les cartes possibles
@@ -86,7 +89,7 @@ public class Controleur implements Observer{
         
         vueDebut = new VueDebut();
         vueDebut.addObserver(this);
-        this.start();
+        start();
         
         //Le generateur construit la grille
         Generateur g = new GrilleAleatoire();
@@ -95,12 +98,11 @@ public class Controleur implements Observer{
         
         tour = 0;
         indexAventurierCourant = 0;
-        tuilesAssechables = new ArrayList<Tuile>();
-        tuilesAccessibles = new ArrayList<Tuile>();
-        tuilesSpeciales = new ArrayList<Tuile>();
+        tuilesAssechables = new ArrayList<>();
+        tuilesAccessibles = new ArrayList<>();
+        tuilesSpeciales = new ArrayList<>();
         action = -1;
     }
-    
     //reformer la pile de cartes inondation à partir de la défausse
     public void reinitialiserPileInondation(){
         if(iteratorInondation.nextIndex() != 0){
@@ -535,7 +537,26 @@ public class Controleur implements Observer{
                 aventurierSuivant();
                 break;
                    
+            case VOIR_INONDATION:
+                ArrayList<String> defausseInondationStr = new ArrayList<>();
+                ListIterator it = pileInondation.listIterator();
+                while(it.nextIndex() < iteratorInondation.nextIndex()){
+                    defausseInondationStr.add(((TypeTuile)it.next()).getImagePath().replaceAll("tuiles", "cartes"));
+                }
+                VueDefausse vdi = new VueDefausse(defausseInondationStr);
+                vdi.afficher();
+                break;
                 
+            case VOIR_TIRAGE:
+                ArrayList<String> defausseTirageStr = new ArrayList<>();
+                for(int i = 0; i < 7; i++){
+                    for(int j = 0; j < defausseTirage[i]; j++){
+                        defausseTirageStr.add(CarteTirage.values()[i].getImage());
+                    }
+                }
+                VueDefausse vdt = new VueDefausse(defausseTirageStr);
+                vdt.afficher();
+                break;
             case JOUER :
                 vueDebut.hide();
                 debut = false;
@@ -564,7 +585,7 @@ public class Controleur implements Observer{
                 }else if(parametre){
                     vueParametres.desactive();
                 }else if(jeu){
-                    vueJeu.visible(jeu);
+                    //vueJeu.visible(jeu);
                     jeu = false;
                 }
                 
@@ -573,8 +594,8 @@ public class Controleur implements Observer{
                 
                 
             case OUI :
-                
-                vueConfirm.hide();
+                if(vueConfirm != null)
+                    vueConfirm.hide();
                 
                 if(debut){
                     vueDebut.hide();
@@ -584,7 +605,9 @@ public class Controleur implements Observer{
                     parametre = false;
                 }else if(!jeu){
                     vueJeu.hide();
-                    vueFinale.hide();
+                    if(finale){
+                        vueFinale.hide();
+                    }
                     jeu = false;
                 }
                 
@@ -617,8 +640,7 @@ public class Controleur implements Observer{
             case RETOUR_MENU:
                 vueFinale.hide();
                 finale = false;
-                vueDebut.afficher();
-                debut = true;
+                initialiserJeu();
                 break;              
                 
             case VALIDER_PARAMETRES: //réception des noms des joueurs
@@ -700,7 +722,7 @@ public class Controleur implements Observer{
                 parametre = false;
                 jeu = true;
                 
-                initialiser();
+                initialiserPartie();
                 break;
         }
     }
@@ -738,7 +760,7 @@ public class Controleur implements Observer{
         }
     }
     
-    public void initialiser(){
+    public void initialiserPartie(){
         
         for(Aventurier a : aventuriers){
             aventuriersByPion.put(a.getPion(), a);
@@ -747,6 +769,7 @@ public class Controleur implements Observer{
         updatePionsVue();
         //vueAventuriers.setPosition(j, a.getPosition().getNom() + " (" + a.getPosition().getX() + " ; " + a.getPosition().getY() + ")");
  
+        Collections.shuffle(pileInondation);
         piocherInondation(6);
         
         //selectAventurier();

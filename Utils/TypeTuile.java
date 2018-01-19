@@ -5,7 +5,7 @@ public enum TypeTuile{
     PORTE_CUIVRE("Porte de cuivre", "src/Images/tuiles/LaPorteDeCuivre", null),
     PORTE_BRONZE("Porte de bronze", "src/Images/tuiles/LaPorteDeBronze", null),
     PORTE_ARGENT("Porte d'argent", "src/Images/tuiles/LaPortedArgent", null),
-    PORTE_OR("Porte d'or", "src/Images/tuiles/LaPortedOr", null),
+    PORTE_OR("Porte d'or", "src/Images/tuiles/LaPorteDOr", null),
     HELIPORT("Heliport", "src/Images/tuiles/Heliport", null),
     
     PALAIS_CORAIL("Palais de corail", "src/Images/tuiles/LePalaisDeCorail", Tresor.CALICE),
@@ -19,7 +19,7 @@ public enum TypeTuile{
     
     VAL_CREPUSCULE("Val du crépuscule", "src/Images/tuiles/LeValDuCrepuscule", null),
     MARAIS_BRUMEUX("Marais brumeux ", "src/Images/tuiles/LeMaraisBrumeux", null),
-    TOUR_GUET("Tour du guet", "src/Images/tuiles/LaTourDuGuet", null),
+    TOUR_GUET("Tour du guet", "src/Images/tuiles/LaTourDeGuet", null),
     PONT_ABIMES("Pont des abîmes", "src/Images/tuiles/LePontDesAbimes", null),
     DUNES_ILLUSION("Dunes de l'illusion", "src/Images/tuiles/LesDunesDeLIllusion", null),
     FALAISES_OUBLI("Les falaises de l'oubli", "src/Images/tuiles/LesFalaisesDeLOubli", null),

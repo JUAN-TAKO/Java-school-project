@@ -21,7 +21,7 @@ import javax.swing.JPanel;
  *
  * @author juan
  */
-public class PanelImage extends JPanel implements MouseListener{
+public class PanelImage extends JPanel{
     private ImageIcon image;
     private ImageIcon scaled;
     private JLabel imageLabel;
@@ -49,6 +49,28 @@ public class PanelImage extends JPanel implements MouseListener{
         message = m;
         imageLabel = new JLabel("", JLabel.CENTER);
         image = ImagePool.getImageIcon(path);
+        addMouseListener(new MouseListener() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                if(obs != null){
+                    obs.setChanged();
+                    obs.notifyObservers(new Message(message));
+                    obs.clearChanged();
+                }
+            }
+
+            @Override
+            public void mousePressed(MouseEvent e) {            }
+
+            @Override
+            public void mouseReleased(MouseEvent e) {            }
+
+            @Override
+            public void mouseEntered(MouseEvent e) {            }
+
+            @Override
+            public void mouseExited(MouseEvent e) {            }
+        });
         addComponentListener(new ComponentAdapter() {
             public void componentResized(ComponentEvent e) {
                 resizeIcon();
@@ -99,25 +121,4 @@ public class PanelImage extends JPanel implements MouseListener{
     public int getH(){
         return scaled != null ? scaled.getIconHeight() : 0;
     }
-
-    @Override
-    public void mouseClicked(MouseEvent e) {
-        if(obs != null){
-            obs.setChanged();
-            obs.notifyObservers(new Message(message));
-            obs.clearChanged();
-        }
-    }
-
-    @Override
-    public void mousePressed(MouseEvent e) {}
-
-    @Override
-    public void mouseReleased(MouseEvent e) {}
-
-    @Override
-    public void mouseEntered(MouseEvent e) {}
-
-    @Override
-    public void mouseExited(MouseEvent e) {}
 }

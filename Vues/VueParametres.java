@@ -20,6 +20,8 @@ import java.awt.Graphics;
 import java.awt.Image;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import java.util.ArrayList;
 import javax.swing.ImageIcon;
 import javax.swing.JTextArea;
@@ -59,12 +61,20 @@ public class VueParametres extends Observable{
     public VueParametres(){              
         Font fontText = new Font("arial", 0, 15);
         window = new JFrame();
-        window.setDefaultCloseOperation(javax.swing.JFrame.DISPOSE_ON_CLOSE);
+        window.setDefaultCloseOperation(javax.swing.JFrame.DO_NOTHING_ON_CLOSE);
         window.setSize(750, 600);
         Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
         window.setLocation(dim.width/2-window.getSize().width/2, dim.height/2-window.getSize().height/2);
         window.setTitle("PARAMETRES");
 
+        window.addWindowListener(new WindowAdapter() {
+            public void windowClosing(WindowEvent e) {
+                setChanged();
+                notifyObservers(new Message(MessageType.QUITTER));
+                clearChanged();
+            }
+        });
+        
         JPanel mainPanel = new JPanel(new BorderLayout());
         window.add(mainPanel);
 

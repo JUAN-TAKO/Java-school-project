@@ -22,6 +22,8 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 import java.awt.*;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import java.io.File;
 import java.io.IOException;
 import javax.imageio.ImageIO;
@@ -38,11 +40,19 @@ public class VueDebut extends Observable{
     
     public VueDebut(){
         window = new JFrame();
-        window.setDefaultCloseOperation(javax.swing.JFrame.DISPOSE_ON_CLOSE);
+        window.setDefaultCloseOperation(javax.swing.JFrame.DO_NOTHING_ON_CLOSE);
         window.setSize(700, 500);
         Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
         window.setLocation(dim.width/2-window.getSize().width/2, dim.height/2-window.getSize().height/2);
         window.setTitle("ILE INTERDITE");
+        
+        window.addWindowListener(new WindowAdapter() {
+            public void windowClosing(WindowEvent e) {
+                setChanged();
+                notifyObservers(new Message(MessageType.QUITTER));
+                clearChanged();
+            }
+        });
         
         JPanel mainPanel = new JPanel(new BorderLayout());
         window.add(mainPanel);

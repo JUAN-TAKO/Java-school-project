@@ -1,5 +1,7 @@
 package Vues;
 
+import Utils.Message;
+import Utils.MessageType;
 import Utils.Tresor;
 import java.awt.BorderLayout;
 import java.awt.Color;
@@ -9,6 +11,8 @@ import java.awt.GridLayout;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import java.util.ArrayList;
 import java.util.Observable;
 import javax.swing.BorderFactory;
@@ -44,7 +48,7 @@ public class VueFinale extends Observable{
         Font fBouton = new Font("arial", 0, 15);
         Font fTresorGagne = new Font("arial", 0, 20);
         window = new JFrame();
-        window.setDefaultCloseOperation(javax.swing.JFrame.DISPOSE_ON_CLOSE);
+        window.setDefaultCloseOperation(javax.swing.JFrame.DO_NOTHING_ON_CLOSE);
         window.setSize(500, 400);
         Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
         window.setLocation(dim.width/2-window.getSize().width/2, dim.height/2-window.getSize().height/2);
@@ -52,6 +56,14 @@ public class VueFinale extends Observable{
         
         JPanel mainPanel = new JPanel(new BorderLayout());
         window.add(mainPanel);
+        
+        window.addWindowListener(new WindowAdapter() {
+            public void windowClosing(WindowEvent e) {
+                setChanged();
+                notifyObservers(new Message(MessageType.OUI));
+                clearChanged();
+            }
+        });
         
         // =================================================================================
         // CENTRE
@@ -133,7 +145,7 @@ public class VueFinale extends Observable{
             @Override
             public void actionPerformed(ActionEvent e) {
                 setChanged();
-                notifyObservers(new Utils.Message(Utils.MessageType.QUITTER));
+                notifyObservers(new Utils.Message(Utils.MessageType.OUI));
                 clearChanged();
             }
 

@@ -14,6 +14,8 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import java.util.ArrayList;
 import java.util.Observable;
 import java.util.Observer;
@@ -85,11 +87,20 @@ public class VueJeu{
     public VueJeu(ArrayList<String> noms, ArrayList<Pion> pions, ArrayList<TypeTuile> types){
         tailles = new Tailles();
         window = new JFrame();
-        window.setDefaultCloseOperation(javax.swing.JFrame.DISPOSE_ON_CLOSE);
+        window.setDefaultCloseOperation(javax.swing.JFrame.DO_NOTHING_ON_CLOSE);
         Dimension d = Toolkit.getDefaultToolkit().getScreenSize();
         window.setSize(new Dimension(d.width, d.height - 30));
         window.setTitle("Plateau de Jeu");
         window.setResizable(true);
+        
+        window.addWindowListener(new WindowAdapter() {
+            public void windowClosing(WindowEvent e) {
+                observable.setChanged();
+                observable.notifyObservers(new Message(MessageType.QUITTER));
+                observable.clearChanged();
+            }
+        });
+        
         mainPanel = new JPanel(new BorderLayout());
         window.add(mainPanel) ;
         observable = new CompositionObservable();

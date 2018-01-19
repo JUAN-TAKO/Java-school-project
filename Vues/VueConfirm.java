@@ -21,6 +21,8 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 import java.awt.*;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import javax.swing.*;
 
 public class VueConfirm extends Observable{
@@ -32,11 +34,19 @@ public class VueConfirm extends Observable{
     
     public VueConfirm(){
         window = new JFrame();
-        window.setDefaultCloseOperation(javax.swing.JFrame.DISPOSE_ON_CLOSE);
+        window.setDefaultCloseOperation(javax.swing.JFrame.DO_NOTHING_ON_CLOSE);
         window.setSize(400, 100);
         Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
         window.setLocation(dim.width/2-window.getSize().width/2, dim.height/2-window.getSize().height/2);
         window.setTitle("Confirmation");
+        
+        window.addWindowListener(new WindowAdapter() {
+            public void windowClosing(WindowEvent e) {
+                setChanged();
+                notifyObservers(new Message(MessageType.NON));
+                clearChanged();
+            }
+        });
         
         JPanel mainPanel = new JPanel(new BorderLayout());
         window.add(mainPanel) ;
