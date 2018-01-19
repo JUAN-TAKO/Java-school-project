@@ -101,9 +101,11 @@ public class Controleur implements Observer{
     
     //reformer la pile de cartes inondation à partir de la défausse
     public void reinitialiserPileInondation(){
-        ArrayList<TypeTuile> defausse = new ArrayList<>(pileInondation.subList(0, iteratorInondation.nextIndex() - 1)); //on récupère une sous-liste de 0 à l'iterateur (la défausse)
-        Collections.shuffle(defausse); //on la mélange
-        iteratorInondation = pileInondation.listIterator(); //on remet l'iterateur au début (on remet les cartes sur la pile)
+        if(iteratorInondation.nextIndex() != 0){
+            ArrayList<TypeTuile> defausse = new ArrayList<>(pileInondation.subList(0, iteratorInondation.nextIndex() - 1)); //on récupère une sous-liste de 0 à l'iterateur (la défausse)
+            Collections.shuffle(defausse); //on la mélange
+            iteratorInondation = pileInondation.listIterator(); //on remet l'iterateur au début (on remet les cartes sur la pile)
+        }
     }
     //tirage automatique d'autant de cartes inondation que nécessaire (par rapport au niveau d'eau)
     public void piocherInondation(int n){
@@ -116,8 +118,7 @@ public class Controleur implements Observer{
                 vueJeu.setEtatTuile(grille.getIndexTuile(t), Etat.INONDEE);
             }
             else{                         //sinon c'est qu'elle est déjà inondee (elle ne peut pas être coulée parce qu'on enlève les cartes des tuiles coulées)
-                t.setEtat(Etat.COULEE);  //on la coule
-                vueJeu.setEtatTuile(grille.getIndexTuile(t), Etat.COULEE);
+                removeTuile(t); //on la coule
                 iteratorInondation.remove();   //on retire la carte qui vient d'être tirée de la pile
             }
             if(!iteratorInondation.hasNext()){ //on reinitialise la pile si on arrive a la fin
@@ -125,11 +126,64 @@ public class Controleur implements Observer{
             }
         }
     }
-    
-    public void reinitialiserPileTirage(){
+    public boolean tresorRecuperable(){
+        return
+                (grille.getTuileByType(TypeTuile.CAVERNE_BRASIER).getEtat() == Etat.COULEE && grille.getTuileByType(TypeTuile.CAVERNE_OMBRES).getEtat() == Etat.COULEE) ||
+                (grille.getTuileByType(TypeTuile.JARDIN_HURLEMENTS).getEtat() == Etat.COULEE && grille.getTuileByType(TypeTuile.JARDIN_MURMURES).getEtat() == Etat.COULEE) ||
+                (grille.getTuileByType(TypeTuile.PALAIS_CORAIL).getEtat() == Etat.COULEE && grille.getTuileByType(TypeTuile.PALAIS_MAREES).getEtat() == Etat.COULEE) ||
+                (grille.getTuileByType(TypeTuile.TEMPLE_LUNE).getEtat() == Etat.COULEE && grille.getTuileByType(TypeTuile.TEMPLE_SOLEIL).getEtat() == Etat.COULEE) ||
+                (grille.getTuileByType(TypeTuile.HELIPORT).getEtat() == Etat.COULEE);
+    }
+    public ArrayList<Aventurier> getAventuriersSurTuile(Tuile t){
+        HashMap<Integer, ArrayList<Aventurier>> positionsAv = new HashMap<>();
+
+        for(int j = 0; j < aventuriers.size(); j++){
+            Aventurier a = aventuriers.get(j);
+            Integer index = grille.getIndexTuile(a.getPosition());
+            ArrayList<Aventurier> aa = positionsAv.get(index);
+            if(aa == null){
+                aa = new ArrayList<>();
+                positionsAv.put(index, aa);
+            }
+            aa.add(a);
+        }
+        return positionsAv.get(grille.getIndexTuile(t));
+    }
+    public boolean deplacementUrgence(Tuile t){
+        ArrayList<Aventurier> avs = getAventuriersSurTuile(t);
+        if(avs != null){
+            for(Aventurier av : avs){
+                ArrayList<Tuile> tad = av.getTuilesAccessiblesDeplacement(grille);
+                if(tad.isEmpty()){
+                    return true;
+                }
+                else{
+                    Collections.shuffle(tad);
+                    clearPionsVue();
+                    av.setPosition(tad.get(0));
+                    updatePionsVue();
+                }
+            }
+            recalculerDeplacement();
+        }
+        return false;
+    }
+    public void removeTuile(Tuile t){
+        t.setEtat(Etat.COULEE);
+        boolean perdu = false;
+        vueJeu.setEtatTuile(grille.getIndexTuile(t), Etat.COULEE);
+        perdu |= tresorRecuperable();
+        perdu |= deplacementUrgence(t);
+        if(perdu){
+            perdu();
+        }
         
     }
-    
+    public void perdu(){
+        vueFinale = new VueFinale(tresorsRecoltes);
+        vueFinale.afficher();
+        vueJeu.hide();
+    }
     //pioche d'une carte tirage de la meme maniere
     public void piocherTirage(){
         
@@ -138,8 +192,6 @@ public class Controleur implements Observer{
         int nb;
         boolean monte = false;
         CarteTirage[] pioche = new CarteTirage[2];
-        System.out.println("nbCartesPioche : " + getNbCartes(piocheTirage));
-        System.out.println("nbCartesDefausse : " + getNbCartes(defausseTirage));
         for(int i = 0; i < 2; i++){
             do{
                 randomNum = (int)(Math.random() * 7);
@@ -152,7 +204,12 @@ public class Controleur implements Observer{
             
             if(pioche[i] == CarteTirage.MONTEE_DES_EAUX){
                 niveauEau++;
+                if(niveauEau > 8){
+                    perdu();
+                    return;
+                }
                 monte = true;
+                addCarte(pioche[i], defausseTirage);
             }
             else{
                 av.addCarte(pioche[i]);
@@ -241,7 +298,6 @@ public class Controleur implements Observer{
     public void deplacer(TypeTuile t){
         getAventurierCourant().setPosition(grille.getTuileByType(t));
         recalculerDeplacement();
-        //vueAventuriers.setPosition(indexAventurierCourant, getAventurierCourant().getPosition().getNom() + " (" + getAventurierCourant().getPosition().getX() + " ; " + getAventurierCourant().getPosition().getY() + ")");
     }
     //assèche la tuile de type t
     public void assecher(TypeTuile t){
@@ -380,36 +436,7 @@ public class Controleur implements Observer{
             case PASSER:    //clic sur le bouton passer
                 aventurierSuivant();
                 break;
-               
-            case CHOISIR_DEPLACEMENT:
-                MessageTuile mtd = (MessageTuile)arg; //interprète le message reçu comme un message contenant une tuile 
-                if(jokerIngenieur){ //si l'ingénieur avait asséché une tuile, on compte cette action
-                    actionSuivante();
-                }
-                deplacer(mtd.getTuile());
-                actionSuivante();
-                jokerIngenieur = false;
-                //selection.hide(); //on cache la fenêtre de séléction
-                break;
-   
-            case CHOISIR_ASSECHEMENT:
-                MessageTuile mta = (MessageTuile)arg; //interprète le message reçu comme un message contenant une tuile
-                b = (getAventurierCourant() instanceof Ingenieur); // b = true si l'aventurier courant est un ingénieur    
-                if(!b){
-                    jokerIngenieur = false;
-                }
-                assecher(mta.getTuile());
-                if(!b || jokerIngenieur){ //si l'aventurier n'est pas un ingénieur ou si l'ingénieur a déjà asséché une tuile, on compte une action. le premier assèchement de l'ingénieur ne seras donc pas compté comme une action
-                    actionSuivante();
-                }
-                jokerIngenieur = (b && !jokerIngenieur); 
-
-                //selection.hide(); //on cache la fenêtre de séléction
-                break;            
-                
-            case ANNULER_SELECTION: //clic sur le bouton annuler (ou fermeture) de la fenêtre de séléction
-                //selection.hide();
-                break;
+                   
                 
             case JOUER :
                 vueDebut.hide();
@@ -584,7 +611,6 @@ public class Controleur implements Observer{
             Aventurier a = aventuriers.get(j);
             Integer index = grille.getIndexTuile(a.getPosition());
             positionsAv.add(index);
-            //vueAventuriers.setPosition(j, a.getPosition().getNom() + " (" + a.getPosition().getX() + " ; " + a.getPosition().getY() + ")");       
         }        
         for(Integer index : positionsAv){
             vueJeu.setAventurier(index, null);
