@@ -74,7 +74,7 @@ public class VueJeu{
         public Tailles(){}
         public void recalculer(){
             panelsJoueursW = (int)((float)windowW * 0.35f);
-            panelsJoueursH = (int)((float)panelsJoueursW / (1.4f * 8.0f));
+            panelsJoueursH = (int)((float)panelsJoueursW / (8.0f / 1.45f));
             mainH = windowH - 2 * panelsJoueursH;
             panelsDefaussesW = (int)((float)mainH / (ratioDefausses + ratioNiveau));
         }
@@ -270,7 +270,11 @@ public class VueJeu{
         panelTresor = new PanelTresor();
         defausseTirage = new PanelImage("src/Images/cache/tresor_cache.png", 2, observable, MessageType.VOIR_TIRAGE);
         panelOuest = new JPanel(new BorderLayout());
-        panelOuest.add(panelTresor, BorderLayout.CENTER);
+        JPanel layoutTresor = new JPanel(new SingleComponentAspectRatioKeeperLayout());
+        panelTresor.setPreferredSize(new Dimension(300, 300));
+        layoutTresor.add(panelTresor);
+        panelOuest.add(layoutTresor, BorderLayout.NORTH);
+        panelOuest.add(new JPanel(), BorderLayout.CENTER);
         panelOuest.add(defausseTirage, BorderLayout.SOUTH);
         mainPanel.add(panelOuest, BorderLayout.WEST);
         mainPanel.addComponentListener(new ComponentAdapter() {
@@ -304,11 +308,17 @@ public class VueJeu{
     public void resize(){
         tailles.windowW = mainPanel.getWidth();
         tailles.windowH = mainPanel.getHeight();
-        //tailles.recalculer();
-        tailles.panelsJoueursW = 750;
-        tailles.panelsJoueursH = 100;
-        tailles.panelsDefaussesW = 280;
-        tailles.mainH = 800;
+        tailles.ratioDefausses = defausseInondation.getRatio();
+        tailles.ratioNiveau = niveau.getRatio();
+        tailles.recalculer();
+//        System.out.println("jW : " + tailles.panelsJoueursW);
+//        System.out.println("jH : " + tailles.panelsJoueursH);
+//        System.out.println("dW : " + tailles.panelsDefaussesW);
+//        System.out.println("mH : " + tailles.mainH);
+//        tailles.panelsJoueursW = 750;
+//        tailles.panelsJoueursH = 100;
+//        tailles.panelsDefaussesW = 280;
+//        tailles.mainH = 800;
 
         for(int i = 0; i < 4; i++){
             panelsJoueurs[i].setPreferredSize(new Dimension(tailles.panelsJoueursW, tailles.panelsJoueursH));
@@ -402,6 +412,8 @@ public class VueJeu{
     
     public void updateCartes(int index, ArrayList<CarteTirage> cartes){
         panelsJoueurs[index].updateCartes(cartes);
+        panelsJoueurs[index].revalidate();
+        panelsJoueurs[index].repaint();
     }
     
     public static void main(String [] args) {

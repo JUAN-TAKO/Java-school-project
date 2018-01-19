@@ -47,6 +47,7 @@ public class Controleur implements Observer{
     
     private int[] cartesPourNiveau = {2,2,3,3,3,4,4,5,5,0,0}; //nombre de cartes a piocher en fonction du niveau de l'eau
     private int niveauEau;
+    private int niveauInitial;
     
     private LinkedList<TypeTuile> pileInondation; //pile des cartes a piocher
     //LinkedList : comme les ArrayList mais la structure interne est différente, elle permet de supprimer des éléments plus facilement mais il faut un itérateur pour la parcourir 
@@ -191,7 +192,7 @@ public class Controleur implements Observer{
         }
     }
     //pioche d'une carte tirage de la meme maniere
-    public void piocherTirage(){
+    public void piocherTirage(boolean init){
         
         Aventurier av = getAventurierCourant();
         int randomNum;
@@ -206,7 +207,7 @@ public class Controleur implements Observer{
                     piocheTirage[randomNum]--;
                     pioche[i] = CarteTirage.values()[randomNum];
                 }
-            }while(nb == 0);
+            }while(nb == 0 || (randomNum == 6 && init));
             
             if(pioche[i] == CarteTirage.MONTEE_DES_EAUX){
                 niveauEau++;
@@ -257,7 +258,7 @@ public class Controleur implements Observer{
     //passe a l'aventurier suivant et au tour suivant si tous les aventuriers ont joués
     public void aventurierSuivant(){
         
-        piocherTirage();
+        piocherTirage(false);
         action = 0;
         jokerIngenieur = false;
         indexAventurierCourant++;
@@ -374,6 +375,7 @@ public class Controleur implements Observer{
                 listeCartes.add(CarteTirage.values()[i]);
             }
         }
+        System.out.println(listeCartes.size());
         vueJeu.updateCartes(aventuriers.indexOf(av), listeCartes);
     }
     public Aventurier getAventurierDefausse(){
@@ -385,32 +387,29 @@ public class Controleur implements Observer{
         return null;
     }
     public void afficherActionsPossibles(Tuile t){
-        if(t != null){
-            ArrayList<Boolean> actionsPossibles = new ArrayList<>();
-            Aventurier av = getAventurierDefausse();
-            for(int i = 0; i < 7; i++){
-                actionsPossibles.add(false);
-            }
-            if(av == null){
-                Tresor tr = t.getTresor();
-                ArrayList<Aventurier> avProches = getAventuriersSurTuile(t);
-                actionsPossibles.set(0, tuilesAccessibles.contains(t) && tuileContexte != null); //se deplacer
-                actionsPossibles.set(1, tuilesAssechables.contains(t) && tuileContexte != null); //assecher
-                actionsPossibles.set(2, tr != null && getAventurierCourant().getCartes(CarteTirage.values()[tr.ordinal()]) >= 4); // recup tresor
-                actionsPossibles.set(3, carteContexte == CarteTirage.HELICOPTERE || (carteContexte == CarteTirage.SABLE && t.getEtat() == Etat.INONDEE)); // utiliser carte
-                actionsPossibles.set(4, carteContexte != null && carteContexte.ordinal() < 5 && avProches != null && avProches.size() > 1); // donner carte
-            }
-            actionsPossibles.set(5, carteContexte != null); // defausser
-            vueJeu.choisirEtatsBoutons(actionsPossibles);
-            
+        
+        ArrayList<Boolean> actionsPossibles = new ArrayList<>();
+        Aventurier av = getAventurierDefausse();
+        for(int i = 0; i < 7; i++){
+            actionsPossibles.add(false);
         }
+        if(t != null && av == null){
+            Tresor tr = t.getTresor();
+            ArrayList<Aventurier> avProches = getAventuriersSurTuile(t);
+            actionsPossibles.set(0, tuilesAccessibles.contains(t) && tuileContexte != null); //se deplacer
+            actionsPossibles.set(1, tuilesAssechables.contains(t) && tuileContexte != null); //assecher
+            actionsPossibles.set(2, tr != null && getAventurierCourant().getCartes(CarteTirage.values()[tr.ordinal()]) >= 4); // recup tresor
+            actionsPossibles.set(3, carteContexte == CarteTirage.HELICOPTERE || (carteContexte == CarteTirage.SABLE && t.getEtat() == Etat.INONDEE)); // utiliser carte
+            actionsPossibles.set(4, getAventurierCourant() == aventurierCarteContexte && carteContexte != null && carteContexte.ordinal() < 5 && avProches != null && avProches.size() > 1); // donner carte
+        }  
+        actionsPossibles.set(5, carteContexte != null); // defausser
+        vueJeu.choisirEtatsBoutons(actionsPossibles);
     }
     //gère la réception des messages des vues
     @Override
     public void update(Observable o, Object arg){
         Message m = (Message)arg;
         boolean b;
-        VueFinale vueFinale = null;
                 
         switch(m.getType()){
             case CLIC_TUILE:
@@ -424,6 +423,8 @@ public class Controleur implements Observer{
             case DEFAUSSER:
                 aventurierCarteContexte.removeCarte(carteContexte);
                 addCarte(carteContexte, defausseTirage);
+                carteContexte = null;
+                afficherActionsPossibles(grille.getTuileByType(tuileContexte));
                 updateCartes(aventurierCarteContexte);
                 break;
             case DEPLACER:  //clic sur le bouton déplacer
@@ -444,8 +445,6 @@ public class Controleur implements Observer{
                 MessageCarte msc = (MessageCarte)m;
                 carteContexte = msc.getCarte();
                 aventurierCarteContexte = aventuriersByPion.get(msc.getPion());
-                afficherActionsPossibles(getAventurierCourant().getPosition());
-                
                 afficherActionsPossibles(grille.getTuileByType(tuileContexte));
                 break;
             case ASSECHER:  //clic sur le bouton assecher
@@ -456,9 +455,9 @@ public class Controleur implements Observer{
                 if(tuileContexte != null){
                     assecher(tuileContexte);
                 }
-                TypeTuile tmp = tuileContexte;
+                //TypeTuile tmp = tuileContexte;
                 tuileContexte = null;
-                afficherActionsPossibles(grille.getTuileByType(tmp));
+                afficherActionsPossibles(grille.getTuileByType(tuileContexte));
                 if(!b || jokerIngenieur){ //si l'aventurier n'est pas un ingénieur ou si l'ingénieur a déjà asséché une tuile, on compte une action. le premier assèchement de l'ingénieur ne seras donc pas compté comme une action
                     actionSuivante();
                 }
@@ -487,6 +486,7 @@ public class Controleur implements Observer{
                     updateCartes(av);
                     updateCartes(avProches.get(0));
                 }
+                afficherActionsPossibles(grille.getTuileByType(tuileContexte));
                 
                 
                 break;
@@ -497,6 +497,7 @@ public class Controleur implements Observer{
                 avs.addCarte(carteContexte);
                 updateCartes(getAventurierCourant());
                 updateCartes(avs);
+                carteContexte = null;
                 vuePion.hide();
                 actionSuivante();
                 
@@ -577,8 +578,9 @@ public class Controleur implements Observer{
                 }else if(parametre){
                     vueParametres.hide();
                     parametre = false;
-                }else if(jeu){
+                }else if(!jeu){
                     vueJeu.hide();
+                    vueFinale.hide();
                     jeu = false;
                 }
                 
@@ -618,6 +620,7 @@ public class Controleur implements Observer{
             case VALIDER_PARAMETRES: //réception des noms des joueurs
                 MessageParametre mp = (MessageParametre)arg; //interprète le message reçu comme un message contenant une liste de noms 
                 
+                niveauInitial = mp.getNiveau();
                 niveauEau = mp.getNiveau();
                 ArrayList<String> noms = mp.getNoms();
                 ArrayList<Pion> pions = new ArrayList<>();
@@ -751,6 +754,14 @@ public class Controleur implements Observer{
         for(int i = 0; i < 6; i++){
             actionsPossibles.add(false);
         }
+        for(int i = 0; i < aventuriers.size(); i++){
+            indexAventurierCourant = i;
+            piocherTirage(true);
+        }
+        indexAventurierCourant = 0;
+        //niveauEau = niveauInitial;
+        //reinitialiserTirage();
+        
         vueJeu.setJoueurActif(0);
         vueJeu.choisirEtatsBoutons(actionsPossibles);
         
