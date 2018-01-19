@@ -301,9 +301,11 @@ public class Controleur implements Observer{
     }
     //déplace l'aventurier courant sur la tuile de type t
     public void deplacer(TypeTuile t){
-        getAventurierCourant().setPosition(grille.getTuileByType(t));
-        checkGagne();
-        recalculerDeplacement();
+        if(t != null){
+            getAventurierCourant().setPosition(grille.getTuileByType(t));
+            checkGagne();
+            recalculerDeplacement();
+        }
     }
     public void checkGagne(){
         ArrayList<Aventurier> aa = getAventuriersSurTuile(grille.getTuileByType(TypeTuile.HELIPORT));
@@ -414,6 +416,7 @@ public class Controleur implements Observer{
             case CLIC_TUILE:
                 MessageTuile mct = (MessageTuile)m;
                 tuileContexte = mct.getTuile();
+                System.out.println(aventurierCarteContexte.getNomRole());
                 recalculerTuiles();
                 afficherActionsPossibles(grille.getTuileByType(tuileContexte));
                 
@@ -443,6 +446,7 @@ public class Controleur implements Observer{
                 MessageCarte msc = (MessageCarte)m;
                 carteContexte = msc.getCarte();
                 aventurierCarteContexte = aventuriersByPion.get(msc.getPion());
+                
                 afficherActionsPossibles(grille.getTuileByType(tuileContexte));
                 break;
             case ASSECHER:  //clic sur le bouton assecher
@@ -452,9 +456,10 @@ public class Controleur implements Observer{
                 }
                 if(tuileContexte != null){
                     assecher(tuileContexte);
-                    afficherActionsPossibles(grille.getTuileByType(tuileContexte));
                 }
+                TypeTuile tmp = tuileContexte;
                 tuileContexte = null;
+                afficherActionsPossibles(grille.getTuileByType(tmp));
                 if(!b || jokerIngenieur){ //si l'aventurier n'est pas un ingénieur ou si l'ingénieur a déjà asséché une tuile, on compte une action. le premier assèchement de l'ingénieur ne seras donc pas compté comme une action
                     actionSuivante();
                 }
@@ -519,7 +524,7 @@ public class Controleur implements Observer{
                     assecher(tuileContexte);
                     aventurierCarteContexte.removeCarte(carteContexte);
                 }
-                
+                updateCartes(aventurierCarteContexte);
                 break;
                 
             case PASSER:    //clic sur le bouton passer

@@ -165,9 +165,10 @@ public class VueJeu{
         // CENTRE
         
         
-        //JPanel panelCentre = new JPanel(new GridBagLayout());
+        JPanel panelCentre = new JPanel(new SingleComponentAspectRatioKeeperLayout());
         grille = new PanelGrille(types, observable);
-        mainPanel.add(grille, BorderLayout.CENTER);
+        panelCentre.add(grille);
+        mainPanel.add(panelCentre, BorderLayout.CENTER);
         grille.setBorder(BorderFactory.createLineBorder(Color.BLACK, 2));
         
         // =================================================================================
@@ -318,6 +319,7 @@ public class VueJeu{
         
         panelOuest.setPreferredSize(new Dimension(tailles.panelsDefaussesW, tailles.mainH));
         panelEst.setPreferredSize(new Dimension(tailles.panelsDefaussesW, tailles.mainH));
+        grille.setPreferredSize(new Dimension(tailles.mainH,tailles.mainH));
         mainPanel.revalidate();
         mainPanel.repaint();
     }
