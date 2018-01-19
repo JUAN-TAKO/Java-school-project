@@ -306,7 +306,8 @@ public class Controleur implements Observer{
         recalculerDeplacement();
     }
     public void checkGagne(){
-        if(getAventuriersSurTuile(grille.getTuileByType(TypeTuile.HELIPORT)).size() > aventuriers.size()){
+        ArrayList<Aventurier> aa = getAventuriersSurTuile(grille.getTuileByType(TypeTuile.HELIPORT));
+        if(aa != null && aa.size() > aventuriers.size()){
             Boolean b = true;
             for(Boolean b2 : tresorsRecoltes){
                 if(b2 == false)
