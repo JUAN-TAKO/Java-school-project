@@ -494,12 +494,15 @@ public class Controleur implements Observer{
                 updateCartes(getAventurierCourant());
                 updateCartes(avs);
                 vuePion.hide();
+                actionSuivante();
+                
                 break;
             case RECUP_TRESOR:
                 Tresor tr = tuileContexte.getTresor();
                 getAventurierCourant().removeCarte(CarteTirage.values()[tr.ordinal()], 4);
                 tresorsRecoltes.set(tr.ordinal(), true);
                 vueJeu.setTresor(tr.ordinal());
+                actionSuivante();
             
             case UTILISER_CARTE : //clic sur le bouton utiliser carte
                 if(carteContexte == CarteTirage.HELICOPTERE){
@@ -511,8 +514,10 @@ public class Controleur implements Observer{
                     }
                     updatePionsVue();
                     recalculerDeplacement();
+                    aventurierCarteContexte.removeCarte(carteContexte);
                 }else{
                     assecher(tuileContexte);
+                    aventurierCarteContexte.removeCarte(carteContexte);
                 }
                 
                 break;
