@@ -265,7 +265,7 @@ public class Controleur implements Observer{
             tourSuivant();
         }
         
-        
+        vueJeu.setJoueurActif(indexAventurierCourant);
         int nbActMax = getAventurierCourant().getNbActionMax();
         vueJeu.setNbAction(((Integer)(nbActMax - action)).toString());
         
@@ -742,6 +742,7 @@ public class Controleur implements Observer{
         for(int i = 0; i < 6; i++){
             actionsPossibles.add(false);
         }
+        vueJeu.setJoueurActif(0);
         vueJeu.choisirEtatsBoutons(actionsPossibles);
         
         

@@ -273,6 +273,14 @@ public class VueJeu{
         mainPanel.repaint();
         
     }
+    public void setJoueurActif(int index){
+        for(int i = 0; i < 4; i++){
+            panelsJoueurs[i].setBorder(BorderFactory.createEmptyBorder());
+        }
+        panelsJoueurs[index].setBorder(BorderFactory.createLineBorder(Color.green, 3));
+        mainPanel.revalidate();
+        mainPanel.repaint();
+    }
     public void setTresor(int index){
         
         panelTresor.setTresor(index, true);
