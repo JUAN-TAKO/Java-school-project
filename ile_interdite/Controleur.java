@@ -424,7 +424,6 @@ public class Controleur implements Observer{
                 ave.removeCarte(carteContexte);
                 addCarte(carteContexte, defausseTirage);
                 updateCartes(ave);
-                clearPionsVue();
                 break;
             case DEPLACER:  //clic sur le bouton déplacer
 //               
