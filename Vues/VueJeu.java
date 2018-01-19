@@ -273,6 +273,10 @@ public class VueJeu{
         mainPanel.repaint();
         
     }
+    public void setTresor(int index){
+        
+        panelTresor.setTresor(index, true);
+    }
     public void setEtatTuile(int index, Etat etat){
         grille.setEtat(index, etat);
         resize();

@@ -1,8 +1,7 @@
 package Vues;
 
 import Utils.Message;
-import Utils.MessageType;
-import Utils.Pion;
+import Utils.*;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
@@ -35,7 +34,7 @@ public class VuePion extends Observable{
     public VuePion(ArrayList<Pion> listesPion, ArrayList<String> listesNom){
         window = new JFrame();
         window.setDefaultCloseOperation(javax.swing.JFrame.DISPOSE_ON_CLOSE);
-        window.setSize(400, 100);
+        window.setSize(400, 300);
         Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
         window.setLocation(dim.width/2-window.getSize().width/2, dim.height/2-window.getSize().height/2);
         window.setTitle("Donner Carte");
@@ -71,6 +70,7 @@ public class VuePion extends Observable{
                 public void mouseClicked(MouseEvent e) {                 
                     setChanged();
                     notifyObservers(new MessagePion(MessageType.SELECT_PION, p));
+                    clearChanged();
                 }
 
                 @Override
