@@ -49,12 +49,10 @@ public class VueJeu{
     private PanelJoueur[] panelsJoueurs = new PanelJoueur[4];
     private CompositionObservable observable;
     
-    private JButton boutonAssecher;
     private JButton boutonDeplacer;
-    private JButton boutonActionSpeciale;
-    private JButton boutonSacSable;
-    private JButton boutonHelico;
+    private JButton boutonAssecher;
     private JButton boutonRecuptresor;
+    private JButton boutonUtiliserCarte;
     private JButton boutonDonnerCarte;
     private JButton boutonDefausser;
     
@@ -176,17 +174,6 @@ public class VueJeu{
                
         niveau = new PanelNiveau(1);
         
-        boutonAssecher = new JButton("Assecher");
-        boutonAssecher.addActionListener(new ActionListener(){
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                observable.setChanged();
-                observable.notifyObservers(new Message(MessageType.ASSECHER));
-                observable.clearChanged();
-            }
-        });
-        
-            
         
         boutonDeplacer = new JButton("Deplacer");
         boutonDeplacer.addActionListener(new ActionListener(){
@@ -198,36 +185,17 @@ public class VueJeu{
             }
         });
         
-        boutonActionSpeciale = new JButton("Action Speciale");
-        boutonActionSpeciale.addActionListener(new ActionListener(){
+        boutonAssecher = new JButton("Assecher");
+        boutonAssecher.addActionListener(new ActionListener(){
             @Override
             public void actionPerformed(ActionEvent e) {
                 observable.setChanged();
-                observable.notifyObservers(new Message(MessageType.ACTION_SPECIALE));
+                observable.notifyObservers(new Message(MessageType.ASSECHER));
                 observable.clearChanged();
             }
         });
-        
-        boutonSacSable = new JButton("Sac de Sable");
-        boutonSacSable.addActionListener(new ActionListener(){
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                observable.setChanged();
-                observable.notifyObservers(new Message(MessageType.SAC_SABLE));
-                observable.clearChanged();
-            }
-        });
-        
-        boutonHelico = new JButton("Hélicoptère");
-        boutonHelico.addActionListener(new ActionListener(){
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                observable.setChanged();
-                observable.notifyObservers(new Message(MessageType.HELICO));
-                observable.clearChanged();
-            }
-        });
-        
+       
+       
         boutonRecuptresor = new JButton("Récupérer Trésor");
         boutonRecuptresor.addActionListener(new ActionListener(){
             @Override
@@ -238,6 +206,18 @@ public class VueJeu{
             }
         });
         
+        
+        boutonUtiliserCarte = new JButton("Utiliser Carte");
+        boutonUtiliserCarte.addActionListener(new ActionListener(){
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                observable.setChanged();
+                observable.notifyObservers(new Message(MessageType.UTILISER_CARTE));
+                observable.clearChanged();
+            }
+        });
+        
+       
         boutonDonnerCarte = new JButton("Donner Carte");
         boutonDonnerCarte.addActionListener(new ActionListener(){
             @Override
@@ -258,12 +238,10 @@ public class VueJeu{
             }
         });
         
-        panelCentreSud.add(boutonAssecher);
         panelCentreSud.add(boutonDeplacer);
-        panelCentreSud.add(boutonActionSpeciale);
-        panelCentreSud.add(boutonSacSable);
-        panelCentreSud.add(boutonHelico);
+        panelCentreSud.add(boutonAssecher);
         panelCentreSud.add(boutonRecuptresor);
+        panelCentreSud.add(boutonUtiliserCarte);
         panelCentreSud.add(boutonDonnerCarte);
         panelCentreSud.add(boutonDefausser);
         
@@ -354,43 +332,43 @@ public class VueJeu{
             if(listes.get(i)){
                 switch(i){
                     case 0 :
-                        boutonAssecher.setEnabled(true);
-                        break;
-                    case 1 :
                         boutonDeplacer.setEnabled(true);
                         break;
+                    case 1 :
+                        boutonAssecher.setEnabled(true);
+                        break;
                     case 2 :
-                        boutonActionSpeciale.setEnabled(true);
+                        boutonRecuptresor.setEnabled(true);
                         break;
                     case 3 :
-                        boutonSacSable.setEnabled(true);
+                        boutonUtiliserCarte.setEnabled(true);
                         break;
                     case 4 :
-                        boutonHelico.setEnabled(true);
+                        boutonDonnerCarte.setEnabled(true);
                         break;
                     case 5 :
-                        boutonRecuptresor.setEnabled(true);
+                        boutonDefausser.setEnabled(true);
                         break;
                 }
             }else{
                 switch(i){
                     case 0 :
-                        boutonAssecher.setEnabled(false);
-                        break;
-                    case 1 :
                         boutonDeplacer.setEnabled(false);
                         break;
+                    case 1 :
+                        boutonAssecher.setEnabled(false);
+                        break;
                     case 2 :
-                        boutonActionSpeciale.setEnabled(false);
+                        boutonRecuptresor.setEnabled(false);
                         break;
                     case 3 :
-                        boutonSacSable.setEnabled(false);
+                        boutonUtiliserCarte.setEnabled(false);
                         break;
                     case 4 :
-                        boutonHelico.setEnabled(false);
+                        boutonDonnerCarte.setEnabled(false);
                         break;
                     case 5 :
-                        boutonRecuptresor.setEnabled(false);
+                        boutonDefausser.setEnabled(false);
                         break;
                 }
             }

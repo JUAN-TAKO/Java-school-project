@@ -65,7 +65,27 @@ public class VuePion extends Observable{
         mainPanel.add(panelCentre, BorderLayout.CENTER);
         
         for(Pion p : listesPion){
-            panelCentre.add(new PanelImage(p.getJoueur() , 0));
+            PanelImage pa = new PanelImage(p.getJoueur() , 0);
+            pa.addMouseListener(new MouseListener() {
+                @Override
+                public void mouseClicked(MouseEvent e) {                 
+                    setChanged();
+                    notifyObservers(new MessagePion(MessageType.SELECT_PION, p));
+                }
+
+                @Override
+                public void mousePressed(MouseEvent e) {                }
+
+                @Override
+                public void mouseReleased(MouseEvent e) {                }
+
+                @Override
+                public void mouseEntered(MouseEvent e) {                }
+
+                @Override
+                public void mouseExited(MouseEvent e) {                }
+            });
+            panelCentre.add(pa);
         }
         for(String n : listesNom){
             JLabel l = new JLabel(n);

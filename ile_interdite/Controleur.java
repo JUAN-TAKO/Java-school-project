@@ -37,7 +37,7 @@ public class Controleur implements Observer{
     private TypeTuile tuileContexte;
     
     private CarteTirage carteContexte;
-    private Pion pionCarteContexte;
+    private Aventurier aventurierCarteContexte;
     
     private int indexAventurierCourant; 
     private Integer action; //nombre d'actions effectuées par le joueur courant
@@ -358,12 +358,13 @@ public class Controleur implements Observer{
             actionsPossibles.add(false);
         }
         Tresor tr = t.getTresor();
-        actionsPossibles.set(0, tuilesAssechables.contains(t) && tuileContexte != null); //assecher
-        actionsPossibles.set(1, tuilesAccessibles.contains(t) && tuileContexte != null); //se deplacer
-        actionsPossibles.set(2, tuilesSpeciales.contains(t) && tuileContexte != null); // speciale
-        actionsPossibles.set(3, t.getEtat() == Etat.INONDEE && getAventurierCourant().getCartes(CarteTirage.SABLE) > 0); // sac de sable
-        actionsPossibles.set(4, t.getEtat() != Etat.COULEE && getAventurierCourant().getCartes(CarteTirage.HELICOPTERE) > 0);// helicoptere
-        actionsPossibles.set(5, tr != null && getAventurierCourant().getCartes(CarteTirage.values()[tr.ordinal()]) >= 4); // recup tresor
+        ArrayList<Aventurier> avProches = getAventuriersSurTuile(t);
+        actionsPossibles.set(0, tuilesAccessibles.contains(t) && tuileContexte != null); //se deplacer
+        actionsPossibles.set(1, tuilesAssechables.contains(t) && tuileContexte != null); //assecher
+        actionsPossibles.set(2, tr != null && getAventurierCourant().getCartes(CarteTirage.values()[tr.ordinal()]) >= 4); // recup tresor
+        actionsPossibles.set(3, carteContexte == CarteTirage.HELICOPTERE || (carteContexte == CarteTirage.SABLE && t.getEtat() == Etat.INONDEE)); // utiliser carte
+        actionsPossibles.set(4, t == getAventurierCourant().getPosition() && carteContexte != null && carteContexte.ordinal() < 5 && avProches.size() > 1); // donner carte
+        actionsPossibles.set(5, carteContexte != null); // defausser
         vueJeu.choisirEtatsBoutons(actionsPossibles);
     }
     //gère la réception des messages des vues
@@ -383,7 +384,7 @@ public class Controleur implements Observer{
                 break;
                 
             case DEFAUSSER:
-                Aventurier ave  = aventuriersByPion.get(pionCarteContexte);
+                Aventurier ave  = aventurierCarteContexte;
                 ave.removeCarte(carteContexte);
                 addCarte(carteContexte, defausseTirage);
                 updateCartes(ave);
@@ -404,9 +405,10 @@ public class Controleur implements Observer{
                 
                 break;
             case CLIC_CARTE:
-                MessageCarte msc = (MessageCarte)m;
+                MessagePion msc = (MessagePion)m;
                 carteContexte = msc.getCarte();
-                pionCarteContexte = msc.getPion();
+                aventurierCarteContexte = aventuriersByPion.get(msc.getPion());
+                afficherActionsPossibles(grille.getTuileByType(tuileContexte));
                 break;
             case ASSECHER:  //clic sur le bouton assecher
                 b = (getAventurierCourant() instanceof Ingenieur); // b = true si l'aventurier courant est un ingénieur    
@@ -424,11 +426,30 @@ public class Controleur implements Observer{
                 break;
                 
             case DONNER_CARTE:   //clic sur le bouton donner carte
+                Aventurier av = getAventurierCourant();
+                ArrayList<Aventurier> avProches = getAventuriersSurTuile(av.getPosition());
+                avProches.remove(av);
+                if(avProches.size() > 1){
+                    ArrayList<Pion> pions = new ArrayList<>();
+                    ArrayList<String> noms = new ArrayList<>();
+                    for(Aventurier a : avProches){
+                        pions.add(a.getPion());
+                        noms.add(a.getNom());
+                    }
+                    VuePion vuePion = new VuePion(pions, noms);
+                    vuePion.afficher();
+                }
+                else{
+                    av.removeCarte(carteContexte);
+                    avProches.get(0).addCarte(carteContexte);
+                    updateCartes(av);
+                    updateCartes(avProches.get(0));
+                }
                 
                 
                 break;
              
-            case ACTION_SPECIALE : //clic sur le bouton action speciale
+            case UTILISER_CARTE : //clic sur le bouton utiliser carte
                 
                 
                 break;
