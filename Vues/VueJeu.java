@@ -89,7 +89,8 @@ public class VueJeu{
         window = new JFrame();
         window.setDefaultCloseOperation(javax.swing.JFrame.DO_NOTHING_ON_CLOSE);
         Dimension d = Toolkit.getDefaultToolkit().getScreenSize();
-        window.setSize(new Dimension(d.width, d.height - 30));
+        window.setSize(new Dimension((int)((float)d.width * 0.75f), (int)((float)d.height * 0.75f)));
+        window.setExtendedState(JFrame.MAXIMIZED_BOTH);
         window.setTitle("Plateau de Jeu");
         window.setResizable(true);
         
