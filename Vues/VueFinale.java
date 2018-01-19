@@ -157,14 +157,4 @@ public class VueFinale extends Observable{
     public void hide() {
         window.dispose();
     }
-     
-    public static void main(String[] args) { 
-        ArrayList<Boolean> b = new ArrayList<>();
-        b.add(false);
-        b.add(true);
-        b.add(false);
-        b.add(false);
-        VueFinale vueVic = new VueFinale(b);
-        vueVic.afficher();
-    }
 }

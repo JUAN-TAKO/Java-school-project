@@ -236,6 +236,7 @@ public class VueParametres extends Observable{
         for(int i=0 ; i<4 ; i++){
             panelFleche.add(getListePanelsFleche().get(i));
         }
+        
         panelFleche.revalidate();
         panelFleche.repaint();
         indexSelect = index;
@@ -310,11 +311,6 @@ public class VueParametres extends Observable{
         boutonValider.setEnabled(true);
         boutonQuitter.setEnabled(true);
     }
-     
-     public static void main(String[] args) { 
-         VueParametres vueParam = new VueParametres();
-         vueParam.afficher();
-     }
 
     
 } 

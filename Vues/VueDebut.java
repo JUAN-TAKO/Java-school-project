@@ -78,11 +78,7 @@ public class VueDebut extends Observable{
             }
         });
         
-        panelBas.add(boutonJouer);
-       
-        
-        
-               
+        panelBas.add(boutonJouer);       
     }
     
     private class PanelAvecImage extends JPanel {
@@ -127,11 +123,6 @@ public class VueDebut extends Observable{
         boutonJouer.setEnabled(true);
         boutonQuitter.setEnabled(true);
     }
-    
-    public static void main(String [] args) {
-        VueDebut vueDebut = new VueDebut();
-        vueDebut.afficher();
-   }
     
     
 }

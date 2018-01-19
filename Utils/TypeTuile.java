@@ -31,21 +31,26 @@ public enum TypeTuile{
     private final String nomTuile;
     private final String imagePath;
     private final Tresor tresor;
+    
     private TypeTuile(String nom, String imPath, Tresor t){
         nomTuile = nom;
         tresor = t;
         imagePath = imPath;
     }
+    
     @Override
     public String toString(){
         return nomTuile;
     }
+    
     public Tresor getTresor(){
         return tresor;
     }
+    
     public String getImagePath(){
         return imagePath + ".png";
     }
+    
     public String getImagePathInonde(){
         return (imagePath + "_Inonde.png");
     }

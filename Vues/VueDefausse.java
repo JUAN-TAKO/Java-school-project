@@ -72,17 +72,5 @@ public class VueDefausse {
         window.dispose();
     }
     
-    public static void main(String[] args) { 
-        ArrayList<String> defausse = new ArrayList<>();
-        
-        for (int i = 0; i < 24; i++) {
-            defausse.add("src/Images/cartes/Heliport.png");
-        }
-        
-        
-        VueDefausse vueDef = new VueDefausse(defausse);
-        vueDef.setTitres("Defausse Tresor");
-        vueDef.afficher();
-    }
     
 }

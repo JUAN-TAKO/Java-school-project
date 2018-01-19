@@ -91,25 +91,4 @@ public class VuePion extends Observable{
     public void hide() {
         window.dispose();
     }
-    
-    public static void main(String [] args){
-        ArrayList<Pion> p = new ArrayList<>();
-        ArrayList<String> n = new ArrayList<>();
-        p.add(Pion.BLEU);
-        p.add(Pion.VERT);
-        p.add(Pion.ROUGE);
-        p.add(Pion.NOIR);
-        
-        n.add("dede");
-        n.add("tibo");
-        n.add("tata");
-        n.add("juan");
-        
-        
-        
-        VuePion vuePion = new VuePion(p,n);
-        vuePion.afficher();
-   }
-    
-    
 }

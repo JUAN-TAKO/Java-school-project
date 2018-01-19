@@ -5,21 +5,21 @@
  */
 package Utils;
 
-/**
- *
- * @author juan
- */
+
 public class MessageCarte extends Message{
     private CarteTirage carte;
     private Pion pion;
+    
     public MessageCarte(CarteTirage c, Pion p){
 	super(MessageType.CLIC_CARTE);
 	carte = c;
         pion = p;
     }
+    
     public CarteTirage getCarte(){
 	return carte;
     }
+    
     public Pion getPion(){
         return pion;
     }

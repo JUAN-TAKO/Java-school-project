@@ -47,10 +47,12 @@ public class PanelNiveau extends JPanel{
         redraw();
         add(labelImage);
     }
+    
     public void setNiveau(int n){
         niveau = n;
         redraw();
     }
+    
     private void resizeIcon(){
         if(getWidth() != 0){
             int wi = combined.getWidth();
@@ -92,25 +94,10 @@ public class PanelNiveau extends JPanel{
             resizeIcon();
         }
     }
+    
     public float getRatio(){
         int wi = combined.getWidth();
         int hi = combined.getHeight();
         return (float)hi / (float)wi;
-    }
-//    public static void main(String[] args){   
-//        //PanelNiveau vueNiveau = new PanelNiveau(0, 0);
-//        JFrame window = new JFrame();
-//        window.add(vueNiveau);
-//        window.setSize(400, 900);
-//        window.setVisible(true);
-//        for(int i = 1; i < 10; i++){
-//            System.out.println("Appuyez sur une touche");
-//            try {
-//                System.in.read();
-//            } catch (IOException ex) {
-//                System.out.println(ex.getMessage());
-//            }
-//            vueNiveau.setNiveau(i);
-//        }
-    //}    
+    }    
 }

@@ -89,23 +89,14 @@ public class VueConfirm extends Observable{
             }
         });
         
-        panelBas.add(boutonOui);
-        
-        
-               
+        panelBas.add(boutonOui);  
     }
+    
     public void afficher() {
         this.window.setVisible(true);
     }
     
     public void hide() {
         window.dispose();
-    }
-    
-    public static void main(String [] args) {
-        VueConfirm confirm = new VueConfirm();
-        confirm.afficher();
-   }
-    
-    
+    } 
 }

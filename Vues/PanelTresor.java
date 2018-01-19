@@ -74,28 +74,4 @@ public class PanelTresor extends JPanel{
             panelCentre.add(panelTresor);
         }
     }
-    
-    
-    public static void main(String [] args) {
-        JFrame  window = new JFrame();
-        window.setDefaultCloseOperation(javax.swing.JFrame.DISPOSE_ON_CLOSE);
-        window.setSize(700, 500);
-        Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
-        window.setLocation(dim.width/2-window.getSize().width/2, dim.height/2-window.getSize().height/2);
-        window.setTitle("Trésor");
-        
-        
-        
-        PanelTresor vueTresor = new PanelTresor();
-        
-        vueTresor.setTresor(0,true);
-        vueTresor.setTresor(1,false);
-        vueTresor.setTresor(2,true);
-        vueTresor.setTresor(3,true);
-        
-        window.add(vueTresor);
-        
-        window.setVisible(true);
-   }
-    
 }

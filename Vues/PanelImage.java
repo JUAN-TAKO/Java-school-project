@@ -41,6 +41,7 @@ public class PanelImage extends JPanel implements MouseListener{
         add(imageLabel, BorderLayout.CENTER);
         
     }
+    
     public PanelImage(String path, int f, CompositionObservable o, MessageType m){
         super(new BorderLayout());
         fit = f;
@@ -62,6 +63,7 @@ public class PanelImage extends JPanel implements MouseListener{
         imageLabel = new JLabel();
         add(imageLabel, BorderLayout.CENTER);
     }
+    
     private void resizeIcon(){
         if(image != null){
             int wi = image.getIconWidth();
@@ -87,6 +89,7 @@ public class PanelImage extends JPanel implements MouseListener{
             repaint();
         }
     }
+    
     public float getRatio(){
         int wi = image.getIconWidth();
         int hi = image.getIconHeight();
@@ -95,17 +98,6 @@ public class PanelImage extends JPanel implements MouseListener{
     
     public int getH(){
         return scaled != null ? scaled.getIconHeight() : 0;
-    }
-    public static void main(String args[]){
-        JFrame window = new JFrame();
-        JPanel mainPanel = new JPanel(new GridLayout(1, 3));
-        window.add(mainPanel);
-        window.setSize(1150, 700);
-        mainPanel.add(new PanelImage("src/Images/cartes/Calice.png", 0));
-        mainPanel.add(new PanelImage("src/Images/cartes/Cristal.png", 0));
-        mainPanel.add(new PanelImage("src/Images/cartes/Pierre.png", 0));
-        
-        window.setVisible(true);
     }
 
     @Override

@@ -20,6 +20,7 @@ public class MessageParametre extends Message{
 	this.noms = noms;
         this.niveau = index;
     }
+    
     public ArrayList<String> getNoms(){
 	return noms;
     }
