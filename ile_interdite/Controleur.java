@@ -389,8 +389,8 @@ public class Controleur implements Observer{
             ArrayList<Boolean> actionsPossibles = new ArrayList<>();
             Aventurier av = getAventurierDefausse();
             for(int i = 0; i < 7; i++){
-                    actionsPossibles.add(false);
-                }
+                actionsPossibles.add(false);
+            }
             if(av == null){
                 Tresor tr = t.getTresor();
                 ArrayList<Aventurier> avProches = getAventuriersSurTuile(t);
@@ -398,7 +398,7 @@ public class Controleur implements Observer{
                 actionsPossibles.set(1, tuilesAssechables.contains(t) && tuileContexte != null); //assecher
                 actionsPossibles.set(2, tr != null && getAventurierCourant().getCartes(CarteTirage.values()[tr.ordinal()]) >= 4); // recup tresor
                 actionsPossibles.set(3, carteContexte == CarteTirage.HELICOPTERE || (carteContexte == CarteTirage.SABLE && t.getEtat() == Etat.INONDEE)); // utiliser carte
-                actionsPossibles.set(4, carteContexte != null && carteContexte.ordinal() < 5 && avProches.size() > 1); // donner carte
+                actionsPossibles.set(4, carteContexte != null && carteContexte.ordinal() < 5 && avProches != null && avProches.size() > 1); // donner carte
             }
             actionsPossibles.set(5, carteContexte != null); // defausser
             vueJeu.choisirEtatsBoutons(actionsPossibles);
@@ -416,17 +416,15 @@ public class Controleur implements Observer{
             case CLIC_TUILE:
                 MessageTuile mct = (MessageTuile)m;
                 tuileContexte = mct.getTuile();
-                System.out.println(aventurierCarteContexte.getNomRole());
                 recalculerTuiles();
                 afficherActionsPossibles(grille.getTuileByType(tuileContexte));
                 
                 break;
                 
             case DEFAUSSER:
-                Aventurier ave  = aventurierCarteContexte;
-                ave.removeCarte(carteContexte);
+                aventurierCarteContexte.removeCarte(carteContexte);
                 addCarte(carteContexte, defausseTirage);
-                updateCartes(ave);
+                updateCartes(aventurierCarteContexte);
                 break;
             case DEPLACER:  //clic sur le bouton déplacer
 //               
@@ -446,6 +444,7 @@ public class Controleur implements Observer{
                 MessageCarte msc = (MessageCarte)m;
                 carteContexte = msc.getCarte();
                 aventurierCarteContexte = aventuriersByPion.get(msc.getPion());
+                afficherActionsPossibles(getAventurierCourant().getPosition());
                 
                 afficherActionsPossibles(grille.getTuileByType(tuileContexte));
                 break;
