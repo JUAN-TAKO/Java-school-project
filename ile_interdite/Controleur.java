@@ -275,11 +275,6 @@ public class Controleur implements Observer{
         
         //selectAventurier();
     }
-    
-    //désactive les aventuriers dont ce n'est pas le tour, et active l'aventurier courant (dans la vue)
-    public void selectAventurier(){ 
-        //vueAventuriers.setActive(indexAventurierCourant);
-    }
 
     //incrémente le nombre de tours et reviens au début de la liste des aventuriers
     public void tourSuivant(){
@@ -393,15 +388,17 @@ public class Controleur implements Observer{
         for(int i = 0; i < 7; i++){
             actionsPossibles.add(false);
         }
-        if(t != null && av == null){
-            Tresor tr = t.getTresor();
-            ArrayList<Aventurier> avProches = getAventuriersSurTuile(t);
-            actionsPossibles.set(0, tuilesAccessibles.contains(t) && tuileContexte != null); //se deplacer
-            actionsPossibles.set(1, tuilesAssechables.contains(t) && tuileContexte != null); //assecher
-            actionsPossibles.set(2, tr != null && getAventurierCourant().getCartes(CarteTirage.values()[tr.ordinal()]) >= 4); // recup tresor
+        if(t != null){
+            if(av == null){
+                Tresor tr = t.getTresor();
+                actionsPossibles.set(0, tuilesAccessibles.contains(t) && tuileContexte != null); //se deplacer
+                actionsPossibles.set(1, tuilesAssechables.contains(t) && tuileContexte != null); //assecher
+                actionsPossibles.set(2, tr != null && getAventurierCourant().getCartes(CarteTirage.values()[tr.ordinal()]) >= 4); // recup tresor
+            }
             actionsPossibles.set(3, carteContexte == CarteTirage.HELICOPTERE || (carteContexte == CarteTirage.SABLE && t.getEtat() == Etat.INONDEE)); // utiliser carte
-            actionsPossibles.set(4, getAventurierCourant() == aventurierCarteContexte && carteContexte != null && carteContexte.ordinal() < 5 && avProches != null && avProches.size() > 1); // donner carte
-        }  
+        }
+        ArrayList<Aventurier> avProches = getAventuriersSurTuile(getAventurierCourant().getPosition());
+        actionsPossibles.set(4, getAventurierCourant() == aventurierCarteContexte && carteContexte != null && carteContexte.ordinal() < 5 && avProches != null && avProches.size() > 1); // donner carte
         actionsPossibles.set(5, carteContexte != null); // defausser
         vueJeu.choisirEtatsBoutons(actionsPossibles);
     }
@@ -431,12 +428,14 @@ public class Controleur implements Observer{
 //               
                 if(jokerIngenieur){ //si l'ingénieur avait asséché une tuile, on compte cette action
                     actionSuivante();
+                    break;
                 }
                 clearPionsVue();
                 deplacer(tuileContexte);
                 updatePionsVue();
-                afficherActionsPossibles(grille.getTuileByType(tuileContexte));
+                Tuile tmp = grille.getTuileByType(tuileContexte);
                 tuileContexte = null;
+                afficherActionsPossibles(tmp);
                 actionSuivante();
                 jokerIngenieur = false;
                 
@@ -485,10 +484,9 @@ public class Controleur implements Observer{
                     avProches.get(0).addCarte(carteContexte);
                     updateCartes(av);
                     updateCartes(avProches.get(0));
-                }
-                afficherActionsPossibles(grille.getTuileByType(tuileContexte));
-                
-                
+                    carteContexte = null;
+                    afficherActionsPossibles(null);
+                }              
                 break;
             case SELECT_PION:
                 MessagePion msp = (MessagePion)m;
@@ -498,6 +496,7 @@ public class Controleur implements Observer{
                 updateCartes(getAventurierCourant());
                 updateCartes(avs);
                 carteContexte = null;
+                afficherActionsPossibles(null);
                 vuePion.hide();
                 actionSuivante();
                 
@@ -507,6 +506,7 @@ public class Controleur implements Observer{
                 getAventurierCourant().removeCarte(CarteTirage.values()[tr.ordinal()], 4);
                 tresorsRecoltes.set(tr.ordinal(), true);
                 vueJeu.setTresor(tr.ordinal());
+                updateCartes(getAventurierCourant());
                 actionSuivante();
             
             case UTILISER_CARTE : //clic sur le bouton utiliser carte
@@ -525,6 +525,10 @@ public class Controleur implements Observer{
                     aventurierCarteContexte.removeCarte(carteContexte);
                 }
                 updateCartes(aventurierCarteContexte);
+                carteContexte = null;
+                aventurierCarteContexte = null;
+                tuileContexte = null;
+                afficherActionsPossibles(null);
                 break;
                 
             case PASSER:    //clic sur le bouton passer

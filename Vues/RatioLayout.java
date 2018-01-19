@@ -29,12 +29,12 @@ import javax.swing.JPanel;
  * @author @francoismarot
  * @see https://gist.github.com/fmarot/f04346d0e989baef1f56ffd83bbf764d
  */
-public class SingleComponentAspectRatioKeeperLayout implements LayoutManager {
+public class RatioLayout implements LayoutManager {
 
 	/** Will be used for calculus in case no real component is in the parent */
 	private static Component fakeComponent = new JPanel();
 
-	public SingleComponentAspectRatioKeeperLayout() {
+	public RatioLayout() {
 		fakeComponent.setPreferredSize(new Dimension(0, 0));
 	}
 
@@ -99,7 +99,7 @@ public class SingleComponentAspectRatioKeeperLayout implements LayoutManager {
 		panel.setPreferredSize(new Dimension(300, 300));
 		panel.setBackground(Color.ORANGE);
 
-		JPanel wrapperPanel = new JPanel(new SingleComponentAspectRatioKeeperLayout());
+		JPanel wrapperPanel = new JPanel(new RatioLayout());
 		wrapperPanel.add(panel);
 
 		frame.getContentPane().add(wrapperPanel);

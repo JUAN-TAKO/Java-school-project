@@ -165,7 +165,7 @@ public class VueJeu{
         // CENTRE
         
         
-        JPanel panelCentre = new JPanel(new SingleComponentAspectRatioKeeperLayout());
+        JPanel panelCentre = new JPanel(new RatioLayout());
         grille = new PanelGrille(types, observable);
         panelCentre.add(grille);
         mainPanel.add(panelCentre, BorderLayout.CENTER);
@@ -176,7 +176,7 @@ public class VueJeu{
         panelSud = new JPanel(new BorderLayout());
         mainPanel.add(panelSud, BorderLayout.SOUTH);
         panelSud.add(panelsJoueurs[2], BorderLayout.WEST);
-        panelCentreSud = new JPanel(new GridLayout(3,3));
+        panelCentreSud = new JPanel(new GridLayout(2,3));
         panelSud.add(panelCentreSud, BorderLayout.CENTER);
         
         panelSud.add(panelsJoueurs[3], BorderLayout.EAST);
@@ -270,7 +270,7 @@ public class VueJeu{
         panelTresor = new PanelTresor();
         defausseTirage = new PanelImage("src/Images/cache/tresor_cache.png", 2, observable, MessageType.VOIR_TIRAGE);
         panelOuest = new JPanel(new BorderLayout());
-        JPanel layoutTresor = new JPanel(new SingleComponentAspectRatioKeeperLayout());
+        JPanel layoutTresor = new JPanel(new RatioLayout());
         panelTresor.setPreferredSize(new Dimension(300, 300));
         layoutTresor.add(panelTresor);
         panelOuest.add(layoutTresor, BorderLayout.NORTH);
